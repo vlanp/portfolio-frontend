@@ -5,6 +5,11 @@ import { NextRequest, NextResponse } from "next/server";
 const locales = ["en", "fr"];
 
 function getLocale(request: NextRequest) {
+  const nextLocale = request.cookies.get("NEXT_LOCALE")?.value;
+
+  if (nextLocale && locales.includes(nextLocale)) {
+    return nextLocale;
+  }
   const headers = Object.fromEntries(request.headers);
   const languages = new Negotiator({ headers }).languages();
   const defaultLocale = "en";

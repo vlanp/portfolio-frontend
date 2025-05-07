@@ -4,5 +4,9 @@
     "Projects": "Projets",
     "About": "À Propos",
     "Contact": "Contact"
+  },
+  "langToggle": {
+    "English": "Anglais",
+    "French": "Français"
   }
 }
