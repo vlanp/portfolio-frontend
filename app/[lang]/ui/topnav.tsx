@@ -13,6 +13,8 @@ import { IDictionary } from "../dictionaries";
 
 const TopNav = ({ dictionary }: { dictionary: IDictionary }) => {
   const pathname = usePathname();
+  const currentLocale = pathname.split("/")[1];
+  const pathNoLocale = pathname.replace(`/${currentLocale}`, "") || "/";
   const links = [
     { name: dictionary.topNav.Home, href: "/", icon: HomeIcon },
     {
@@ -36,10 +38,10 @@ const TopNav = ({ dictionary }: { dictionary: IDictionary }) => {
             key={link.name}
             href={link.href}
             className={clsx(
-              "text-sidebar-foreground w-30 h-10 flex items-center justify-center gap-2 rounded-xl",
+              "text-sidebar-foreground px-4 h-10 flex items-center justify-center gap-2 rounded-xl",
               {
                 "bg-sidebar-ring text-sidebar-primary-foreground":
-                  pathname === link.href,
+                  pathNoLocale === link.href,
               }
             )}
           >
