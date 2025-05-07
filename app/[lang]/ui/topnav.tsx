@@ -1,28 +1,32 @@
 "use client";
 
+import Link from "next/link";
+import clsx from "clsx";
+import { usePathname } from "next/navigation";
 import {
   IdentificationIcon,
   HomeIcon,
   BriefcaseIcon,
   EnvelopeIcon,
 } from "@heroicons/react/24/outline";
-import Link from "next/link";
-import clsx from "clsx";
-import { usePathname } from "next/navigation";
+import { IDictionary } from "../dictionaries";
 
-const links = [
-  { name: "Home", href: "/", icon: HomeIcon },
-  {
-    name: "Projects",
-    href: "/projects",
-    icon: BriefcaseIcon,
-  },
-  { name: "About", href: "/about", icon: IdentificationIcon },
-  { name: "Contact", href: "/contact", icon: EnvelopeIcon },
-];
-
-const TopNav = () => {
+const TopNav = ({ dictionary }: { dictionary: IDictionary }) => {
   const pathname = usePathname();
+  const links = [
+    { name: dictionary.topNav.Home, href: "/", icon: HomeIcon },
+    {
+      name: dictionary.topNav.Projects,
+      href: "/projects",
+      icon: BriefcaseIcon,
+    },
+    {
+      name: dictionary.topNav.About,
+      href: "/about",
+      icon: IdentificationIcon,
+    },
+    { name: dictionary.topNav.Contact, href: "/contact", icon: EnvelopeIcon },
+  ];
   return (
     <>
       {links.map((link) => {
