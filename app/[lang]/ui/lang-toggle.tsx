@@ -17,6 +17,7 @@ export function LangToggle({ dictionary }: { dictionary: IDictionary }) {
   const router = useRouter();
   const pathname = usePathname();
   const currentLocale = pathname.split("/")[1];
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -29,7 +30,7 @@ export function LangToggle({ dictionary }: { dictionary: IDictionary }) {
         <DropdownMenuItem
           onClick={() => {
             setCookie("NEXT_LOCALE", "en");
-            const newPath = pathname.replace(`/${currentLocale}`, "en");
+            const newPath = pathname.replace(`/${currentLocale}`, "/en");
             router.push(newPath);
           }}
         >
@@ -38,7 +39,7 @@ export function LangToggle({ dictionary }: { dictionary: IDictionary }) {
         <DropdownMenuItem
           onClick={() => {
             setCookie("NEXT_LOCALE", "fr");
-            const newPath = pathname.replace(`/${currentLocale}`, "fr");
+            const newPath = pathname.replace(`/${currentLocale}`, "/fr");
             router.push(newPath);
           }}
         >

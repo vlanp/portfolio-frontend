@@ -8,5 +8,9 @@
   "langToggle": {
     "English": "Anglais",
     "French": "Français"
+  },
+  "404NotFound": {
+    "Description": "Impossible de trouver la ressource demandée.",
+    "GoBack": "Retour"
   }
 }
