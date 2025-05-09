@@ -3,5 +3,5 @@ export default interface IProjectItem {
   title: string;
   description: string;
   nav: number;
-  category: string;
+  category: string | null;
 }
