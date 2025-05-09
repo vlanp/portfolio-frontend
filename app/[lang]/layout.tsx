@@ -45,7 +45,7 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <div className="min-h-screen flex flex-col">
-            <header className="bg-sidebar-accent text-sidebar-foreground border-sidebar-border border-2 flex flex-row p-5 justify-between">
+            <header className="bg-sidebar-accent text-sidebar-foreground border-sidebar-border border-2 flex flex-row justify-between items-center px-5 h-header-height">
               <ModeToggle />
               <TopNav dictionary={dict} />
               <LangToggle dictionary={dict} />
