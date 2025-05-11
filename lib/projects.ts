@@ -1,4 +1,4 @@
-import urls, { UrlsKeys } from "@/projects/projects-repos";
+import urls from "@/projects/projects-repos";
 import {
   fetchDataError,
   FetchDataSuccess,

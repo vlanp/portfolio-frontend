@@ -1,10 +1,4 @@
-import { getProject } from "@/lib/projects";
-import { getToto } from "@/lib/test";
-import { UrlsKeys } from "@/projects/projects-repos";
-
-const ProjectPage = async (props: { params: Promise<{ name: UrlsKeys }> }) => {
-  const params = await props.params;
-
+const ProjectPage = async () => {
   // const project = await getProject(params.name);
 
   // console.log(project);

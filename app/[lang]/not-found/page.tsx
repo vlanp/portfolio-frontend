@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { FaceFrownIcon } from "@heroicons/react/24/outline";
 import { getDictionary, IDictionary } from "../dictionaries";
+import { buttonVariants } from "@/components/ui/button";
 
 export default async function NotFound({
   params,
@@ -14,10 +15,7 @@ export default async function NotFound({
       <FaceFrownIcon className="w-10 text-gray-400" />
       <h2 className="text-xl font-semibold">404 Not Found</h2>
       <p>{dict["404NotFound"].Description}</p>
-      <Link
-        href="/"
-        className="mt-4 rounded-md bg-blue-500 px-4 py-2 text-sm text-white transition-colors hover:bg-blue-400"
-      >
+      <Link className={buttonVariants({ variant: "outline" })} href="/">
         {dict["404NotFound"].GoBack}
       </Link>
     </main>

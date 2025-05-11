@@ -12,9 +12,8 @@ import {
 import { IDictionary } from "../dictionaries";
 
 const TopNav = ({ dictionary }: { dictionary: IDictionary }) => {
-  const pathname = usePathname();
-  const currentLocale = pathname.split("/")[1];
-  const pathNoLocale = pathname.replace(`/${currentLocale}`, "") || "/";
+  const pathname = "/" + (usePathname().split("/")[2] || "");
+
   const links = [
     { name: dictionary.topNav.Home, href: "/", icon: HomeIcon },
     {
@@ -41,7 +40,7 @@ const TopNav = ({ dictionary }: { dictionary: IDictionary }) => {
               "text-sidebar-foreground px-4 h-10 flex items-center justify-center gap-2 rounded-xl",
               {
                 "bg-sidebar-ring text-sidebar-primary-foreground":
-                  pathNoLocale === link.href,
+                  pathname === link.href,
               }
             )}
           >

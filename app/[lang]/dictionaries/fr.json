@@ -12,5 +12,9 @@
   "404NotFound": {
     "Description": "Impossible de trouver la ressource demandée.",
     "GoBack": "Retour"
+  },
+  "ProjectSidebarError": {
+    "Description": "Chargement du projet impossible",
+    "Retry": "Réessayer"
   }
 }
