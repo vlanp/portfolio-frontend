@@ -1,13 +1,18 @@
-import { getProjectsNames } from "@/lib/projects";
+import checkedEnv from "@/lib/checkEnv";
+import IRepo from "@/types/IRepo";
 import Link from "next/link";
+import axios from "axios";
 
-const ProjectsPage = () => {
-  const projectsNames = getProjectsNames();
+const ProjectsPage = async () => {
+  const response = await axios.get<IRepo[]>(
+    checkedEnv.BACKEND_URL + checkedEnv.GET_REPOS_URL
+  );
+
   return (
     <section className="w-full">
-      {projectsNames.map((projectName) => (
-        <Link href={"/projects/" + projectName} key={projectName}>
-          <p>{projectName}</p>
+      {response.data.map((repo) => (
+        <Link href={"/projects/" + repo.displayName} key={repo._id}>
+          <p>{repo.displayName}</p>
         </Link>
       ))}
     </section>

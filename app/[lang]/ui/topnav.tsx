@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import clsx from "clsx";
 import { usePathname } from "next/navigation";
 import {
   IdentificationIcon,
@@ -10,6 +9,7 @@ import {
   EnvelopeIcon,
 } from "@heroicons/react/24/outline";
 import { IDictionary } from "../dictionaries";
+import { Button } from "@/components/ui/button";
 
 const TopNav = ({ dictionary }: { dictionary: IDictionary }) => {
   const pathname = "/" + (usePathname().split("/")[2] || "");
@@ -33,20 +33,17 @@ const TopNav = ({ dictionary }: { dictionary: IDictionary }) => {
       {links.map((link) => {
         const LinkIcon = link.icon;
         return (
-          <Link
+          <Button
             key={link.name}
-            href={link.href}
-            className={clsx(
-              "text-sidebar-foreground px-4 h-10 flex items-center justify-center gap-2 rounded-xl",
-              {
-                "bg-sidebar-ring text-sidebar-primary-foreground":
-                  pathname === link.href,
-              }
-            )}
+            size={"lg"}
+            asChild
+            variant={pathname === link.href ? "outline" : "link"}
           >
-            <LinkIcon className="w-6" />
-            <p className="hidden md:block">{link.name}</p>
-          </Link>
+            <Link href={link.href}>
+              <LinkIcon className="h-full size-fit py-2" />
+              <p className="hidden md:block text-xl">{link.name}</p>
+            </Link>
+          </Button>
         );
       })}
     </>

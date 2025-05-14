@@ -1,8 +1,7 @@
 import { Sidebar, SidebarContent } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
-import { getDictionary, IDictionary } from "../../dictionaries";
 
-const ProjectSidebarError = async () => {
+const ProjectSidebarError = () => {
   return (
     <Sidebar variant="floating" className="top-header-height">
       <SidebarContent className="flex flex-col items-center justify-center gap-4">

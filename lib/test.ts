@@ -2,11 +2,6 @@
 
 import projectsRepos, { IProjectsReposKeys } from "@/projects/projects-repos";
 import {
-  fetchDataError,
-  FetchDataSuccess,
-  IFetchDataState,
-} from "@/types/IFetchDataState";
-import {
   IOctokitTagsResponse,
   IOctokitTreeResponse,
 } from "@/types/IOctokitResponse";
@@ -85,46 +80,43 @@ const octokit = new Octokit({
 //   console.log(branchData.data);
 // };
 
-const getTagsDataState = async (
+const getTags = async (
   name: IProjectsReposKeys
-): Promise<IFetchDataState<IOctokitTagsResponse>> => {
-  try {
-    throw new Error("Error");
-    const projectRepo = projectsRepos[name];
-    const tags = await octokit.rest.repos.listTags({
-      owner: projectRepo.owner,
-      repo: projectRepo.repo,
-    });
-    return new FetchDataSuccess(tags);
-  } catch (error) {
-    console.warn("Error fetching tags:", error);
-    return fetchDataError;
-  }
+): Promise<IOctokitTagsResponse> => {
+  const projectRepo = projectsRepos[name];
+  const tags = await octokit.rest.repos.listTags({
+    owner: projectRepo.owner,
+    repo: projectRepo.repo,
+  });
+  return tags;
 };
 
-const getTreeDataState = async (
+const getTree = async (
   name: IProjectsReposKeys,
   sha: string
-): Promise<IFetchDataState<IOctokitTreeResponse>> => {
-  try {
-    const projectRepo = projectsRepos[name];
-    const tree = await octokit.rest.git.getTree({
-      owner: projectRepo.owner,
-      repo: projectRepo.repo,
-      tree_sha: sha,
-      recursive: "true",
-    });
-    const docsItems = tree.data.tree.filter(
-      (item) => item.path.startsWith("docs/") || item.path === "docs"
-    );
-    console.log(docsItems);
-    return new FetchDataSuccess(tree);
-  } catch (error) {
-    console.warn("Error fetching tree:", error);
-    return fetchDataError;
-  }
+): Promise<IOctokitTreeResponse> => {
+  const projectRepo = projectsRepos[name];
+  const tree = await octokit.rest.git.getTree({
+    owner: projectRepo.owner,
+    repo: projectRepo.repo,
+    tree_sha: sha,
+    recursive: "true",
+  });
+  const docsItems = tree.data.tree.filter(
+    (item) => item.path.startsWith("docs/") || item.path === "docs"
+  );
+
+  const result = {
+    ...tree,
+    data: {
+      ...tree.data,
+      tree: docsItems,
+    },
+  };
+
+  return result;
 };
 
 // export { getProject };
 
-export { getTagsDataState, getTreeDataState };
+export { getTags, getTree };

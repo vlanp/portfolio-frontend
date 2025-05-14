@@ -18,18 +18,19 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { IOctokitTagsResponse } from "@/types/IOctokitResponse";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 export function TagCombobox({
   tags,
-  selectedTag,
-  setSelectedTag,
+  setTag,
 }: {
   tags: IOctokitTagsResponse;
-  selectedTag: string;
-  setSelectedTag: Dispatch<SetStateAction<string | null>>;
+  setTag: (tag: string) => void;
 }) {
   const [open, setOpen] = useState(false);
+  const searchParams = useSearchParams();
+  const selectedTag = searchParams.get("tag");
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -55,7 +56,7 @@ export function TagCombobox({
                   key={tag.name}
                   value={tag.name}
                   onSelect={(currentValue) => {
-                    setSelectedTag(currentValue);
+                    setTag(currentValue);
                     setOpen(false);
                   }}
                 >
