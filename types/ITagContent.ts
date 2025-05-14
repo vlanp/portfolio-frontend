@@ -1,4 +1,5 @@
 import type { Octokit as OctokitType } from "octokit";
+import IFrontMatterContent from "./IFrontMatterContent";
 
 type IOctokitTagsResponse = Awaited<
   ReturnType<OctokitType["rest"]["repos"]["listTags"]>
@@ -7,15 +8,6 @@ type IOctokitTagsResponse = Awaited<
 type IOctokitTreeResponse = Awaited<
   ReturnType<OctokitType["rest"]["git"]["getTree"]>
 >;
-
-interface IContent {
-  htmlContent: string;
-  matterContent: {
-    title: string;
-    description: string;
-    nav: number;
-  };
-}
 
 interface ITagContent {
   orderedTags: IOctokitTagsResponse["data"];
@@ -30,7 +22,7 @@ interface IDir {
 
 interface IFile {
   file: IOctokitTreeResponse["data"]["tree"][0];
-  content: IContent;
+  matterContent: IFrontMatterContent;
 }
 
 export type { ITagContent, IDir, IFile };

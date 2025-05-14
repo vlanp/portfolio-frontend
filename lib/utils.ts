@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
-import { redirect } from "next/navigation";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { ReadonlyURLSearchParams, redirect } from "next/navigation";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -8,8 +9,6 @@ export function cn(...inputs: ClassValue[]) {
 
 function formatPathToDisplayName(path: string): string {
   const fileName = path.split("/").pop();
-
-  console.log(path);
 
   if (!fileName) {
     return "";
@@ -33,4 +32,20 @@ const setSPInSC = (paramKey: string, paramValue: string, pathname: string) => {
   redirect(`${pathname}?${params.toString()}`);
 };
 
-export { formatPathToDisplayName, setSPInSC };
+const setSPInCC = (
+  paramKey: string,
+  paramValue: string,
+  searchParams: ReadonlyURLSearchParams,
+  router: AppRouterInstance,
+  pathname: string
+) => {
+  const params = new URLSearchParams(searchParams);
+  if (paramValue) {
+    params.set(paramKey, paramValue);
+  } else {
+    params.delete(paramKey);
+  }
+  router.replace(`${pathname}?${params.toString()}`);
+};
+
+export { formatPathToDisplayName, setSPInSC, setSPInCC };

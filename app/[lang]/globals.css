@@ -121,4 +121,52 @@
   body {
     @apply bg-background text-foreground;
   }
+  h1 {
+    @apply mb-2 text-5xl font-bold tracking-tighter;
+  }
+  h2 {
+    @apply mb-2 text-4xl font-semibold tracking-tight;
+  }
+  h3 {
+    @apply mb-1.5 text-3xl font-semibold tracking-tight;
+  }
+  h4 {
+    @apply mb-1.5 text-2xl font-semibold;
+  }
+  h5 {
+    @apply mb-1 text-xl font-semibold;
+  }
+  h6 {
+    @apply mb-1 text-lg font-semibold;
+  }
+  p {
+    @apply mb-2 text-xl leading-relaxed;
+  }
+  a {
+    @apply text-sidebar-primary hover:text-sidebar-primary/80 transition-colors duration-200;
+  }
+  blockquote {
+    @apply pl-4 border-l-4 border-muted italic my-4;
+  }
+  hr {
+    @apply my-6 border-border;
+  }
+  code {
+    @apply font-mono text-sm px-1.5 py-0.5 bg-secondary text-secondary-foreground rounded-md;
+  }
+  pre {
+    @apply font-mono text-sm p-4 bg-secondary text-secondary-foreground rounded-lg my-4 overflow-x-auto;
+  }
+  img {
+    @apply max-w-full h-auto;
+  }
+  table {
+    @apply w-full border-collapse mb-4;
+  }
+  th {
+    @apply text-left py-2 px-3 border-b border-border font-semibold;
+  }
+  td {
+    @apply py-2 px-3 border-b border-border;
+  }
 }

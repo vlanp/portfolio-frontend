@@ -2,7 +2,7 @@
 
 import { Check, ChevronsUpDown } from "lucide-react";
 
-import { cn } from "@/lib/utils";
+import { cn, setSPInCC } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -18,7 +18,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { IOctokitTagsResponse } from "@/types/IOctokitResponse";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export function TagCombobox({
@@ -35,19 +35,6 @@ export function TagCombobox({
   const selectedTag = tags.find(
     (tag) => tag.commit.sha === searchParams.get("sha")
   )?.name;
-
-  const setSha = useCallback(
-    (sha: string) => {
-      const params = new URLSearchParams(searchParams);
-      if (sha) {
-        params.set("sha", sha);
-      } else {
-        params.delete("sha");
-      }
-      router.replace(`${pathname}?${params.toString()}`);
-    },
-    [pathname, router, searchParams]
-  );
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -74,7 +61,13 @@ export function TagCombobox({
                   disabled={disabled}
                   value={tag.name}
                   onSelect={() => {
-                    setSha(tag.commit.sha);
+                    setSPInCC(
+                      "sha",
+                      tag.commit.sha,
+                      searchParams,
+                      router,
+                      pathname
+                    );
                     setOpen(false);
                   }}
                 >

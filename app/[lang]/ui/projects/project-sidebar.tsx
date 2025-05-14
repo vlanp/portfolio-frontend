@@ -35,11 +35,6 @@ const ProjectSidebar = async ({
   const sha = await searchParams?.then((params) => params.sha);
   let tagResponse: AxiosResponse<ITagContent, unknown>;
   if (!sha) {
-    const url =
-      checkedEnv.BACKEND_URL +
-      checkedEnv.GET_LAST_TAG_URL.replace("{repoid}", id);
-    console.log(url);
-
     tagResponse = await axios.get<ITagContent>(
       checkedEnv.BACKEND_URL +
         checkedEnv.GET_LAST_TAG_URL.replace("{repoid}", id)
@@ -62,7 +57,7 @@ const ProjectSidebar = async ({
           <SidebarGroupAction asChild>
             <TagCombobox tags={tagResponse.data.orderedTags} />
           </SidebarGroupAction>
-          <SidebarSeparator className="mt-2" />
+          <SidebarSeparator className="my-2" />
           <SidebarGroupContent>
             <SidebarMenu>
               {tagResponse.data.orderedDirs.map((orderedDir) => (
