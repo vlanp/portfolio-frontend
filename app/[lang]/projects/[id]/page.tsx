@@ -6,6 +6,7 @@ import checkedEnv from "@/lib/checkEnv";
 import IFileExist from "@/types/IFileExist";
 import { setSPInSC } from "@/lib/utils";
 import { headers } from "next/headers";
+import HtmlMarkdownContent from "../../ui/projects/html-markdown-content";
 
 const ProjectPage = async ({
   params,
@@ -58,15 +59,7 @@ const ProjectPage = async ({
     <SidebarProvider>
       <ProjectSidebar params={params} searchParams={searchParams} />
       <SidebarTrigger />
-      {fileContent && (
-        <section className="flex justify-center w-full">
-          <div className="mt-5 max-w-6xl flex flex-col items-center px-4">
-            <h1>{fileContent.matterContent.title}</h1>
-            <p>{fileContent.matterContent.description}</p>
-            <p dangerouslySetInnerHTML={{ __html: fileContent.htmlContent }} />
-          </div>
-        </section>
-      )}
+      {fileContent && <HtmlMarkdownContent fileContent={fileContent} />}
     </SidebarProvider>
   );
 };

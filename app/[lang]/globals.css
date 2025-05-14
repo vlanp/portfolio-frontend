@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "highlight.js/styles/atom-one-light.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -81,6 +82,7 @@
 }
 
 .dark {
+  @import "highlight.js/styles/atom-one-dark.css";
   --background: oklch(0.141 0.005 285.823);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.21 0.006 285.885);
@@ -140,7 +142,7 @@
     @apply mb-1 text-lg font-semibold;
   }
   p {
-    @apply mb-2 text-xl leading-relaxed;
+    @apply mb-2 leading-relaxed;
   }
   a {
     @apply text-sidebar-primary hover:text-sidebar-primary/80 transition-colors duration-200;
@@ -152,10 +154,7 @@
     @apply my-6 border-border;
   }
   code {
-    @apply font-mono text-sm px-1.5 py-0.5 bg-secondary text-secondary-foreground rounded-md;
-  }
-  pre {
-    @apply font-mono text-sm p-4 bg-secondary text-secondary-foreground rounded-lg my-4 overflow-x-auto;
+    @apply rounded-md;
   }
   img {
     @apply max-w-full h-auto;
