@@ -11,7 +11,7 @@ const ProjectsPage = async () => {
   return (
     <section className="w-full">
       {response.data.map((repo) => (
-        <Link href={"/projects/" + repo.displayName} key={repo._id}>
+        <Link href={"/projects/" + repo._id} key={repo._id}>
           <p>{repo.displayName}</p>
         </Link>
       ))}

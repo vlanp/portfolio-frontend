@@ -17,20 +17,23 @@ function getLocale(request: NextRequest) {
 }
 
 export function middleware(request: NextRequest) {
+  const headers = new Headers(request.headers);
+  headers.set("x-current-path", request.nextUrl.pathname);
+
   // Check if there is any supported locale in the pathname
   const { pathname } = request.nextUrl;
   const pathnameHasLocale = locales.some(
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
   );
 
-  if (pathnameHasLocale) return;
+  if (pathnameHasLocale) return NextResponse.next({ headers });
 
   // Redirect if there is no locale
   const locale = getLocale(request);
   request.nextUrl.pathname = `/${locale}${pathname}`;
   // e.g. incoming request is /products
   // The new URL is now /en-US/products
-  return NextResponse.redirect(request.nextUrl);
+  return NextResponse.redirect(request.nextUrl, { headers });
 }
 
 export const config = {

@@ -18,19 +18,36 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { IOctokitTagsResponse } from "@/types/IOctokitResponse";
-import { useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useCallback, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export function TagCombobox({
   tags,
-  setTag,
+  disabled,
 }: {
-  tags: IOctokitTagsResponse;
-  setTag: (tag: string) => void;
+  tags: IOctokitTagsResponse["data"];
+  disabled?: boolean;
 }) {
+  const router = useRouter();
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const searchParams = useSearchParams();
-  const selectedTag = searchParams.get("tag");
+  const selectedTag = tags.find(
+    (tag) => tag.commit.sha === searchParams.get("sha")
+  )?.name;
+
+  const setSha = useCallback(
+    (sha: string) => {
+      const params = new URLSearchParams(searchParams);
+      if (sha) {
+        params.set("sha", sha);
+      } else {
+        params.delete("sha");
+      }
+      router.replace(`${pathname}?${params.toString()}`);
+    },
+    [pathname, router, searchParams]
+  );
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -51,12 +68,13 @@ export function TagCombobox({
           <CommandList>
             <CommandEmpty>No tags found.</CommandEmpty>
             <CommandGroup>
-              {tags.data.map((tag) => (
+              {tags.map((tag) => (
                 <CommandItem
                   key={tag.name}
+                  disabled={disabled}
                   value={tag.name}
-                  onSelect={(currentValue) => {
-                    setTag(currentValue);
+                  onSelect={() => {
+                    setSha(tag.commit.sha);
                     setOpen(false);
                   }}
                 >

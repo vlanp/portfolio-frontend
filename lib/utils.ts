@@ -1,4 +1,5 @@
 import { clsx, type ClassValue } from "clsx";
+import { redirect } from "next/navigation";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -26,4 +27,10 @@ function formatPathToDisplayName(path: string): string {
   return formattedName;
 }
 
-export { formatPathToDisplayName };
+const setSPInSC = (paramKey: string, paramValue: string, pathname: string) => {
+  const params = new URLSearchParams();
+  params.set(paramKey, paramValue);
+  redirect(`${pathname}?${params.toString()}`);
+};
+
+export { formatPathToDisplayName, setSPInSC };

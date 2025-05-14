@@ -1,28 +1,107 @@
-import { Sidebar } from "@/components/ui/sidebar";
-import { IProjectsReposKeys } from "@/projects/projects-repos";
-import { Suspense } from "react";
-import ProjectSidebarSkeleton from "./project-sidebar/project-sidebar-skeleton";
-import ProjectSidebarContent from "./project-sidebar/projet-sidebar-content";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupAction,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
+  SidebarSeparator,
+} from "@/components/ui/sidebar";
+import axios, { AxiosResponse } from "axios";
+import { ITagContent } from "@/types/ITagContent";
+import checkedEnv from "@/lib/checkEnv";
+import IRepo from "@/types/IRepo";
+import { headers } from "next/headers";
+import { formatPathToDisplayName, setSPInSC } from "@/lib/utils";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@radix-ui/react-collapsible";
+import { ChevronDown } from "lucide-react";
+import { TagCombobox } from "./project-sidebar/tag-combobox";
 
-const ProjectSidebar = ({
-  name,
+const ProjectSidebar = async ({
+  params,
   searchParams,
 }: {
-  name: IProjectsReposKeys;
+  params: Promise<{ id: string }>;
   searchParams?: Promise<{
-    tag?: string;
+    sha?: string;
   }>;
 }) => {
-  // const project = await getProject(name);
-  // const categories = project.map((it) => it.data.title);
-  // console.log(categories);
-  // getTree(name, "312a7076f9dc9071c5aa89bc6809a776255d57a9");
+  const { id } = await params;
+  const headerList = await headers();
+  const pathname = headerList.get("x-current-path");
+  if (!pathname) {
+    throw new Error("No pathname found in headers");
+  }
+  const sha = await searchParams?.then((params) => params.sha);
+  let tagResponse: AxiosResponse<ITagContent, unknown>;
+  if (!sha) {
+    const url =
+      checkedEnv.BACKEND_URL +
+      checkedEnv.GET_LAST_TAG_URL.replace("{repoid}", id);
+    console.log(url);
 
+    tagResponse = await axios.get<ITagContent>(
+      checkedEnv.BACKEND_URL +
+        checkedEnv.GET_LAST_TAG_URL.replace("{repoid}", id)
+    );
+    setSPInSC("sha", tagResponse.data.tag.commit.sha, pathname);
+  } else {
+    tagResponse = await axios.get<ITagContent>(
+      checkedEnv.BACKEND_URL +
+        checkedEnv.GET_TAG_URL.replace("{repoid}", id).replace("{sha}", sha)
+    );
+  }
+  const repoResponse = await axios.get<IRepo>(
+    checkedEnv.BACKEND_URL + checkedEnv.GET_REPO_URL.replace("{repoid}", id)
+  );
   return (
     <Sidebar variant="floating" className="top-header-height">
-      <Suspense fallback={<ProjectSidebarSkeleton />}>
-        <ProjectSidebarContent name={name} searchParams={searchParams} />
-      </Suspense>
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>{repoResponse.data.displayName}</SidebarGroupLabel>
+          <SidebarGroupAction asChild>
+            <TagCombobox tags={tagResponse.data.orderedTags} />
+          </SidebarGroupAction>
+          <SidebarSeparator className="mt-2" />
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {tagResponse.data.orderedDirs.map((orderedDir) => (
+                <Collapsible key={orderedDir.dir.path}>
+                  <SidebarMenuItem>
+                    <CollapsibleTrigger asChild>
+                      <SidebarMenuButton>
+                        <ChevronDown />
+                        {formatPathToDisplayName(orderedDir.dir.path)}
+                      </SidebarMenuButton>
+                    </CollapsibleTrigger>
+                    {orderedDir.orderedFiles.map((orderedFile) => (
+                      <CollapsibleContent key={orderedFile.file.path}>
+                        <SidebarMenuSub>
+                          <SidebarMenuSubItem className="mb-2">
+                            <SidebarMenuSubButton className="h-fit">
+                              {formatPathToDisplayName(orderedFile.file.path)}
+                            </SidebarMenuSubButton>
+                          </SidebarMenuSubItem>
+                        </SidebarMenuSub>
+                      </CollapsibleContent>
+                    ))}
+                  </SidebarMenuItem>
+                </Collapsible>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
     </Sidebar>
   );
 };
