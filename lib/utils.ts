@@ -26,9 +26,18 @@ function formatPathToDisplayName(path: string): string {
   return formattedName;
 }
 
-const setSPInSC = (paramKey: string, paramValue: string, pathname: string) => {
-  const params = new URLSearchParams();
-  params.set(paramKey, paramValue);
+const setSPInSC = (
+  paramKey: string,
+  paramValue: string,
+  pathname: string,
+  searchParams: Record<string, string>
+) => {
+  const params = new URLSearchParams(searchParams);
+  if (paramValue) {
+    params.set(paramKey, paramValue);
+  } else {
+    params.delete(paramKey);
+  }
   redirect(`${pathname}?${params.toString()}`);
 };
 

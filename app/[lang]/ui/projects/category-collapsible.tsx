@@ -9,11 +9,25 @@ import {
   CollapsibleContent,
 } from "@radix-ui/react-collapsible";
 import { ChevronDown, ChevronRight } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SubCategory from "./sub-category";
+import { useSearchParams } from "next/navigation";
 
 const CategoryCollapsible = ({ orderedDir }: { orderedDir: IDir }) => {
+  const searchParams = useSearchParams();
+  const filePath = searchParams.get("filePath");
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (
+      filePath &&
+      orderedDir.orderedFiles.map((it) => it.file.path).includes(filePath)
+    ) {
+      setIsOpen(true);
+    } else {
+      setIsOpen(false);
+    }
+  }, [filePath, orderedDir.orderedFiles]);
   return (
     <Collapsible onOpenChange={setIsOpen} open={isOpen}>
       <SidebarMenuItem>

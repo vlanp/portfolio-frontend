@@ -1,7 +1,6 @@
 "use client";
 
 import { Check, ChevronsUpDown } from "lucide-react";
-
 import { cn, setSPInCC } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -36,6 +35,11 @@ export function TagCombobox({
     (tag) => tag.commit.sha === searchParams.get("sha")
   )?.name;
 
+  const handleTagSelection = async (sha: string) => {
+    setSPInCC("sha", sha, searchParams, router, pathname);
+    setOpen(false);
+  };
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -61,14 +65,7 @@ export function TagCombobox({
                   disabled={disabled}
                   value={tag.name}
                   onSelect={() => {
-                    setSPInCC(
-                      "sha",
-                      tag.commit.sha,
-                      searchParams,
-                      router,
-                      pathname
-                    );
-                    setOpen(false);
+                    handleTagSelection(tag.commit.sha);
                   }}
                 >
                   {tag.name}

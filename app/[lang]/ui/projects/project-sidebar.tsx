@@ -22,8 +22,9 @@ const ProjectSidebar = async ({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams?: Promise<{
+  searchParams: Promise<{
     sha?: string;
+    filePath?: string;
   }>;
 }) => {
   const { id } = await params;
@@ -33,21 +34,39 @@ const ProjectSidebar = async ({
     throw new Error("No pathname found in headers");
   }
   const sha = await searchParams?.then((params) => params.sha);
+  const filePath = await searchParams?.then((params) => params.filePath);
   let tagResponse: AxiosResponse<ITagContent, unknown>;
   if (!sha) {
     tagResponse = await axios.get<ITagContent>(
-      checkedEnv.BACKEND_URL +
-        checkedEnv.GET_LAST_TAG_URL.replace("{repoid}", id)
+      checkedEnv.NEXT_PUBLIC_BACKEND_URL +
+        checkedEnv.NEXT_PUBLIC_GET_LAST_TAG_URL.replace("{repoid}", id)
     );
-    setSPInSC("sha", tagResponse.data.tag.commit.sha, pathname);
+    setSPInSC(
+      "sha",
+      tagResponse.data.tag.commit.sha,
+      pathname,
+      await searchParams
+    );
   } else {
     tagResponse = await axios.get<ITagContent>(
-      checkedEnv.BACKEND_URL +
-        checkedEnv.GET_TAG_URL.replace("{repoid}", id).replace("{sha}", sha)
+      checkedEnv.NEXT_PUBLIC_BACKEND_URL +
+        checkedEnv.NEXT_PUBLIC_GET_TAG_URL.replace("{repoid}", id).replace(
+          "{sha}",
+          sha
+        )
+    );
+  }
+  if (!filePath) {
+    setSPInSC(
+      "filePath",
+      tagResponse.data.orderedDirs[0].orderedFiles[0].file.path,
+      pathname,
+      await searchParams
     );
   }
   const repoResponse = await axios.get<IRepo>(
-    checkedEnv.BACKEND_URL + checkedEnv.GET_REPO_URL.replace("{repoid}", id)
+    checkedEnv.NEXT_PUBLIC_BACKEND_URL +
+      checkedEnv.NEXT_PUBLIC_GET_REPO_URL.replace("{repoid}", id)
   );
   return (
     <Sidebar variant="floating" className="top-header-height">

@@ -3,13 +3,16 @@ import ProjectSidebar from "../../ui/projects/project-sidebar";
 import axios from "axios";
 import IFileContent from "@/types/IFileContent";
 import checkedEnv from "@/lib/checkEnv";
+import IFileExist from "@/types/IFileExist";
+import { setSPInSC } from "@/lib/utils";
+import { headers } from "next/headers";
 
 const ProjectPage = async ({
   params,
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams?: Promise<{
+  searchParams: Promise<{
     sha?: string;
     filePath?: string;
   }>;
@@ -20,16 +23,36 @@ const ProjectPage = async ({
   let fileContent: IFileContent | null = null;
   if (filePath) {
     const encodedFilepath = encodeURIComponent(filePath);
-    fileContent = (
-      await axios.get<IFileContent>(
-        checkedEnv.BACKEND_URL +
-          checkedEnv.GET_FILE_CONTENT_URL.replace("{repoid}", id).replace(
-            "{filepath}",
-            encodedFilepath
-          ),
-        { params: { ref: sha } }
+    const didFileExist = (
+      await axios.get<IFileExist>(
+        checkedEnv.NEXT_PUBLIC_BACKEND_URL +
+          checkedEnv.NEXT_PUBLIC_GET_FILE_EXIST_URL.replace(
+            "{repoid}",
+            id
+          ).replace("{filepath}", encodedFilepath),
+        { params: { sha } }
       )
     ).data;
+
+    if (didFileExist.exist) {
+      fileContent = (
+        await axios.get<IFileContent>(
+          checkedEnv.NEXT_PUBLIC_BACKEND_URL +
+            checkedEnv.NEXT_PUBLIC_GET_FILE_CONTENT_URL.replace(
+              "{repoid}",
+              id
+            ).replace("{filepath}", encodedFilepath),
+          { params: { ref: sha } }
+        )
+      ).data;
+    } else {
+      const headerList = await headers();
+      const pathname = headerList.get("x-current-path");
+      if (!pathname) {
+        throw new Error("No pathname found in headers");
+      }
+      setSPInSC("filePath", "", pathname, await searchParams);
+    }
   }
   return (
     <SidebarProvider>

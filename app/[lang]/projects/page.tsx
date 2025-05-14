@@ -5,7 +5,7 @@ import axios from "axios";
 
 const ProjectsPage = async () => {
   const response = await axios.get<IRepo[]>(
-    checkedEnv.BACKEND_URL + checkedEnv.GET_REPOS_URL
+    checkedEnv.NEXT_PUBLIC_BACKEND_URL + checkedEnv.NEXT_PUBLIC_GET_REPOS_URL
   );
 
   return (
