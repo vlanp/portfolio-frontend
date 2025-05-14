@@ -1,0 +1,36 @@
+"use client";
+
+import { SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar";
+import { formatPathToDisplayName } from "@/lib/utils";
+import { IDir } from "@/types/ITagContent";
+import {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+} from "@radix-ui/react-collapsible";
+import { ChevronDown, ChevronRight } from "lucide-react";
+import { useState } from "react";
+import SubCategory from "./sub-category";
+
+const CategoryCollapsible = ({ orderedDir }: { orderedDir: IDir }) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  return (
+    <Collapsible onOpenChange={setIsOpen} open={isOpen}>
+      <SidebarMenuItem>
+        <CollapsibleTrigger asChild>
+          <SidebarMenuButton>
+            {isOpen ? <ChevronDown /> : <ChevronRight />}
+            {formatPathToDisplayName(orderedDir.dir.path)}
+          </SidebarMenuButton>
+        </CollapsibleTrigger>
+        {orderedDir.orderedFiles.map((orderedFile) => (
+          <CollapsibleContent key={orderedFile.file.path}>
+            <SubCategory orderedFile={orderedFile} />
+          </CollapsibleContent>
+        ))}
+      </SidebarMenuItem>
+    </Collapsible>
+  );
+};
+
+export default CategoryCollapsible;

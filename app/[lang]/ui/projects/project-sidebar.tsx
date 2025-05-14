@@ -6,11 +6,6 @@ import {
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
   SidebarSeparator,
 } from "@/components/ui/sidebar";
 import axios, { AxiosResponse } from "axios";
@@ -18,14 +13,9 @@ import { ITagContent } from "@/types/ITagContent";
 import checkedEnv from "@/lib/checkEnv";
 import IRepo from "@/types/IRepo";
 import { headers } from "next/headers";
-import { formatPathToDisplayName, setSPInSC } from "@/lib/utils";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@radix-ui/react-collapsible";
-import { ChevronDown } from "lucide-react";
-import { TagCombobox } from "./project-sidebar/tag-combobox";
+import { setSPInSC } from "@/lib/utils";
+import { TagCombobox } from "./tag-combobox";
+import CategoryCollapsible from "./category-collapsible";
 
 const ProjectSidebar = async ({
   params,
@@ -76,27 +66,10 @@ const ProjectSidebar = async ({
           <SidebarGroupContent>
             <SidebarMenu>
               {tagResponse.data.orderedDirs.map((orderedDir) => (
-                <Collapsible key={orderedDir.dir.path}>
-                  <SidebarMenuItem>
-                    <CollapsibleTrigger asChild>
-                      <SidebarMenuButton>
-                        <ChevronDown />
-                        {formatPathToDisplayName(orderedDir.dir.path)}
-                      </SidebarMenuButton>
-                    </CollapsibleTrigger>
-                    {orderedDir.orderedFiles.map((orderedFile) => (
-                      <CollapsibleContent key={orderedFile.file.path}>
-                        <SidebarMenuSub>
-                          <SidebarMenuSubItem className="mb-2">
-                            <SidebarMenuSubButton className="h-fit">
-                              {formatPathToDisplayName(orderedFile.file.path)}
-                            </SidebarMenuSubButton>
-                          </SidebarMenuSubItem>
-                        </SidebarMenuSub>
-                      </CollapsibleContent>
-                    ))}
-                  </SidebarMenuItem>
-                </Collapsible>
+                <CategoryCollapsible
+                  key={orderedDir.dir.path}
+                  orderedDir={orderedDir}
+                />
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
