@@ -58,8 +58,10 @@ const ProjectPage = async ({
   return (
     <SidebarProvider>
       <ProjectSidebar params={params} searchParams={searchParams} />
-      <SidebarTrigger />
-      {fileContent && <HtmlMarkdownContent fileContent={fileContent} />}
+      <section className="flex flex-1">
+        <SidebarTrigger className="fixed" />
+        {fileContent && <HtmlMarkdownContent fileContent={fileContent} />}
+      </section>
     </SidebarProvider>
   );
 };

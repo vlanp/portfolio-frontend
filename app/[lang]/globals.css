@@ -5,6 +5,8 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --font-poppins: var(--font-poppins);
+  --font-inter: var(--font-inter);
   --spacing-header-height: var(--header-height);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -108,7 +110,7 @@
   --chart-5: oklch(0.645 0.246 16.439);
   --sidebar: oklch(0.21 0.006 285.885);
   --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary: oklch(0.76 0.125 235.5);
   --sidebar-primary-foreground: oklch(0.985 0 0);
   --sidebar-accent: oklch(0.274 0.006 286.033);
   --sidebar-accent-foreground: oklch(0.985 0 0);
@@ -121,28 +123,28 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-poppins;
   }
   h1 {
-    @apply mb-2 text-5xl font-bold tracking-tighter;
+    @apply text-5xl font-bold tracking-tighter font-inter;
   }
   h2 {
-    @apply mb-2 text-4xl font-semibold tracking-tight;
+    @apply mb-2 mt-6 text-4xl font-semibold tracking-tight font-inter;
   }
   h3 {
-    @apply mb-1.5 text-3xl font-semibold tracking-tight;
+    @apply mb-1.5 mt-4 text-3xl font-semibold tracking-tight font-inter;
   }
   h4 {
-    @apply mb-1.5 text-2xl font-semibold;
+    @apply mb-1.5 mt-3 text-2xl font-semibold font-inter;
   }
   h5 {
-    @apply mb-1 text-xl font-semibold;
+    @apply mb-1 mt-2 text-xl font-semibold font-inter;
   }
   h6 {
-    @apply mb-1 text-lg font-semibold;
+    @apply mb-1 mt-2 text-lg font-semibold font-inter;
   }
   p {
-    @apply mb-2 leading-relaxed;
+    @apply mb-2 mt-1 leading-relaxed text-lg;
   }
   a {
     @apply text-sidebar-primary hover:text-sidebar-primary/80 transition-colors duration-200;
@@ -153,19 +155,14 @@
   hr {
     @apply my-6 border-border;
   }
+  pre,
   code {
-    @apply rounded-md;
+    @apply rounded-lg whitespace-pre-wrap mb-5;
   }
   img {
-    @apply max-w-full h-auto;
+    @apply max-w-10 h-auto;
   }
-  table {
-    @apply w-full border-collapse mb-4;
-  }
-  th {
-    @apply text-left py-2 px-3 border-b border-border font-semibold;
-  }
-  td {
-    @apply py-2 px-3 border-b border-border;
+  .hljs {
+    @apply min-w-0;
   }
 }

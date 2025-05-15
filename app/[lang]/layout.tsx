@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "./theme-providers";
 import Favicon from "./favicon.ico";
@@ -8,14 +8,16 @@ import TopNav from "./ui/topnav";
 import { LangToggle } from "./ui/lang-toggle";
 import { getDictionary, IDictionary } from "./dictionaries";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  weight: ["500"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const poppins = Poppins({
+  variable: "--font-poppins",
   subsets: ["latin"],
+  weight: ["500"],
 });
 
 export const metadata: Metadata = {
@@ -35,22 +37,20 @@ export default async function RootLayout({
   const dict: IDictionary = await getDictionary(lang);
   return (
     <html suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${poppins.variable} ${inter.variable} antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          <div className="min-h-screen flex flex-col">
-            <header className="bg-sidebar-accent text-sidebar-foreground border-sidebar-border border-2 flex flex-row justify-between items-center px-5 h-header-height">
+          <div className="min-h-screen w-full flex flex-col">
+            <header className="fixed w-full bg-sidebar-accent text-sidebar-foreground border-sidebar-border border-2 flex flex-row justify-between items-center px-5 h-header-height">
               <ModeToggle />
               <TopNav dictionary={dict} />
               <LangToggle dictionary={dict} />
             </header>
-            <main className="flex flex-1">{children}</main>
+            <main className="mt-header-height flex flex-1">{children}</main>
             <footer></footer>
           </div>
         </ThemeProvider>
