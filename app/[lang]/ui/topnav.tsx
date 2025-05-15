@@ -39,9 +39,9 @@ const TopNav = ({ dictionary }: { dictionary: IDictionary }) => {
             asChild
             variant={pathname === link.href ? "outline" : "link"}
           >
-            <Link href={link.href}>
+            <Link className="text-[18px]" href={link.href}>
               <LinkIcon className="h-full size-fit py-2" />
-              <p className="hidden md:block text-xl">{link.name}</p>
+              {link.name}
             </Link>
           </Button>
         );
