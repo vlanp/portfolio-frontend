@@ -7,17 +7,9 @@ import IFileExist from "@/types/IFileExist";
 import { setSPInSC } from "@/lib/utils";
 import { headers } from "next/headers";
 import HtmlMarkdownContent from "../../ui/projects/html-markdown-content";
+import IProjectPageProps from "@/types/IProjectPageProps";
 
-const ProjectPage = async ({
-  params,
-  searchParams,
-}: {
-  params: Promise<{ id: string }>;
-  searchParams: Promise<{
-    sha?: string;
-    filePath?: string;
-  }>;
-}) => {
+const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
   const filePath = await searchParams?.then((params) => params.filePath);
   const sha = await searchParams?.then((params) => params.sha);
   const { id } = await params;
