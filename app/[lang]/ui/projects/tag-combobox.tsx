@@ -16,9 +16,9 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { IOctokitTagsResponse } from "@/types/IOctokitResponse";
 import { useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { IOctokitTagsResponse } from "@/types/ITagContent";
 
 export function TagCombobox({
   tags,

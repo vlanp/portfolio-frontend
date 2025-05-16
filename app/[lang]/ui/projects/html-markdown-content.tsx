@@ -1,19 +1,10 @@
-"use client";
-
 import IFileContent from "@/types/IFileContent";
-import hljs from "highlight.js";
-
-import { useEffect } from "react";
 
 const HtmlMarkdownContent = ({
   fileContent,
 }: {
   fileContent: IFileContent;
 }) => {
-  useEffect(() => {
-    hljs.highlightAll();
-  }, [fileContent.htmlContent]);
-
   return (
     <section className="max-w-full flex flex-1 justify-center py-5">
       <div className="max-w-6xl flex-1 flex flex-col items-center px-4">

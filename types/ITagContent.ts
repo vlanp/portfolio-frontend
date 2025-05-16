@@ -1,13 +1,14 @@
-import type { Octokit as OctokitType } from "octokit";
 import IFrontMatterContent from "./IFrontMatterContent";
+import type { Endpoints } from "@octokit/types";
 
-type IOctokitTagsResponse = Awaited<
-  ReturnType<OctokitType["rest"]["repos"]["listTags"]>
->;
+export type IOctokitContentResponse =
+  Endpoints["GET /repos/{owner}/{repo}/contents/{path}"]["response"];
 
-type IOctokitTreeResponse = Awaited<
-  ReturnType<OctokitType["rest"]["git"]["getTree"]>
->;
+export type IOctokitTagsResponse =
+  Endpoints["GET /repos/{owner}/{repo}/tags"]["response"];
+
+export type IOctokitTreeResponse =
+  Endpoints["GET /repos/{owner}/{repo}/git/trees/{tree_sha}"]["response"];
 
 interface ITagContent {
   orderedTags: IOctokitTagsResponse["data"];

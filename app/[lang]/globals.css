@@ -1,6 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "highlight.js/styles/atom-one-light.css";
+@import "./styles/atom-one-light.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -84,7 +84,7 @@
 }
 
 .dark {
-  @import "highlight.js/styles/atom-one-dark.css";
+  @import "./styles/atom-one-dark.css";
   --background: oklch(0.141 0.005 285.823);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.21 0.006 285.885);
