@@ -1,11 +1,11 @@
 import { SidebarGroupLabel, SidebarGroupAction } from "@/components/ui/sidebar";
-import { TagCombobox } from "./tag-combobox";
 import IRepo from "@/types/IRepo";
 import axios from "axios";
 import checkedEnv from "@/lib/checkEnv";
 import { IOctokitTagsResponse } from "@/types/ITagContent";
 import { setSPInSC } from "@/lib/utils";
 import IProjectPageProps from "@/types/IProjectPageProps";
+import { TagCombobox } from "./tag-combobox";
 
 const ProjectSidebarGroupHeader = async ({
   repoId,

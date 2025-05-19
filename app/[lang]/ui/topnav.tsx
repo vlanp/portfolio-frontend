@@ -41,7 +41,7 @@ const TopNav = ({ dictionary }: { dictionary: IDictionary }) => {
           >
             <Link className="text-[18px]" href={link.href}>
               <LinkIcon className="h-full size-fit py-2" />
-              {link.name}
+              <span className="hidden md:flex">{link.name}</span>
             </Link>
           </Button>
         );

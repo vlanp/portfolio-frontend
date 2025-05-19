@@ -1,13 +1,14 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import ProjectSidebar from "../../ui/projects/project-sidebar";
+import ProjectLeftSidebar from "../../ui/projects/project-left-sidebar";
 import axios from "axios";
 import IFileContent from "@/types/IFileContent";
 import checkedEnv from "@/lib/checkEnv";
 import IFileExist from "@/types/IFileExist";
 import { setSPInSC } from "@/lib/utils";
 import { headers } from "next/headers";
-import HtmlMarkdownContent from "../../ui/projects/html-markdown-content";
+import HtmlMarkdownContent from "../../ui/projects/left-sidebar/html-markdown-content";
 import IProjectPageProps from "@/types/IProjectPageProps";
+import ProjectRightSidebar from "../../ui/projects/project-right-sidebar";
 
 const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
   const filePath = await searchParams?.then((params) => params.filePath);
@@ -48,13 +49,19 @@ const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
     }
   }
   return (
-    <SidebarProvider>
-      <ProjectSidebar params={params} searchParams={searchParams} />
+    <>
+      <SidebarProvider className="w-fit">
+        <ProjectLeftSidebar params={params} searchParams={searchParams} />
+        <SidebarTrigger />
+      </SidebarProvider>
       <section className="flex flex-1">
-        <SidebarTrigger className="fixed" />
         {fileContent && <HtmlMarkdownContent fileContent={fileContent} />}
       </section>
-    </SidebarProvider>
+      <SidebarProvider className="relative w-fit">
+        <SidebarTrigger side="right" />
+        <ProjectRightSidebar />
+      </SidebarProvider>
+    </>
   );
 };
 

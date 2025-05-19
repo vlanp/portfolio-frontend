@@ -180,3 +180,9 @@
     @apply underline;
   }
 }
+
+@layer utilities {
+  .clip-scroll-bar {
+    clip-path: inset(0 0 0 0 round 0.5rem);
+  }
+}

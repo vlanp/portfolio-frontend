@@ -5,13 +5,16 @@ import {
   SidebarSeparator,
 } from "@/components/ui/sidebar";
 import { headers } from "next/headers";
-import ProjectSidebarGroupHeader from "./project-sidebar-group-header";
-import ProjectSidebarGroupMenu from "./project-sidebar-group-menu";
+import ProjectSidebarGroupHeader from "./left-sidebar/project-sidebar-group-header";
+import ProjectSidebarGroupMenu from "./left-sidebar/project-sidebar-group-menu";
 import IProjectPageProps from "@/types/IProjectPageProps";
 import { Suspense } from "react";
-import ProjectSidebarGroupMenuSkeleton from "./project-sidebar-group-menu-skeleton";
+import ProjectSidebarGroupMenuSkeleton from "./left-sidebar/project-sidebar-group-menu-skeleton";
 
-const ProjectSidebar = async ({ params, searchParams }: IProjectPageProps) => {
+const ProjectLeftSidebar = async ({
+  params,
+  searchParams,
+}: IProjectPageProps) => {
   const awaitedSearchParams = await searchParams;
   const filePath = awaitedSearchParams.filePath;
   const { id } = await params;
@@ -48,4 +51,4 @@ const ProjectSidebar = async ({ params, searchParams }: IProjectPageProps) => {
   );
 };
 
-export default ProjectSidebar;
+export default ProjectLeftSidebar;
