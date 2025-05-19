@@ -5,6 +5,8 @@ const HtmlMarkdownContent = ({
 }: {
   fileContent: IFileContent;
 }) => {
+  console.log(fileContent.htmlContent);
+
   return (
     <section className="max-w-full flex flex-1 justify-center py-5">
       <div className="max-w-6xl flex-1 flex flex-col items-center px-4">

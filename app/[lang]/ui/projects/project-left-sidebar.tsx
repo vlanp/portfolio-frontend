@@ -33,7 +33,7 @@ const ProjectLeftSidebar = async ({
             pathname={pathname}
             awaitedSearchParams={awaitedSearchParams}
           />
-          <SidebarSeparator className="my-2" />
+          <SidebarSeparator />
           <Suspense
             key={awaitedSearchParams.sha}
             fallback={<ProjectSidebarGroupMenuSkeleton />}

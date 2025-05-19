@@ -14,6 +14,7 @@ const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
   const filePath = await searchParams?.then((params) => params.filePath);
   const sha = await searchParams?.then((params) => params.sha);
   const { id } = await params;
+  const { lang } = await params;
   let fileContent: IFileContent | null = null;
   if (filePath) {
     const encodedFilepath = encodeURIComponent(filePath);
@@ -59,7 +60,12 @@ const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
       </section>
       <SidebarProvider className="relative w-fit">
         <SidebarTrigger side="right" />
-        <ProjectRightSidebar />
+        {fileContent && (
+          <ProjectRightSidebar
+            lang={lang}
+            tableOfContents={fileContent.tableOfContents}
+          />
+        )}
       </SidebarProvider>
     </>
   );

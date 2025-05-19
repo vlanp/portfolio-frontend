@@ -16,5 +16,8 @@
   "ProjectSidebarError": {
     "Description": "Chargement du projet impossible",
     "Retry": "Réessayer"
+  },
+  "RightProjectSidebar": {
+    "Title": "Sur cette page"
   }
 }

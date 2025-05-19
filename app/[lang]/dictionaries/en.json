@@ -16,5 +16,8 @@
   "ProjectSidebarError": {
     "Description": "Unable to load the project",
     "Retry": "Retry"
+  },
+  "RightProjectSidebar": {
+    "Title": "On this page"
   }
 }
