@@ -9,6 +9,7 @@ import { headers } from "next/headers";
 import HtmlMarkdownContent from "../../ui/projects/left-sidebar/html-markdown-content";
 import IProjectPageProps from "@/types/IProjectPageProps";
 import ProjectRightSidebar from "../../ui/projects/project-right-sidebar";
+import { extraLargeBreakpoint, mobileBreakpoint } from "@/types/IBreakpoints";
 
 const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
   const filePath = await searchParams?.then((params) => params.filePath);
@@ -51,14 +52,17 @@ const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
   }
   return (
     <>
-      <SidebarProvider className="w-fit">
+      <SidebarProvider breakpoint={mobileBreakpoint} className="w-fit">
         <ProjectLeftSidebar params={params} searchParams={searchParams} />
         <SidebarTrigger />
       </SidebarProvider>
       <section className="flex flex-1">
         {fileContent && <HtmlMarkdownContent fileContent={fileContent} />}
       </section>
-      <SidebarProvider className="relative w-fit">
+      <SidebarProvider
+        breakpoint={extraLargeBreakpoint}
+        className="relative w-fit"
+      >
         <SidebarTrigger side="right" />
         {fileContent && (
           <ProjectRightSidebar
