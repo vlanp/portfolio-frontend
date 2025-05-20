@@ -11,12 +11,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { IDictionary } from "../dictionaries";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export function LangToggle({ dictionary }: { dictionary: IDictionary }) {
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = new URLSearchParams(useSearchParams());
   const currentLocale = pathname.split("/")[1];
+  console.log(searchParams);
 
   return (
     <DropdownMenu>
@@ -31,7 +33,7 @@ export function LangToggle({ dictionary }: { dictionary: IDictionary }) {
           onClick={() => {
             setCookie("NEXT_LOCALE", "en");
             const newPath = pathname.replace(`/${currentLocale}`, "/en");
-            router.push(newPath);
+            router.push(`${newPath}?${searchParams.toString()}`);
           }}
         >
           {dictionary.langToggle.English}
@@ -40,7 +42,7 @@ export function LangToggle({ dictionary }: { dictionary: IDictionary }) {
           onClick={() => {
             setCookie("NEXT_LOCALE", "fr");
             const newPath = pathname.replace(`/${currentLocale}`, "/fr");
-            router.push(newPath);
+            router.push(`${newPath}?${searchParams.toString()}`);
           }}
         >
           {dictionary.langToggle.French}
