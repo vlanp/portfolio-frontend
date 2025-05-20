@@ -26,11 +26,11 @@ function formatPathToDisplayName(path: string): string {
   return formattedName;
 }
 
-const setSPInSC = (
+const constructNewUrl = (
   paramKey: string,
   paramValue: string,
   pathname: string,
-  searchParams: Record<string, string>
+  searchParams: Record<string, string> | ReadonlyURLSearchParams
 ) => {
   const params = new URLSearchParams(searchParams);
   if (paramValue) {
@@ -38,7 +38,17 @@ const setSPInSC = (
   } else {
     params.delete(paramKey);
   }
-  redirect(`${pathname}?${params.toString()}`);
+  return `${pathname}?${params.toString()}`;
+};
+
+const setSPInSC = (
+  paramKey: string,
+  paramValue: string,
+  pathname: string,
+  searchParams: Record<string, string>
+) => {
+  const newUrl = constructNewUrl(paramKey, paramValue, pathname, searchParams);
+  redirect(newUrl);
 };
 
 const setSPInCC = (
@@ -48,13 +58,8 @@ const setSPInCC = (
   router: AppRouterInstance,
   pathname: string
 ) => {
-  const params = new URLSearchParams(searchParams);
-  if (paramValue) {
-    params.set(paramKey, paramValue);
-  } else {
-    params.delete(paramKey);
-  }
-  router.replace(`${pathname}?${params.toString()}`);
+  const newUrl = constructNewUrl(paramKey, paramValue, pathname, searchParams);
+  router.replace(newUrl);
 };
 
-export { formatPathToDisplayName, setSPInSC, setSPInCC };
+export { formatPathToDisplayName, setSPInSC, setSPInCC, constructNewUrl };

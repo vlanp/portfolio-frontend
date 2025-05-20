@@ -19,5 +19,9 @@
   },
   "RightProjectSidebar": {
     "Title": "On this page"
+  },
+  "HtmlMarkdownContent": {
+    "Previous": "Previous",
+    "Next": "Next"
   }
 }

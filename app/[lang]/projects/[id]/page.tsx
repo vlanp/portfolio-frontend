@@ -6,7 +6,7 @@ import checkedEnv from "@/lib/checkEnv";
 import IFileExist from "@/types/IFileExist";
 import { setSPInSC } from "@/lib/utils";
 import { headers } from "next/headers";
-import HtmlMarkdownContent from "../../ui/projects/left-sidebar/html-markdown-content";
+import HtmlMarkdownContent from "../../ui/projects/html-markdown-content";
 import IProjectPageProps from "@/types/IProjectPageProps";
 import ProjectRightSidebar from "../../ui/projects/project-right-sidebar";
 import { extraLargeBreakpoint, mobileBreakpoint } from "@/types/IBreakpoints";
@@ -57,7 +57,16 @@ const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
         <SidebarTrigger />
       </SidebarProvider>
       <section className="flex flex-1">
-        {fileContent && <HtmlMarkdownContent fileContent={fileContent} />}
+        {fileContent && filePath && sha && (
+          <HtmlMarkdownContent
+            fileContent={fileContent}
+            lang={lang}
+            filePath={filePath}
+            repoId={id}
+            sha={sha}
+            searchParams={searchParams}
+          />
+        )}
       </section>
       <SidebarProvider
         breakpoint={extraLargeBreakpoint}

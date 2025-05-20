@@ -36,7 +36,7 @@ const ProjectRightSidebar = async ({
           <SidebarGroupContent>
             <SidebarMenu>
               {tableOfContents
-                .filter((it) => it.parent === null)
+                .filter((it) => it.level === 1)
                 .map((docToc) => (
                   <SidebarMenuItem key={docToc.id}>
                     <SidebarMenuButton asChild>

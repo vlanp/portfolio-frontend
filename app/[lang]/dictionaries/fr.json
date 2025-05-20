@@ -19,5 +19,9 @@
   },
   "RightProjectSidebar": {
     "Title": "Sur cette page"
+  },
+  "HtmlMarkdownContent": {
+    "Previous": "Précédent",
+    "Next": "Suivant"
   }
 }
