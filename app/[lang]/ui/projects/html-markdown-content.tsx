@@ -63,11 +63,14 @@ const HtmlMarkdownContent = async ({
         <div className="border-t-1 w-full mb-4" />
         <div dangerouslySetInnerHTML={{ __html: fileContent.htmlContent }} />
         <div className="flex flex-row justify-between w-full m-20">
-          <div>
+          <div className="max-w-60">
             {previousFile && (
               <>
-                <p>{dict.HtmlMarkdownContent.Previous.toUpperCase()}</p>
+                <p className="text-muted-foreground font-bold text-sm tracking-wider">
+                  {dict.HtmlMarkdownContent.Previous.toUpperCase()}
+                </p>
                 <Link
+                  className="text-xl"
                   href={constructNewUrl(
                     "filePath",
                     previousFile.file.path,
@@ -80,11 +83,14 @@ const HtmlMarkdownContent = async ({
               </>
             )}
           </div>
-          <div>
+          <div className="max-w-60">
             {nextFile && (
               <>
-                <p>{dict.HtmlMarkdownContent.Next.toUpperCase()}</p>
+                <p className="text-muted-foreground font-bold text-sm tracking-wider">
+                  {dict.HtmlMarkdownContent.Next.toUpperCase()}
+                </p>
                 <Link
+                  className="text-xl"
                   href={constructNewUrl(
                     "filePath",
                     nextFile.file.path,

@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "./styles/atom-one-light.css";
+@import "./styles/github-colors-light.css";
+@import "./styles/github-base.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -41,6 +43,13 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+  --color-basic-link: var(--basic-link);
+  /* --color-note: var(--note);
+  --color-tip: var(--tip);
+  --color-warning: var(--warning);
+  --color-severe: var(--severe);
+  --color-caution: var(--caution);
+  --color-important: var(--important); */
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -81,10 +90,18 @@
   --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.705 0.015 286.067);
+  --basic-link: oklch(0.985 0 0);
+  /* --note: #0969da;
+  --tip: #1a7f37;
+  --warning: #9a6700;
+  --severe: #bc4c00;
+  --caution: #d1242f;
+  --important: #8250df; */
 }
 
 .dark {
   @import "./styles/atom-one-dark.css";
+  @import "./styles/github-colors-dark-class.css";
   --background: oklch(0.141 0.005 285.823);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.21 0.006 285.885);
@@ -110,12 +127,19 @@
   --chart-5: oklch(0.645 0.246 16.439);
   --sidebar: oklch(0.21 0.006 285.885);
   --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.76 0.125 235.5);
+  --sidebar-primary: oklch(0.985 0 0);
   --sidebar-primary-foreground: oklch(0.985 0 0);
   --sidebar-accent: oklch(0.274 0.006 286.033);
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.552 0.016 285.938);
+  --basic-link: oklch(0.76 0.125 235.5);
+  /* --note: #2f81f7;
+  --tip: #3fb950;
+  --warning: #d29922;
+  --severe: #db6d28;
+  --caution: #f85149;
+  --important: #a371f7; */
 }
 
 @layer base {
@@ -140,13 +164,13 @@
     @apply text-5xl font-bold tracking-tighter;
   }
   h2 {
-    @apply mb-2 mt-6 text-4xl font-semibold tracking-tight;
+    @apply mb-4 mt-6 text-4xl font-semibold tracking-tight;
   }
   h3 {
-    @apply mb-1.5 mt-4 text-3xl font-semibold tracking-tight;
+    @apply mb-3 mt-4 text-3xl font-semibold tracking-tight;
   }
   h4 {
-    @apply mb-1.5 mt-3 text-2xl font-semibold;
+    @apply mb-2 mt-3 text-2xl font-semibold;
   }
   h5 {
     @apply mb-1 mt-2 text-xl font-semibold;
@@ -155,10 +179,10 @@
     @apply mb-1 mt-2 text-lg font-semibold;
   }
   p {
-    @apply mb-2 mt-1 leading-relaxed text-lg;
+    @apply mb-2 mt-1 leading-relaxed;
   }
   a {
-    @apply text-sidebar-primary hover:text-sidebar-primary/80 transition-colors duration-200;
+    @apply text-basic-link hover:text-basic-link/60 transition-colors duration-200;
   }
   blockquote {
     @apply pl-4 border-l-4 border-muted italic my-4;
@@ -170,14 +194,17 @@
   code {
     @apply rounded-lg whitespace-pre-wrap mb-5;
   }
+  ul:not([data-slot="sidebar-menu-sub"]):not([data-slot="sidebar-menu"]) {
+    @apply my-2 list-disc flex flex-col gap-1 ml-10;
+  }
   img {
     @apply max-w-full h-auto;
   }
   .hljs {
     @apply min-w-0;
   }
-  .anchor-link:hover {
-    @apply underline;
+  .anchor-link {
+    @apply text-foreground hover:text-foreground hover:underline;
   }
 }
 
