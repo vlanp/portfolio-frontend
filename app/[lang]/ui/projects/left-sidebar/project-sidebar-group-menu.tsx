@@ -27,7 +27,9 @@ const ProjectSidebarGroupMenu = async ({
         awaitedSearchParams.sha
       )
   );
-  if (!filePath) {
+  const firstFilePath =
+    tagResponse.data?.orderedDirs[0]?.orderedFiles[0]?.file?.path;
+  if (!filePath && firstFilePath) {
     setSPInSC(
       "filePath",
       tagResponse.data.orderedDirs[0].orderedFiles[0].file.path,
