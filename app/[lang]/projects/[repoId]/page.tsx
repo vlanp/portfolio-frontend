@@ -104,6 +104,7 @@ const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
     <>
       <SidebarProvider breakpoint={mobileBreakpoint} className="w-fit">
         <Suspense
+          key={sha}
           fallback={
             <LeftSidebarSkeleton
               tags={tagsResponse.data}
