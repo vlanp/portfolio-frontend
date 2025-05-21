@@ -6,6 +6,7 @@ import { IFile, ITagContent } from "@/types/ITagContent";
 import checkedEnv from "@/lib/checkEnv";
 import Link from "next/link";
 import { constructNewUrl } from "@/lib/utils";
+import { ILang } from "@/types/ILang";
 
 const HtmlMarkdownContent = async ({
   fileContent,
@@ -15,6 +16,7 @@ const HtmlMarkdownContent = async ({
   sha,
   urlSearchParams,
   pathname,
+  lang,
 }: {
   fileContent: IFileContent;
   projectDict: IDictionary["Projects"]["Project"];
@@ -23,15 +25,17 @@ const HtmlMarkdownContent = async ({
   sha: string;
   urlSearchParams: URLSearchParams;
   pathname: string;
+  lang: ILang;
 }) => {
-  const tagResponse = await axios.get<ITagContent>(
+  const tagContentResponse = await axios.get<ITagContent>(
     checkedEnv.NEXT_PUBLIC_BACKEND_URL +
       checkedEnv.NEXT_PUBLIC_GET_TAG_URL.replace("{repoid}", repoId).replace(
         "{sha}",
         sha
-      )
+      ),
+    { params: { lang } }
   );
-  const orderedFiles = tagResponse.data.orderedDirs.flatMap(
+  const orderedFiles = tagContentResponse.data.orderedDirs.flatMap(
     (orderedDir) => orderedDir.orderedFiles
   );
   const numberOfFiles = orderedFiles.length;

@@ -86,13 +86,28 @@ const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
             "{repoid}",
             repoId
           ).replace("{filepath}", encodedFilepath),
-        { params: { sha } }
+        { params: { sha, lang } }
       )
     ).data;
+    console.log(
+      "didFileExist:",
+      didFileExist,
+      "urlSearchParams:",
+      urlSearchParams
+    );
+
     if (!didFileExist.exist) {
       const newUrl = constructNewUrl(
         EProjectPageSearchParamsKeys.FILE_PATH,
         "",
+        pathname,
+        urlSearchParams
+      );
+      redirect(newUrl);
+    } else if (didFileExist.filePath) {
+      const newUrl = constructNewUrl(
+        EProjectPageSearchParamsKeys.FILE_PATH,
+        didFileExist.filePath,
         pathname,
         urlSearchParams
       );
@@ -120,6 +135,7 @@ const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
             repoDisplayName={repoResponse.data.displayName}
             tags={tagsResponse.data}
             filePath={filePath}
+            lang={lang}
           />
         </Suspense>
         <SidebarTrigger />
@@ -135,6 +151,7 @@ const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
           urlSearchParams={urlSearchParams}
           projectDict={projectDict}
           pathname={pathname}
+          lang={lang}
         />
       </Suspense>
     </>

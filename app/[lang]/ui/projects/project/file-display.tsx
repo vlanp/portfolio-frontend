@@ -7,6 +7,7 @@ import checkedEnv from "@/lib/checkEnv";
 import { extraLargeBreakpoint } from "@/types/IBreakpoints";
 import { IDictionary } from "@/app/[lang]/dictionaries";
 import FileDisplaySkeleton from "./file-display-skeleton";
+import { ILang } from "@/types/ILang";
 
 const FileDisplay = async ({
   repoId,
@@ -15,6 +16,7 @@ const FileDisplay = async ({
   urlSearchParams,
   projectDict,
   pathname,
+  lang,
 }: {
   repoId: string;
   filePath: string | undefined;
@@ -22,6 +24,7 @@ const FileDisplay = async ({
   urlSearchParams: URLSearchParams;
   projectDict: IDictionary["Projects"]["Project"];
   pathname: string;
+  lang: ILang;
 }) => {
   if (!filePath) {
     return <FileDisplaySkeleton projectDict={projectDict} />;
@@ -50,6 +53,7 @@ const FileDisplay = async ({
           sha={sha}
           urlSearchParams={urlSearchParams}
           pathname={pathname}
+          lang={lang}
         />
       </section>
       <SidebarProvider

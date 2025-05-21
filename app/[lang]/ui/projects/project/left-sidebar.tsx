@@ -16,6 +16,7 @@ import checkedEnv from "@/lib/checkEnv";
 import { redirect } from "next/navigation";
 import { TagCombobox } from "./left-sidebar/tag-combobox";
 import { constructNewUrl } from "@/lib/utils";
+import { ILang } from "@/types/ILang";
 
 const LeftSidebar = async ({
   repoId,
@@ -25,6 +26,7 @@ const LeftSidebar = async ({
   urlSearchParams,
   repoDisplayName,
   tags,
+  lang,
 }: {
   repoId: string;
   sha: string;
@@ -33,13 +35,15 @@ const LeftSidebar = async ({
   urlSearchParams: URLSearchParams;
   repoDisplayName: string;
   tags: IOctokitTagsResponse["data"];
+  lang: ILang;
 }) => {
   const tagContentResponse = await axios.get<ITagContent>(
     checkedEnv.NEXT_PUBLIC_BACKEND_URL +
       checkedEnv.NEXT_PUBLIC_GET_TAG_URL.replace("{repoid}", repoId).replace(
         "{sha}",
         sha
-      )
+      ),
+    { params: { lang } }
   );
   if (!filePath) {
     const firstFilePath =

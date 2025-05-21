@@ -18,7 +18,6 @@ export function LangToggle({ dictionary }: { dictionary: IDictionary }) {
   const pathname = usePathname();
   const searchParams = new URLSearchParams(useSearchParams());
   const currentLocale = pathname.split("/")[1];
-  console.log(searchParams);
 
   return (
     <DropdownMenu>
