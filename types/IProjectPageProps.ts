@@ -1,9 +1,17 @@
+import { ILang } from "./ILang";
+
+enum EProjectPageSearchParamsKeys {
+  SHA = "sha",
+  FILE_PATH = "filePath",
+}
+
+type ISearchParamsKeysType = `${EProjectPageSearchParamsKeys}`;
+
 interface IProjectPageProps {
-  params: Promise<{ id: string; lang: "en" | "fr" }>;
-  searchParams: Promise<{
-    sha?: string;
-    filePath?: string;
-  }>;
+  params: Promise<{ repoId: string; lang: ILang }>;
+  searchParams: Promise<Partial<Record<ISearchParamsKeysType, string>>>;
 }
 
 export default IProjectPageProps;
+export { EProjectPageSearchParamsKeys };
+export type { ISearchParamsKeysType };

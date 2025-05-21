@@ -12,10 +12,11 @@ import { ChevronDown, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import SubCategory from "./sub-category";
 import { useSearchParams } from "next/navigation";
+import { EProjectPageSearchParamsKeys } from "@/types/IProjectPageProps";
 
 const CategoryCollapsible = ({ orderedDir }: { orderedDir: IDir }) => {
   const searchParams = useSearchParams();
-  const filePath = searchParams.get("filePath");
+  const filePath = searchParams.get(EProjectPageSearchParamsKeys.FILE_PATH);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   useEffect(() => {

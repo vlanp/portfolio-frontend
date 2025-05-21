@@ -13,15 +13,15 @@
     "Description": "Impossible de trouver la ressource demandée.",
     "GoBack": "Retour"
   },
-  "ProjectSidebarError": {
-    "Description": "Chargement du projet impossible",
-    "Retry": "Réessayer"
-  },
-  "RightProjectSidebar": {
-    "Title": "Sur cette page"
-  },
-  "HtmlMarkdownContent": {
-    "Previous": "Précédent",
-    "Next": "Suivant"
+  "Projects": {
+    "Project": {
+      "RightProjectSidebar": {
+        "Title": "Sur cette page"
+      },
+      "HtmlMarkdownContent": {
+        "Previous": "Précédent",
+        "Next": "Suivant"
+      }
+    }
   }
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { Check, ChevronsUpDown } from "lucide-react";
-import { cn, setSPInCC } from "@/lib/utils";
+import { cn, constructNewUrl } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -19,6 +19,7 @@ import {
 import { useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IOctokitTagsResponse } from "@/types/ITagContent";
+import { EProjectPageSearchParamsKeys } from "@/types/IProjectPageProps";
 
 export function TagCombobox({
   tags,
@@ -31,12 +32,20 @@ export function TagCombobox({
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const searchParams = useSearchParams();
+  const urlSearchParams = new URLSearchParams(searchParams);
   const selectedTag = tags.find(
-    (tag) => tag.commit.sha === searchParams.get("sha")
+    (tag) =>
+      tag.commit.sha === searchParams.get(EProjectPageSearchParamsKeys.SHA)
   )?.name;
 
   const handleTagSelection = async (sha: string) => {
-    setSPInCC("sha", sha, searchParams, router, pathname);
+    const newUrl = constructNewUrl(
+      EProjectPageSearchParamsKeys.SHA,
+      sha,
+      pathname,
+      urlSearchParams
+    );
+    router.push(newUrl);
     setOpen(false);
   };
 

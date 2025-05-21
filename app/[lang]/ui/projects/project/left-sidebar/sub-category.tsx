@@ -5,7 +5,8 @@ import {
   SidebarMenuSubItem,
   SidebarMenuSubButton,
 } from "@/components/ui/sidebar";
-import { setSPInCC } from "@/lib/utils";
+import { constructNewUrl } from "@/lib/utils";
+import { EProjectPageSearchParamsKeys } from "@/types/IProjectPageProps";
 import { IFile } from "@/types/ITagContent";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
@@ -13,21 +14,25 @@ const SubCategory = ({ orderedFile }: { orderedFile: IFile }) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const selectedFilePath = searchParams.get("filePath");
+  const urlSearchParams = new URLSearchParams(searchParams);
+  const filePath = searchParams.get(EProjectPageSearchParamsKeys.FILE_PATH);
+
+  const handleClick = () => {
+    const newUrl = constructNewUrl(
+      EProjectPageSearchParamsKeys.FILE_PATH,
+      orderedFile.file.path,
+      pathname,
+      urlSearchParams
+    );
+    router.push(newUrl);
+  };
+
   return (
     <SidebarMenuSub>
       <SidebarMenuSubItem>
         <SidebarMenuSubButton
-          onClick={() =>
-            setSPInCC(
-              "filePath",
-              orderedFile.file.path,
-              searchParams,
-              router,
-              pathname
-            )
-          }
-          isActive={selectedFilePath === orderedFile.file.path}
+          onClick={handleClick}
+          isActive={filePath === orderedFile.file.path}
         >
           {orderedFile.matterContent.title}
         </SidebarMenuSubButton>

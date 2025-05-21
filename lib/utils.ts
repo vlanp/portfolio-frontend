@@ -1,6 +1,4 @@
 import { clsx, type ClassValue } from "clsx";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { ReadonlyURLSearchParams, redirect } from "next/navigation";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -30,36 +28,14 @@ const constructNewUrl = (
   paramKey: string,
   paramValue: string,
   pathname: string,
-  searchParams: Record<string, string> | ReadonlyURLSearchParams
+  urlSearchParams: URLSearchParams
 ) => {
-  const params = new URLSearchParams(searchParams);
   if (paramValue) {
-    params.set(paramKey, paramValue);
+    urlSearchParams.set(paramKey, paramValue);
   } else {
-    params.delete(paramKey);
+    urlSearchParams.delete(paramKey);
   }
-  return `${pathname}?${params.toString()}`;
+  return `${pathname}?${urlSearchParams.toString()}`;
 };
 
-const setSPInSC = (
-  paramKey: string,
-  paramValue: string,
-  pathname: string,
-  searchParams: Record<string, string>
-) => {
-  const newUrl = constructNewUrl(paramKey, paramValue, pathname, searchParams);
-  redirect(newUrl);
-};
-
-const setSPInCC = (
-  paramKey: string,
-  paramValue: string,
-  searchParams: ReadonlyURLSearchParams,
-  router: AppRouterInstance,
-  pathname: string
-) => {
-  const newUrl = constructNewUrl(paramKey, paramValue, pathname, searchParams);
-  router.replace(newUrl);
-};
-
-export { formatPathToDisplayName, setSPInSC, setSPInCC, constructNewUrl };
+export { formatPathToDisplayName, constructNewUrl };

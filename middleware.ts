@@ -1,8 +1,9 @@
 import { match } from "@formatjs/intl-localematcher";
 import Negotiator from "negotiator";
 import { NextRequest, NextResponse } from "next/server";
+import { ELang } from "./types/ILang";
 
-const locales = ["en", "fr"];
+const locales: string[] = Object.values(ELang);
 
 function getLocale(request: NextRequest) {
   const nextLocale = request.cookies.get("NEXT_LOCALE")?.value;

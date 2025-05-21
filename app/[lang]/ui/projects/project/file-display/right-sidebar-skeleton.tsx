@@ -1,14 +1,24 @@
 "use client";
 
+import { IDictionary } from "@/app/[lang]/dictionaries";
 import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
   SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuSkeleton,
+  SidebarSeparator,
 } from "@/components/ui/sidebar";
 import { useEffect, useRef, useState } from "react";
 
-const ProjectSidebarGroupMenuSkeleton = () => {
+const RightSidebarSkeleton = ({
+  projectDict,
+}: {
+  projectDict: IDictionary["Projects"]["Project"];
+}) => {
   const [skeletonCount, setSkeletonCount] = useState(0);
   const sidebarRef = useRef<HTMLUListElement | null>(null);
 
@@ -17,8 +27,6 @@ const ProjectSidebarGroupMenuSkeleton = () => {
       if (!sidebarRef.current) return;
 
       const sidebarHeight = sidebarRef.current.clientHeight;
-
-      console.log(sidebarHeight);
 
       const sidebarGroupPadding = 8;
 
@@ -47,16 +55,26 @@ const ProjectSidebarGroupMenuSkeleton = () => {
     };
   }, []);
   return (
-    <SidebarGroupContent className="gap-1 flex-1">
-      <SidebarMenu ref={sidebarRef} className="min-h-full">
-        {Array.from({ length: skeletonCount }).map((_, index) => (
-          <SidebarMenuItem key={index}>
-            <SidebarMenuSkeleton />
-          </SidebarMenuItem>
-        ))}
-      </SidebarMenu>
-    </SidebarGroupContent>
+    <Sidebar side="right" variant="floating" className="top-header-height">
+      <SidebarContent>
+        <SidebarGroup className="min-h-full">
+          <SidebarGroupLabel>
+            {projectDict.RightProjectSidebar.Title}
+          </SidebarGroupLabel>
+          <SidebarSeparator />
+          <SidebarGroupContent className="gap-1 flex-1">
+            <SidebarMenu ref={sidebarRef} className="min-h-full">
+              {Array.from({ length: skeletonCount }).map((_, index) => (
+                <SidebarMenuItem key={index}>
+                  <SidebarMenuSkeleton />
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+    </Sidebar>
   );
 };
 
-export default ProjectSidebarGroupMenuSkeleton;
+export default RightSidebarSkeleton;

@@ -12,25 +12,23 @@ import {
   SidebarMenuSubItem,
   SidebarSeparator,
 } from "@/components/ui/sidebar";
-import IProjectPageProps from "@/types/IProjectPageProps";
-import { getDictionary, IDictionary } from "../../dictionaries";
+import { IDictionary } from "../../../../dictionaries";
 import IDocToC from "@/types/IDocToc";
 import Link from "next/link";
 
-const ProjectRightSidebar = async ({
-  lang,
+const RightSidebar = ({
+  projectDict,
   tableOfContents,
 }: {
-  lang: Awaited<IProjectPageProps["params"]>["lang"];
+  projectDict: IDictionary["Projects"]["Project"];
   tableOfContents: IDocToC[];
 }) => {
-  const dict: IDictionary = await getDictionary(lang);
   return (
     <Sidebar side="right" variant="floating" className="top-header-height">
       <SidebarContent>
         <SidebarGroup className="min-h-full">
           <SidebarGroupLabel>
-            {dict.RightProjectSidebar.Title}
+            {projectDict.RightProjectSidebar.Title}
           </SidebarGroupLabel>
           <SidebarSeparator />
           <SidebarGroupContent>
@@ -63,4 +61,4 @@ const ProjectRightSidebar = async ({
   );
 };
 
-export default ProjectRightSidebar;
+export default RightSidebar;

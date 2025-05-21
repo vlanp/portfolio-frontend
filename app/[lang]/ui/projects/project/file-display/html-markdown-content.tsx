@@ -1,35 +1,29 @@
 import IFileContent from "@/types/IFileContent";
-import IProjectPageProps from "@/types/IProjectPageProps";
-import { getDictionary, IDictionary } from "../../dictionaries";
+import { EProjectPageSearchParamsKeys } from "@/types/IProjectPageProps";
+import { IDictionary } from "../../../../dictionaries";
 import axios from "axios";
 import { IFile, ITagContent } from "@/types/ITagContent";
 import checkedEnv from "@/lib/checkEnv";
 import Link from "next/link";
 import { constructNewUrl } from "@/lib/utils";
-import { headers } from "next/headers";
 
 const HtmlMarkdownContent = async ({
   fileContent,
-  lang,
+  projectDict,
   filePath,
   repoId,
   sha,
-  searchParams,
+  urlSearchParams,
+  pathname,
 }: {
   fileContent: IFileContent;
-  lang: Awaited<IProjectPageProps["params"]>["lang"];
+  projectDict: IDictionary["Projects"]["Project"];
   filePath: string;
   repoId: string;
   sha: string;
-  searchParams: IProjectPageProps["searchParams"];
+  urlSearchParams: URLSearchParams;
+  pathname: string;
 }) => {
-  const headerList = await headers();
-  const pathname = headerList.get("x-current-path");
-  if (!pathname) {
-    throw new Error("No pathname found in headers");
-  }
-  const awaitedSearchParams = await searchParams;
-  const dict: IDictionary = await getDictionary(lang);
   const tagResponse = await axios.get<ITagContent>(
     checkedEnv.NEXT_PUBLIC_BACKEND_URL +
       checkedEnv.NEXT_PUBLIC_GET_TAG_URL.replace("{repoid}", repoId).replace(
@@ -67,15 +61,15 @@ const HtmlMarkdownContent = async ({
             {previousFile && (
               <>
                 <p className="text-muted-foreground font-bold text-sm tracking-wider">
-                  {dict.HtmlMarkdownContent.Previous.toUpperCase()}
+                  {projectDict.HtmlMarkdownContent.Previous.toUpperCase()}
                 </p>
                 <Link
                   className="text-xl"
                   href={constructNewUrl(
-                    "filePath",
+                    EProjectPageSearchParamsKeys.FILE_PATH,
                     previousFile.file.path,
                     pathname,
-                    awaitedSearchParams
+                    urlSearchParams
                   )}
                 >
                   {previousFile.matterContent.title}
@@ -87,15 +81,15 @@ const HtmlMarkdownContent = async ({
             {nextFile && (
               <>
                 <p className="text-muted-foreground font-bold text-sm tracking-wider">
-                  {dict.HtmlMarkdownContent.Next.toUpperCase()}
+                  {projectDict.HtmlMarkdownContent.Next.toUpperCase()}
                 </p>
                 <Link
                   className="text-xl"
                   href={constructNewUrl(
-                    "filePath",
+                    EProjectPageSearchParamsKeys.FILE_PATH,
                     nextFile.file.path,
                     pathname,
-                    awaitedSearchParams
+                    urlSearchParams
                   )}
                 >
                   {nextFile.matterContent.title}

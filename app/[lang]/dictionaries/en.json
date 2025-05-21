@@ -13,15 +13,15 @@
     "Description": "Could not find the requested resource.",
     "GoBack": "Go Back"
   },
-  "ProjectSidebarError": {
-    "Description": "Unable to load the project",
-    "Retry": "Retry"
-  },
-  "RightProjectSidebar": {
-    "Title": "On this page"
-  },
-  "HtmlMarkdownContent": {
-    "Previous": "Previous",
-    "Next": "Next"
+  "Projects": {
+    "Project": {
+      "RightProjectSidebar": {
+        "Title": "On this page"
+      },
+      "HtmlMarkdownContent": {
+        "Previous": "Previous",
+        "Next": "Next"
+      }
+    }
   }
 }
