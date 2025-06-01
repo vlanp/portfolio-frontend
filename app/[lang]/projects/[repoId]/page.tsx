@@ -8,7 +8,6 @@ import IProjectPageProps, {
   EProjectPageSearchParamsKeys,
 } from "@/types/IProjectPageProps";
 import { mobileBreakpoint } from "@/types/IBreakpoints";
-import IRepo from "@/types/IRepo";
 import { redirect } from "next/navigation";
 import { IOctokitTagsResponse } from "@/types/ITagContent";
 import { Suspense } from "react";
@@ -17,6 +16,8 @@ import FileDisplay from "../../ui/projects/project/file-display";
 import { getDictionary, IDictionary } from "../../dictionaries";
 import FileDisplaySkeleton from "../../ui/projects/project/file-display-skeleton";
 import { constructNewUrl } from "@/lib/utils";
+import { IRepo } from "@/types/IProject";
+import { IApiSuccessResponse } from "@/types/IApiResponse";
 
 const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
   const awaitedSearchParams = await searchParams;
@@ -36,7 +37,7 @@ const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
 
   const repoId = awaitedParams.repoId;
   const repoResponse = await axios
-    .get<IRepo>(
+    .get<IApiSuccessResponse<IRepo>>(
       checkedEnv.NEXT_PUBLIC_BACKEND_URL +
         checkedEnv.NEXT_PUBLIC_GET_REPO_URL.replace("{repoid}", repoId)
     )
@@ -52,16 +53,19 @@ const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
       }
     });
 
-  const tagsResponse = await axios.get<IOctokitTagsResponse["data"]>(
+  const tagsResponse = await axios.get<
+    IApiSuccessResponse<IOctokitTagsResponse["data"]>
+  >(
     checkedEnv.NEXT_PUBLIC_BACKEND_URL +
       checkedEnv.NEXT_PUBLIC_GET_TAGS_URL.replace("{repoid}", repoId)
   );
+  const tags = tagsResponse.data.data;
   const sha = awaitedSearchParams.sha;
-  const tag = tagsResponse.data.find((it) => it.commit.sha === sha);
-  if (!tag && tagsResponse.data.length > 0) {
+  const tag = tags.find((it) => it.commit.sha === sha);
+  if (!tag && tags.length > 0) {
     const newUrl = constructNewUrl(
       EProjectPageSearchParamsKeys.SHA,
-      tagsResponse.data[0].commit.sha,
+      tags[0].commit.sha,
       pathname,
       urlSearchParams
     );
@@ -80,7 +84,7 @@ const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
   if (filePath) {
     const encodedFilepath = encodeURIComponent(filePath);
     const didFileExist = (
-      await axios.get<IFileExist>(
+      await axios.get<IApiSuccessResponse<IFileExist>>(
         checkedEnv.NEXT_PUBLIC_BACKEND_URL +
           checkedEnv.NEXT_PUBLIC_GET_FILE_EXIST_URL.replace(
             "{repoid}",
@@ -88,13 +92,7 @@ const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
           ).replace("{filepath}", encodedFilepath),
         { params: { sha, lang } }
       )
-    ).data;
-    console.log(
-      "didFileExist:",
-      didFileExist,
-      "urlSearchParams:",
-      urlSearchParams
-    );
+    ).data.data;
 
     if (!didFileExist.exist) {
       const newUrl = constructNewUrl(
@@ -122,8 +120,8 @@ const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
           key={sha}
           fallback={
             <LeftSidebarSkeleton
-              tags={tagsResponse.data}
-              displayName={repoResponse.data.displayName}
+              tags={tags}
+              displayName={repoResponse.data.data.displayName.stringified}
             />
           }
         >
@@ -132,8 +130,8 @@ const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
             pathname={pathname}
             sha={sha}
             urlSearchParams={urlSearchParams}
-            repoDisplayName={repoResponse.data.displayName}
-            tags={tagsResponse.data}
+            repoDisplayName={repoResponse.data.data.displayName.stringified}
+            tags={tags}
             filePath={filePath}
             lang={lang}
           />

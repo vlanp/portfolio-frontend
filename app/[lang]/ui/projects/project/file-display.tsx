@@ -8,6 +8,7 @@ import { extraLargeBreakpoint } from "@/types/IBreakpoints";
 import { IDictionary } from "@/app/[lang]/dictionaries";
 import FileDisplaySkeleton from "./file-display-skeleton";
 import { ILang } from "@/types/ILang";
+import { IApiSuccessResponse } from "@/types/IApiResponse";
 
 const FileDisplay = async ({
   repoId,
@@ -32,7 +33,7 @@ const FileDisplay = async ({
 
   const encodedFilepath = encodeURIComponent(filePath);
   const fileContent = (
-    await axios.get<IFileContent>(
+    await axios.get<IApiSuccessResponse<IFileContent>>(
       checkedEnv.NEXT_PUBLIC_BACKEND_URL +
         checkedEnv.NEXT_PUBLIC_GET_FILE_CONTENT_URL.replace(
           "{repoid}",
@@ -40,7 +41,7 @@ const FileDisplay = async ({
         ).replace("{filepath}", encodedFilepath),
       { params: { ref: sha } }
     )
-  ).data;
+  ).data.data;
 
   return (
     <>

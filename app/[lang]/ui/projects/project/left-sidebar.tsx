@@ -17,6 +17,7 @@ import { redirect } from "next/navigation";
 import { TagCombobox } from "./left-sidebar/tag-combobox";
 import { constructNewUrl } from "@/lib/utils";
 import { ILang } from "@/types/ILang";
+import { IApiSuccessResponse } from "@/types/IApiResponse";
 
 const LeftSidebar = async ({
   repoId,
@@ -37,7 +38,7 @@ const LeftSidebar = async ({
   tags: IOctokitTagsResponse["data"];
   lang: ILang;
 }) => {
-  const tagContentResponse = await axios.get<ITagContent>(
+  const tagContentResponse = await axios.get<IApiSuccessResponse<ITagContent>>(
     checkedEnv.NEXT_PUBLIC_BACKEND_URL +
       checkedEnv.NEXT_PUBLIC_GET_TAG_URL.replace("{repoid}", repoId).replace(
         "{sha}",
@@ -47,7 +48,7 @@ const LeftSidebar = async ({
   );
   if (!filePath) {
     const firstFilePath =
-      tagContentResponse.data.orderedDirs[0]?.orderedFiles[0]?.file?.path;
+      tagContentResponse.data.data.orderedDirs[0]?.orderedFiles[0]?.file?.path;
     if (!firstFilePath) {
       throw new Error(
         "Unable to find a file to display for repoid " +
@@ -75,7 +76,7 @@ const LeftSidebar = async ({
           <SidebarSeparator />
           <SidebarGroupContent>
             <SidebarMenu>
-              {tagContentResponse.data.orderedDirs.map((orderedDir) => (
+              {tagContentResponse.data.data.orderedDirs.map((orderedDir) => (
                 <CategoryCollapsible
                   key={orderedDir.dir.path}
                   orderedDir={orderedDir}

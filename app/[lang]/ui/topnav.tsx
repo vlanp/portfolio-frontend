@@ -3,11 +3,11 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  IdentificationIcon,
-  HomeIcon,
-  BriefcaseIcon,
-  EnvelopeIcon,
-} from "@heroicons/react/24/outline";
+  HiOutlineIdentification,
+  HiOutlineHome,
+  HiOutlineBriefcase,
+  HiOutlineEnvelope,
+} from "react-icons/hi2";
 import { IDictionary } from "../dictionaries";
 import { Button } from "@/components/ui/button";
 
@@ -15,18 +15,22 @@ const TopNav = ({ dictionary }: { dictionary: IDictionary }) => {
   const pathname = "/" + (usePathname().split("/")[2] || "");
 
   const links = [
-    { name: dictionary.topNav.Home, href: "/", icon: HomeIcon },
+    { name: dictionary.topNav.Home, href: "/", icon: HiOutlineHome },
     {
       name: dictionary.topNav.Projects,
       href: "/projects",
-      icon: BriefcaseIcon,
+      icon: HiOutlineBriefcase,
     },
     {
       name: dictionary.topNav.About,
       href: "/about",
-      icon: IdentificationIcon,
+      icon: HiOutlineIdentification,
     },
-    { name: dictionary.topNav.Contact, href: "/contact", icon: EnvelopeIcon },
+    {
+      name: dictionary.topNav.Contact,
+      href: "/contact",
+      icon: HiOutlineEnvelope,
+    },
   ];
   return (
     <>

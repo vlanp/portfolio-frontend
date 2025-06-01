@@ -7,6 +7,7 @@ import checkedEnv from "@/lib/checkEnv";
 import Link from "next/link";
 import { constructNewUrl } from "@/lib/utils";
 import { ILang } from "@/types/ILang";
+import { IApiSuccessResponse } from "@/types/IApiResponse";
 
 const HtmlMarkdownContent = async ({
   fileContent,
@@ -27,7 +28,7 @@ const HtmlMarkdownContent = async ({
   pathname: string;
   lang: ILang;
 }) => {
-  const tagContentResponse = await axios.get<ITagContent>(
+  const tagContentResponse = await axios.get<IApiSuccessResponse<ITagContent>>(
     checkedEnv.NEXT_PUBLIC_BACKEND_URL +
       checkedEnv.NEXT_PUBLIC_GET_TAG_URL.replace("{repoid}", repoId).replace(
         "{sha}",
@@ -35,7 +36,7 @@ const HtmlMarkdownContent = async ({
       ),
     { params: { lang } }
   );
-  const orderedFiles = tagContentResponse.data.orderedDirs.flatMap(
+  const orderedFiles = tagContentResponse.data.data.orderedDirs.flatMap(
     (orderedDir) => orderedDir.orderedFiles
   );
   const numberOfFiles = orderedFiles.length;

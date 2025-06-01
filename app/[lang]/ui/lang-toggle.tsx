@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Globe } from "lucide-react";
+import { LuGlobe } from "react-icons/lu";
 import { setCookie } from "cookies-next";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,7 +23,7 @@ export function LangToggle({ dictionary }: { dictionary: IDictionary }) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="icon">
-          <Globe className="h-[1.2rem] w-[1.2rem]" />
+          <LuGlobe className="h-[1.2rem] w-[1.2rem]" />
           <span className="sr-only">Toggle display language</span>
         </Button>
       </DropdownMenuTrigger>

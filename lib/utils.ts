@@ -5,6 +5,22 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+const arrayDistinct = <T>(array: T[]) => {
+  return array.filter((value, index, array) => array.indexOf(value) === index);
+};
+
+const arrayDistinctBy = <T, K>(array: T[], keySelector: (item: T) => K) => {
+  const seen = new Set<K>();
+  return array.filter((item) => {
+    const key = keySelector(item);
+    if (seen.has(key)) {
+      return false;
+    }
+    seen.add(key);
+    return true;
+  });
+};
+
 function formatPathToDisplayName(path: string): string {
   const fileName = path.split("/").pop();
 
@@ -38,4 +54,9 @@ const constructNewUrl = (
   return `${pathname}?${urlSearchParams.toString()}`;
 };
 
-export { formatPathToDisplayName, constructNewUrl };
+export {
+  formatPathToDisplayName,
+  constructNewUrl,
+  arrayDistinct,
+  arrayDistinctBy,
+};

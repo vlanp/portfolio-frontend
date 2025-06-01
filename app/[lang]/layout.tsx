@@ -45,12 +45,12 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <div className="min-h-screen w-full flex flex-col">
-            <header className="fixed w-full bg-sidebar-accent text-sidebar-foreground border-sidebar-border border-2 flex flex-row justify-between items-center px-5 h-header-height">
+            <header className="fixed w-full bg-sidebar-accent text-sidebar-foreground border-sidebar-border border-2 flex flex-row justify-between items-center px-5 h-header-height z-50">
               <ModeToggle />
               <TopNav dictionary={dict} />
               <LangToggle dictionary={dict} />
             </header>
-            <main className="mt-header-height flex flex-1">{children}</main>
+            <main className="mt-header-height flex flex-1 p-5">{children}</main>
             <footer></footer>
           </div>
         </ThemeProvider>

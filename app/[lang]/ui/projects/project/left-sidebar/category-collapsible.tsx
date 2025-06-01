@@ -8,7 +8,7 @@ import {
   CollapsibleTrigger,
   CollapsibleContent,
 } from "@radix-ui/react-collapsible";
-import { ChevronDown, ChevronRight } from "lucide-react";
+import { LuChevronDown, LuChevronRight } from "react-icons/lu";
 import { useEffect, useState } from "react";
 import SubCategory from "./sub-category";
 import { useSearchParams } from "next/navigation";
@@ -34,7 +34,7 @@ const CategoryCollapsible = ({ orderedDir }: { orderedDir: IDir }) => {
       <SidebarMenuItem>
         <CollapsibleTrigger asChild>
           <SidebarMenuButton>
-            {isOpen ? <ChevronDown /> : <ChevronRight />}
+            {isOpen ? <LuChevronDown /> : <LuChevronRight />}
             {formatPathToDisplayName(orderedDir.dir.path)}
           </SidebarMenuButton>
         </CollapsibleTrigger>

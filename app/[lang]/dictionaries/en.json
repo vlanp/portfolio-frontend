@@ -22,6 +22,12 @@
         "Previous": "Previous",
         "Next": "Next"
       }
-    }
+    },
+    "Video": "Video",
+    "Code": "Code",
+    "Documentation": "Documentation",
+    "FullStack": "Full Stack",
+    "Repository": "Repository",
+    "Repositories": "Repositories"
   }
 }

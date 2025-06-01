@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, ChevronsUpDown } from "lucide-react";
+import { LuCheck, LuChevronsUpDown } from "react-icons/lu";
 import { cn, constructNewUrl } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -59,7 +59,7 @@ export function TagCombobox({
           className="w-[200px] justify-between"
         >
           {selectedTag}
-          <ChevronsUpDown className="opacity-50" />
+          <LuChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
@@ -78,7 +78,7 @@ export function TagCombobox({
                   }}
                 >
                   {tag.name}
-                  <Check
+                  <LuCheck
                     className={cn(
                       "ml-auto",
                       selectedTag === tag.name ? "opacity-100" : "opacity-0"
