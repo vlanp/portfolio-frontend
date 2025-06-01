@@ -196,8 +196,8 @@ const ProjectTabs = ({
               </div>
 
               {/* Repository Information - Compact */}
-              <Card className="border-muted">
-                <CardHeader className="pb-2">
+              <Card className="flex border-muted min-h-70 justify-between">
+                <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-sm">
                     <LuCode className="h-4 w-4" />
                     <span className="truncate">{repo.displayName.name}</span>
@@ -206,7 +206,7 @@ const ProjectTabs = ({
                     </Badge>
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-3 pt-0">
+                <CardContent className="flex flex-col space-y-3 pt-0 flex-1 justify-between">
                   {/* Description - Truncated */}
                   <p className="text-xs text-muted-foreground line-clamp-2">
                     {repo.description[lang]}
@@ -229,7 +229,7 @@ const ProjectTabs = ({
                                 language.iconName,
                                 language.color
                               )}
-                              <span>{lang}</span>
+                              <span>{language.name}</span>
                             </Badge>
                           ))}
                         {repo.programmingLanguages.length > 4 && (
@@ -259,7 +259,7 @@ const ProjectTabs = ({
                                   framework.iconName,
                                   framework.color
                                 )}
-                                <span>{framework.iconName}</span>
+                                <span>{framework.name}</span>
                               </Badge>
                             ))}
                           {getAllFrameworks(repo).length > 3 && (
@@ -288,7 +288,7 @@ const ProjectTabs = ({
                                 platform.iconName,
                                 platform.color
                               )}
-                              <span>{platform.iconName}</span>
+                              <span>{platform.name}</span>
                             </Badge>
                           ))}
                         </div>
@@ -297,44 +297,30 @@ const ProjectTabs = ({
                   </div>
 
                   {/* Links - Compact */}
-                  <div className="flex gap-2 pt-1">
-                    <Button
-                      asChild
-                      size="sm"
-                      className="h-7 px-2 text-xs flex items-center gap-1"
-                    >
+                  <div className="flex gap-2 h-8">
+                    <Button asChild className="flex-1">
                       <Link
                         href={repo.github}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <SiGithub className="h-3 w-3" />
+                        <SiGithub className="size-6" />
                         {projectsDict.Code}
                       </Link>
                     </Button>
-                    <Button
-                      asChild
-                      variant="outline"
-                      size="sm"
-                      className="h-7 px-2 text-xs flex items-center gap-1"
-                    >
+                    <Button asChild variant="outline" className="flex-1">
                       <Link
                         href={repo.youtube}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <SiYoutube className="h-3 w-3 text-red-500" />
+                        <SiYoutube className="size-6 text-red-500" />
                         {projectsDict.Video}
                       </Link>
                     </Button>
-                    <Button
-                      asChild
-                      variant="outline"
-                      size="sm"
-                      className="h-7 px-2 text-xs flex items-center gap-1"
-                    >
+                    <Button asChild variant="outline" className="flex-1">
                       <Link href={"/projects/" + repo._id}>
-                        <SiGoogledocs className="h-3 w-3" />
+                        <SiGoogledocs className="size-6" />
                         {projectsDict.Documentation}
                       </Link>
                     </Button>
