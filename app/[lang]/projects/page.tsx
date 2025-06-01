@@ -20,15 +20,15 @@ const ProjectsPage = async ({
     checkedEnv.NEXT_PUBLIC_BACKEND_URL + checkedEnv.NEXT_PUBLIC_GET_PROJECTS_URL
   );
 
-  const apiResponseParseResult = getZApiSuccessResponse(
+  const projectsResponseParseResult = getZApiSuccessResponse(
     ZProject.array()
   ).safeParse(projectsResponse.data);
 
-  if (!apiResponseParseResult.success) {
-    throw new Error(z.prettifyError(apiResponseParseResult.error));
+  if (!projectsResponseParseResult.success) {
+    throw new Error(z.prettifyError(projectsResponseParseResult.error));
   }
 
-  const projects = apiResponseParseResult.data.data;
+  const projects = projectsResponseParseResult.data.data;
 
   return (
     <ProjectsTabs projects={projects} lang={lang} projectsDict={projectsDict} />

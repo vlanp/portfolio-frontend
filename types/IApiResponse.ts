@@ -1,7 +1,7 @@
 import z from "zod/v4";
 
-const getZApiSuccessResponse = <ResponseType>(
-  zResponseType: z.ZodType<ResponseType>
+const getZApiSuccessResponse = <ZResponseType extends z.ZodTypeAny = z.ZodAny>(
+  zResponseType: ZResponseType
 ) => {
   return z.object({
     success: z.literal(true),
@@ -11,8 +11,10 @@ const getZApiSuccessResponse = <ResponseType>(
 };
 
 type IApiSuccessResponse<ResponseType> = z.infer<
-  ReturnType<typeof getZApiSuccessResponse<ResponseType>>
->;
+  ReturnType<typeof getZApiSuccessResponse>
+> & {
+  data: ResponseType;
+};
 
 const ZApiErrorResponse = z.object({
   success: z.literal(false),

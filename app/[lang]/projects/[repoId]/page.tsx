@@ -2,7 +2,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import LeftSidebar from "../../ui/projects/project/left-sidebar";
 import axios, { AxiosError } from "axios";
 import checkedEnv from "@/lib/checkEnv";
-import IFileExist from "@/types/IFileExist";
+import IFileExist, { ZFileExist } from "@/types/IFileExist";
 import { headers } from "next/headers";
 import IProjectPageProps, {
   EProjectPageSearchParamsKeys,
@@ -16,8 +16,12 @@ import FileDisplay from "../../ui/projects/project/file-display";
 import { getDictionary, IDictionary } from "../../dictionaries";
 import FileDisplaySkeleton from "../../ui/projects/project/file-display-skeleton";
 import { constructNewUrl } from "@/lib/utils";
-import { IRepo } from "@/types/IProject";
-import { IApiSuccessResponse } from "@/types/IApiResponse";
+import { ZRepo } from "@/types/IProject";
+import {
+  getZApiSuccessResponse,
+  IApiSuccessResponse,
+} from "@/types/IApiResponse";
+import z from "zod/v4";
 
 const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
   const awaitedSearchParams = await searchParams;
@@ -37,7 +41,7 @@ const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
 
   const repoId = awaitedParams.repoId;
   const repoResponse = await axios
-    .get<IApiSuccessResponse<IRepo>>(
+    .get<unknown>(
       checkedEnv.NEXT_PUBLIC_BACKEND_URL +
         checkedEnv.NEXT_PUBLIC_GET_REPO_URL.replace("{repoid}", repoId)
     )
@@ -52,6 +56,16 @@ const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
         throw error;
       }
     });
+
+  const repoResponseParseResult = getZApiSuccessResponse(ZRepo).safeParse(
+    repoResponse.data
+  );
+
+  if (!repoResponseParseResult.success) {
+    throw new Error(z.prettifyError(repoResponseParseResult.error));
+  }
+
+  const repo = repoResponseParseResult.data.data;
 
   const tagsResponse = await axios.get<
     IApiSuccessResponse<IOctokitTagsResponse["data"]>
@@ -83,18 +97,28 @@ const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
   const filePath = awaitedSearchParams.filePath;
   if (filePath) {
     const encodedFilepath = encodeURIComponent(filePath);
-    const didFileExist = (
-      await axios.get<IApiSuccessResponse<IFileExist>>(
-        checkedEnv.NEXT_PUBLIC_BACKEND_URL +
-          checkedEnv.NEXT_PUBLIC_GET_FILE_EXIST_URL.replace(
-            "{repoid}",
-            repoId
-          ).replace("{filepath}", encodedFilepath),
-        { params: { sha, lang } }
-      )
-    ).data.data;
+    const didFileExistResponse = await axios.get<
+      IApiSuccessResponse<IFileExist>
+    >(
+      checkedEnv.NEXT_PUBLIC_BACKEND_URL +
+        checkedEnv.NEXT_PUBLIC_GET_FILE_EXIST_URL.replace(
+          "{repoid}",
+          repoId
+        ).replace("{filepath}", encodedFilepath),
+      { params: { sha, lang } }
+    );
 
-    if (!didFileExist.exist) {
+    const fileExistReponseParseResult = getZApiSuccessResponse(
+      ZFileExist
+    ).safeParse(didFileExistResponse.data);
+
+    if (!fileExistReponseParseResult.success) {
+      throw new Error(z.prettifyError(fileExistReponseParseResult.error));
+    }
+
+    const fileExist = fileExistReponseParseResult.data.data;
+
+    if (!fileExist.exist) {
       const newUrl = constructNewUrl(
         EProjectPageSearchParamsKeys.FILE_PATH,
         "",
@@ -102,10 +126,10 @@ const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
         urlSearchParams
       );
       redirect(newUrl);
-    } else if (didFileExist.filePath) {
+    } else if (fileExist.filePath) {
       const newUrl = constructNewUrl(
         EProjectPageSearchParamsKeys.FILE_PATH,
-        didFileExist.filePath,
+        fileExist.filePath,
         pathname,
         urlSearchParams
       );
@@ -121,7 +145,7 @@ const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
           fallback={
             <LeftSidebarSkeleton
               tags={tags}
-              displayName={repoResponse.data.data.displayName.stringified}
+              displayName={repo.displayName.stringified}
             />
           }
         >
@@ -130,7 +154,7 @@ const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
             pathname={pathname}
             sha={sha}
             urlSearchParams={urlSearchParams}
-            repoDisplayName={repoResponse.data.data.displayName.stringified}
+            repoDisplayName={repo.displayName.stringified}
             tags={tags}
             filePath={filePath}
             lang={lang}

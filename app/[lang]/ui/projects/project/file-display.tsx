@@ -2,13 +2,14 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import HtmlMarkdownContent from "./file-display/html-markdown-content";
 import RightSidebar from "./file-display/right-sidebar";
 import axios from "axios";
-import IFileContent from "@/types/IFileContent";
+import { ZFileContent } from "@/types/IFileContent";
 import checkedEnv from "@/lib/checkEnv";
 import { extraLargeBreakpoint } from "@/types/IBreakpoints";
 import { IDictionary } from "@/app/[lang]/dictionaries";
 import FileDisplaySkeleton from "./file-display-skeleton";
 import { ILang } from "@/types/ILang";
-import { IApiSuccessResponse } from "@/types/IApiResponse";
+import { getZApiSuccessResponse } from "@/types/IApiResponse";
+import z from "zod/v4";
 
 const FileDisplay = async ({
   repoId,
@@ -32,16 +33,24 @@ const FileDisplay = async ({
   }
 
   const encodedFilepath = encodeURIComponent(filePath);
-  const fileContent = (
-    await axios.get<IApiSuccessResponse<IFileContent>>(
-      checkedEnv.NEXT_PUBLIC_BACKEND_URL +
-        checkedEnv.NEXT_PUBLIC_GET_FILE_CONTENT_URL.replace(
-          "{repoid}",
-          repoId
-        ).replace("{filepath}", encodedFilepath),
-      { params: { ref: sha } }
-    )
-  ).data.data;
+  const fileContentResponse = await axios.get<unknown>(
+    checkedEnv.NEXT_PUBLIC_BACKEND_URL +
+      checkedEnv.NEXT_PUBLIC_GET_FILE_CONTENT_URL.replace(
+        "{repoid}",
+        repoId
+      ).replace("{filepath}", encodedFilepath),
+    { params: { ref: sha } }
+  );
+
+  const fileContentParseResult = getZApiSuccessResponse(ZFileContent).safeParse(
+    fileContentResponse.data
+  );
+
+  if (!fileContentParseResult.success) {
+    throw new Error(z.prettifyError(fileContentParseResult.error));
+  }
+
+  const fileContent = fileContentParseResult.data.data;
 
   return (
     <>
