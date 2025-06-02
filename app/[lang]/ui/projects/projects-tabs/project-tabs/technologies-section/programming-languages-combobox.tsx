@@ -42,14 +42,18 @@ function ProgrammingLanguagesCombobox({
           variant="ghost"
           role="combobox"
           aria-expanded={open}
-          className="w-full text-md"
+          className="w-full text-md flex justify-center gap-2"
         >
-          {value ? "Frameworks " + value : "Select framework..."}
-          {programmingLanguage &&
-            getIconComponent(
-              programmingLanguage.iconName,
-              programmingLanguage.color
-            )}
+          <span className="truncate max-w-[200px]">
+            {value ? "Frameworks " + value : "Select framework..."}
+          </span>
+          <span className="hidden sm:block">
+            {programmingLanguage &&
+              getIconComponent(
+                programmingLanguage.iconName,
+                programmingLanguage.color
+              )}
+          </span>
           <LuChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>

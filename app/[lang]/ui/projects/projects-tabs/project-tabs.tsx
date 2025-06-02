@@ -13,12 +13,17 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { IProject } from "@/types/IProject";
 import { LuChevronDown, LuLayers } from "react-icons/lu";
 import { SiYoutube, SiGithub, SiGoogledocs } from "react-icons/si";
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { ILang } from "@/types/ILang";
 import { IDictionary } from "../../../dictionaries";
 import Link from "next/link";
 import { IconType } from "react-icons";
 import TechnologiesSection from "./project-tabs/technologies-section";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const ProjectTabs = ({
   project,
@@ -32,6 +37,31 @@ const ProjectTabs = ({
   iconsComps: Map<string, IconType | null>;
 }) => {
   const [selectedTab, setSelectedTab] = useState(project.repos[0]?._id);
+  const [truncateDescription, setTruncateDescription] = useState<boolean>(true);
+  const repoInfoCardRef = useRef<HTMLDivElement>(null);
+  const [initialRepoInfoCardHeight, setInitialRepoInfoCardHeight] = useState<
+    number | null
+  >(null);
+
+  useLayoutEffect(() => {
+    const resetRepoInfoCard = () => {
+      setTruncateDescription(true);
+      setInitialRepoInfoCardHeight(null);
+    };
+
+    window.addEventListener("resize", resetRepoInfoCard);
+
+    return () => {
+      window.removeEventListener("resize", resetRepoInfoCard);
+    };
+  }, []);
+
+  useLayoutEffect(() => {
+    if (repoInfoCardRef.current && !initialRepoInfoCardHeight) {
+      const { height } = repoInfoCardRef.current.getBoundingClientRect();
+      setInitialRepoInfoCardHeight(height);
+    }
+  }, [initialRepoInfoCardHeight]);
 
   const MAX_VISIBLE_TABS = 4;
   const totalRepos = project.repos.length;
@@ -56,11 +86,11 @@ const ProjectTabs = ({
   };
 
   return (
-    <Card className="w-full h-fit max-w-full md:max-w-[600px] mx-auto shadow-lg border-2 hover:shadow-xl transition-shadow duration-300">
-      <CardContent>
+    <Card className="w-full h-fit max-w-[600px] mx-auto shadow-lg border-2 hover:shadow-xl transition-shadow duration-300 py-4">
+      <CardContent className="px-4 sm:px-6">
         {/* Project Header */}
         <div className="text-center mb-3">
-          <h4 className="truncate mt-0">{project.name}</h4>
+          <h4 className="flex flex-wrap justify-center mt-0">{project.name}</h4>
           <div className="flex items-center justify-center gap-1 md:gap-3">
             {project.isFullStack && (
               <Badge variant="secondary" className="text-xs md:text-sm">
@@ -89,6 +119,7 @@ const ProjectTabs = ({
                 <TabsTrigger
                   key={repo._id}
                   value={repo._id}
+                  title={repo.displayName.name}
                   className="px-1.5 md:px-4 py-1 md:py-2 text-xs md:text-sm whitespace-nowrap flex items-center gap-1 md:gap-2 h-6 md:h-8"
                 >
                   <span className="hidden md:inline">
@@ -97,7 +128,7 @@ const ProjectTabs = ({
                       repo.programmingLanguages[0]?.color
                     )}
                   </span>
-                  <span className="truncate text-xs md:text-sm max-w-[60px] md:max-w-none">
+                  <span className="truncate text-xs md:text-sm max-w-[60px]">
                     {repo.displayName.name}
                   </span>
                 </TabsTrigger>
@@ -185,83 +216,118 @@ const ProjectTabs = ({
               </div>
 
               {/* Repository Information */}
-              <Card className="flex border-muted min-h-70 justify-between py-4 gap-2">
+              <Card
+                style={{
+                  ...(initialRepoInfoCardHeight && {
+                    minHeight: `${initialRepoInfoCardHeight}px`,
+                  }),
+                }}
+                className="flex border-muted justify-between py-4 gap-2"
+                ref={repoInfoCardRef}
+              >
                 <CardHeader className="flex justify-center">
-                  <CardTitle className="flex items-center gap-2 text-lg">
-                    <span className="truncate">{repo.displayName.name}</span>
+                  <CardTitle className="flex flex-col md:flex-row items-center gap-2 text-lg">
+                    <span className="max-w-[220px] sm:max-w-[300px] truncate">
+                      {repo.displayName.name}
+                    </span>
                     <Badge variant="secondary" className="text-xs">
                       {repo.displayName.type}
                     </Badge>
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="flex flex-col space-y-3 pt-0 flex-1 justify-between">
+                <CardContent className="flex flex-col space-y-3 pt-0 flex-1 justify-between px-4 sm:px-6">
                   {/* Description */}
-                  <p className="text-xs text-muted-foreground line-clamp-2">
-                    {repo.description[lang]}
-                  </p>
+                  {/* TODO Translate */}
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <p
+                        className={
+                          "text-sm text-muted-foreground text-center min-h-12 hover:cursor-pointer hover:opacity-60" +
+                          (truncateDescription ? " line-clamp-2" : "")
+                        }
+                        onClick={() => setTruncateDescription((p) => !p)}
+                      >
+                        {repo.description[lang]}
+                      </p>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>{truncateDescription ? "Show more" : "Show less"}</p>
+                    </TooltipContent>
+                  </Tooltip>
 
-                  <TechnologiesSection
-                    getIconComponent={getIconComponent}
-                    repo={repo}
-                  />
+                  {truncateDescription && (
+                    <>
+                      {/* Languages and Frameworks */}
+                      <TechnologiesSection
+                        getIconComponent={getIconComponent}
+                        repo={repo}
+                      />
+                      {/* Platforms */}
+                      {repo.platforms.length > 0 && (
+                        <div>
+                          <p className="text-md w-full text-center">Platform</p>
+                          <div className="flex flex-wrap gap-1 justify-center">
+                            {repo.platforms.map((platform) => (
+                              <Badge
+                                key={platform.iconName}
+                                variant="outline"
+                                className="text-sm py-1 gap-2"
+                              >
+                                <span className="text-md">
+                                  {getIconComponent(
+                                    platform.iconName,
+                                    platform.color
+                                  )}
+                                </span>
 
-                  {/* Platforms */}
-                  {repo.platforms.length > 0 && (
-                    <div>
-                      <p className="text-md w-full text-center">Platform</p>
-                      <div className="flex flex-wrap gap-1 justify-center">
-                        {repo.platforms.map((platform) => (
-                          <Badge
-                            key={platform.iconName}
-                            variant="outline"
-                            className="text-sm py-1 gap-2"
-                          >
-                            <span className="text-md">
-                              {getIconComponent(
-                                platform.iconName,
-                                platform.color
-                              )}
-                            </span>
-
-                            <span>{platform.name}</span>
-                          </Badge>
-                        ))}
+                                <span>{platform.name}</span>
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                      {/* Links */}
+                      <div className="flex flex-col">
+                        <p className="text-md w-full text-center">
+                          En savoir plus
+                        </p>
+                        <div className="flex gap-2 h-8">
+                          <Button asChild className="flex-1">
+                            <Link
+                              href={repo.github}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <SiGithub className="size-6" />
+                              <span className="hidden md:block">
+                                {projectsDict.Code}
+                              </span>
+                            </Link>
+                          </Button>
+                          <Button asChild variant="outline" className="flex-1">
+                            <Link
+                              href={repo.youtube}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <SiYoutube className="size-6 text-red-500" />
+                              <span className="hidden md:block">
+                                {projectsDict.Video}
+                              </span>
+                            </Link>
+                          </Button>
+                          <Button asChild variant="outline" className="flex-1">
+                            <Link href={"/projects/" + repo._id}>
+                              <SiGoogledocs className="size-6" />
+                              <span className="hidden md:block">
+                                {projectsDict.Documentation}
+                              </span>
+                            </Link>
+                          </Button>
+                        </div>
                       </div>
-                    </div>
+                    </>
                   )}
-
-                  {/* Links */}
-                  <div className="flex flex-col">
-                    <p className="text-md w-full text-center">En savoir plus</p>
-                    <div className="flex gap-2 h-8">
-                      <Button asChild className="flex-1">
-                        <Link
-                          href={repo.github}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <SiGithub className="size-6" />
-                          {projectsDict.Code}
-                        </Link>
-                      </Button>
-                      <Button asChild variant="outline" className="flex-1">
-                        <Link
-                          href={repo.youtube}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <SiYoutube className="size-6 text-red-500" />
-                          {projectsDict.Video}
-                        </Link>
-                      </Button>
-                      <Button asChild variant="outline" className="flex-1">
-                        <Link href={"/projects/" + repo._id}>
-                          <SiGoogledocs className="size-6" />
-                          {projectsDict.Documentation}
-                        </Link>
-                      </Button>
-                    </div>
-                  </div>
                 </CardContent>
               </Card>
             </TabsContent>
