@@ -35,11 +35,11 @@ const ZRepo = z.object({
   repo: z.string(),
   path: z.string(),
   description: ZRepoDescription,
-  programmingLanguages: z.array(ZDisplayIcon),
-  frameworksJavascript: z.array(ZDisplayIcon).optional(),
-  frameworksKotlin: z.array(ZDisplayIcon).optional(),
-  frameworksPython: z.array(ZDisplayIcon).optional(),
-  frameworksCSS: z.array(ZDisplayIcon).optional(),
+  programmingLanguages: z.array(
+    ZDisplayIcon.extend({
+      frameworks: z.array(ZDisplayIcon),
+    })
+  ),
   platforms: z.array(ZDisplayIcon),
   youtube: z.string(),
   github: z.string(),
@@ -64,26 +64,12 @@ function getDistinctIconNames(projects: IProject[]): string[] {
 
   projects.forEach((project) => {
     project.repos.forEach((repo) => {
-      repo.programmingLanguages.forEach((lang) => {
-        iconNames.push(lang.iconName);
+      repo.programmingLanguages.forEach((programmingLanguage) => {
+        iconNames.push(programmingLanguage.iconName);
+        programmingLanguage.frameworks.forEach((framework) => {
+          iconNames.push(framework.iconName);
+        });
       });
-
-      repo.frameworksJavascript?.forEach((framework) => {
-        iconNames.push(framework.iconName);
-      });
-
-      repo.frameworksKotlin?.forEach((framework) => {
-        iconNames.push(framework.iconName);
-      });
-
-      repo.frameworksPython?.forEach((framework) => {
-        iconNames.push(framework.iconName);
-      });
-
-      repo.frameworksCSS?.forEach((framework) => {
-        iconNames.push(framework.iconName);
-      });
-
       repo.platforms.forEach((platform) => {
         iconNames.push(platform.iconName);
       });

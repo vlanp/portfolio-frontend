@@ -10,14 +10,15 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { IProject, IRepo } from "@/types/IProject";
-import { LuChevronDown, LuCode, LuLayers } from "react-icons/lu";
+import { IProject } from "@/types/IProject";
+import { LuChevronDown, LuLayers } from "react-icons/lu";
 import { SiYoutube, SiGithub, SiGoogledocs } from "react-icons/si";
 import { useState } from "react";
 import { ILang } from "@/types/ILang";
 import { IDictionary } from "../../../dictionaries";
 import Link from "next/link";
 import { IconType } from "react-icons";
+import TechnologiesSection from "./project-tabs/technologies-section";
 
 const ProjectTabs = ({
   project,
@@ -49,16 +50,6 @@ const ProjectTabs = ({
     (repo) => repo._id === selectedTab
   );
 
-  const getAllFrameworks = (repo: IRepo) => {
-    const frameworks = [
-      ...(repo.frameworksJavascript || []),
-      ...(repo.frameworksKotlin || []),
-      ...(repo.frameworksPython || []),
-      ...(repo.frameworksCSS || []),
-    ];
-    return frameworks;
-  };
-
   const getIconComponent = (iconName: string, color: string) => {
     const IconComponent = iconsComps.get(iconName);
     return IconComponent ? <IconComponent color={color} /> : null;
@@ -68,10 +59,8 @@ const ProjectTabs = ({
     <Card className="w-full h-fit max-w-full md:max-w-[600px] mx-auto shadow-lg border-2 hover:shadow-xl transition-shadow duration-300">
       <CardContent>
         {/* Project Header */}
-        <div className="text-center space-y-2 mb-3 md:mb-6">
-          <h3 className="truncate font-semibold text-base md:text-xl">
-            {project.name}
-          </h3>
+        <div className="text-center mb-3">
+          <h4 className="truncate mt-0">{project.name}</h4>
           <div className="flex items-center justify-center gap-1 md:gap-3">
             {project.isFullStack && (
               <Badge variant="secondary" className="text-xs md:text-sm">
@@ -94,7 +83,7 @@ const ProjectTabs = ({
           className="w-full"
         >
           {/* Navigation */}
-          <div className="flex items-center gap-1 md:gap-3 mb-2 md:mb-4">
+          <div className="flex items-center">
             <TabsList className="flex-1 justify-start p-0.5 md:p-1 h-7 md:h-10">
               {visibleRepos.map((repo) => (
                 <TabsTrigger
@@ -183,8 +172,8 @@ const ProjectTabs = ({
               value={repo._id}
               className="mt-0 space-y-3"
             >
-              {/* Video - Smaller aspect ratio */}
-              <div className="relative w-full aspect-[16/10] rounded-md overflow-hidden bg-black shadow-sm border">
+              {/* Video */}
+              <div className="relative w-full aspect-[16/9] rounded-md overflow-hidden bg-black shadow-sm border">
                 <iframe
                   className="w-full h-full"
                   src={repo.youtube + "?hl=" + lang}
@@ -195,11 +184,10 @@ const ProjectTabs = ({
                 />
               </div>
 
-              {/* Repository Information - Compact */}
-              <Card className="flex border-muted min-h-70 justify-between">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-sm">
-                    <LuCode className="h-4 w-4" />
+              {/* Repository Information */}
+              <Card className="flex border-muted min-h-70 justify-between py-4 gap-2">
+                <CardHeader className="flex justify-center">
+                  <CardTitle className="flex items-center gap-2 text-lg">
                     <span className="truncate">{repo.displayName.name}</span>
                     <Badge variant="secondary" className="text-xs">
                       {repo.displayName.type}
@@ -207,123 +195,72 @@ const ProjectTabs = ({
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="flex flex-col space-y-3 pt-0 flex-1 justify-between">
-                  {/* Description - Truncated */}
+                  {/* Description */}
                   <p className="text-xs text-muted-foreground line-clamp-2">
                     {repo.description[lang]}
                   </p>
 
-                  {/* Technologies - Compact Grid */}
-                  <div className="space-y-2">
-                    {/* Languages */}
+                  <TechnologiesSection
+                    getIconComponent={getIconComponent}
+                    repo={repo}
+                  />
+
+                  {/* Platforms */}
+                  {repo.platforms.length > 0 && (
                     <div>
-                      <div className="flex flex-wrap gap-1">
-                        {repo.programmingLanguages
-                          .slice(0, 4)
-                          .map((language) => (
-                            <Badge
-                              key={language.name}
-                              variant="outline"
-                              className="text-xs px-1.5 py-0.5 flex items-center gap-1"
-                            >
-                              {getIconComponent(
-                                language.iconName,
-                                language.color
-                              )}
-                              <span>{language.name}</span>
-                            </Badge>
-                          ))}
-                        {repo.programmingLanguages.length > 4 && (
+                      <p className="text-md w-full text-center">Platform</p>
+                      <div className="flex flex-wrap gap-1 justify-center">
+                        {repo.platforms.map((platform) => (
                           <Badge
+                            key={platform.iconName}
                             variant="outline"
-                            className="text-xs px-1.5 py-0.5"
+                            className="text-sm py-1 gap-2"
                           >
-                            +{repo.programmingLanguages.length - 4}
-                          </Badge>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Frameworks */}
-                    {getAllFrameworks(repo).length > 0 && (
-                      <div>
-                        <div className="flex flex-wrap gap-1">
-                          {getAllFrameworks(repo)
-                            .slice(0, 3)
-                            .map((framework) => (
-                              <Badge
-                                key={framework.iconName}
-                                variant="secondary"
-                                className="text-xs px-1.5 py-0.5 flex items-center gap-1"
-                              >
-                                {getIconComponent(
-                                  framework.iconName,
-                                  framework.color
-                                )}
-                                <span>{framework.name}</span>
-                              </Badge>
-                            ))}
-                          {getAllFrameworks(repo).length > 3 && (
-                            <Badge
-                              variant="secondary"
-                              className="text-xs px-1.5 py-0.5"
-                            >
-                              +{getAllFrameworks(repo).length - 3}
-                            </Badge>
-                          )}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Platforms */}
-                    {repo.platforms.length > 0 && (
-                      <div>
-                        <div className="flex flex-wrap gap-1">
-                          {repo.platforms.map((platform) => (
-                            <Badge
-                              key={platform.iconName}
-                              variant="outline"
-                              className="text-xs px-1.5 py-0.5 flex items-center gap-1"
-                            >
+                            <span className="text-md">
                               {getIconComponent(
                                 platform.iconName,
                                 platform.color
                               )}
-                              <span>{platform.name}</span>
-                            </Badge>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
+                            </span>
 
-                  {/* Links - Compact */}
-                  <div className="flex gap-2 h-8">
-                    <Button asChild className="flex-1">
-                      <Link
-                        href={repo.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <SiGithub className="size-6" />
-                        {projectsDict.Code}
-                      </Link>
-                    </Button>
-                    <Button asChild variant="outline" className="flex-1">
-                      <Link
-                        href={repo.youtube}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <SiYoutube className="size-6 text-red-500" />
-                        {projectsDict.Video}
-                      </Link>
-                    </Button>
-                    <Button asChild variant="outline" className="flex-1">
-                      <Link href={"/projects/" + repo._id}>
-                        <SiGoogledocs className="size-6" />
-                        {projectsDict.Documentation}
-                      </Link>
-                    </Button>
+                            <span>{platform.name}</span>
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Links */}
+                  <div className="flex flex-col">
+                    <p className="text-md w-full text-center">En savoir plus</p>
+                    <div className="flex gap-2 h-8">
+                      <Button asChild className="flex-1">
+                        <Link
+                          href={repo.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <SiGithub className="size-6" />
+                          {projectsDict.Code}
+                        </Link>
+                      </Button>
+                      <Button asChild variant="outline" className="flex-1">
+                        <Link
+                          href={repo.youtube}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <SiYoutube className="size-6 text-red-500" />
+                          {projectsDict.Video}
+                        </Link>
+                      </Button>
+                      <Button asChild variant="outline" className="flex-1">
+                        <Link href={"/projects/" + repo._id}>
+                          <SiGoogledocs className="size-6" />
+                          {projectsDict.Documentation}
+                        </Link>
+                      </Button>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
