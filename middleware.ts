@@ -41,7 +41,7 @@ export const config = {
   matcher: [
     {
       source: "/((?!_next).*)",
-      missing: [{ type: "header", key: "next-action" }], // If not, receive undefined when calling server actions
+      missing: [{ type: "header", key: "next-action" }], // If not, receive undefined when calling server actions => https://github.com/vercel/next.js/issues/50659#issuecomment-1846046743 & https://www.reddit.com/r/nextjs/comments/1euu4vq/server_action_returning_undefined_on_client_even/
     },
   ],
 };
