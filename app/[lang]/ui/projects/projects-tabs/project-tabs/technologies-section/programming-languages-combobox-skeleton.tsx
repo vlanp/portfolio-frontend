@@ -10,7 +10,7 @@ const ProgrammingLanguageComboboxSkeleton = () => {
       disabled
     >
       <Skeleton className="h-5 w-32" />
-      <Skeleton className="h-5 w-5" />
+      <Skeleton className="hidden sm:block w-5 h-5" />
       <LuChevronsUpDown className="opacity-30" />
     </Button>
   );

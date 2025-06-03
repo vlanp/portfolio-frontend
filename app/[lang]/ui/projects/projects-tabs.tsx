@@ -13,6 +13,7 @@ import {
   IFetchDataState,
 } from "@/types/IFetchDataState";
 import { IDictionary } from "../../dictionaries/generated";
+import ProjectsTabsSkeleton from "./projects-tabs-skeleton";
 
 const ProjectsTabs = ({
   projects,
@@ -38,7 +39,7 @@ const ProjectsTabs = ({
   }, [projects]);
 
   if (iconsCompsDataState.status !== "fetchDataSuccess") {
-    return;
+    return <ProjectsTabsSkeleton />;
   }
 
   return (
