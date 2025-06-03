@@ -20,13 +20,16 @@ import { useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IOctokitTagsResponse } from "@/types/ITagContent";
 import { EProjectPageSearchParamsKeys } from "@/types/IProjectPageProps";
+import { IDictionary } from "@/app/[lang]/dictionaries";
 
 export function TagCombobox({
   tags,
   disabled,
+  projectDict,
 }: {
   tags: IOctokitTagsResponse["data"];
   disabled?: boolean;
+  projectDict: IDictionary["Projects"]["Project"];
 }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -64,9 +67,15 @@ export function TagCombobox({
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
-          <CommandInput placeholder="Search tag..." />
+          <CommandInput
+            placeholder={
+              projectDict.LeftProjectSidebar.TagCombobox.SearchPlaceholder
+            }
+          />
           <CommandList>
-            <CommandEmpty>No tags found.</CommandEmpty>
+            <CommandEmpty>
+              {projectDict.LeftProjectSidebar.TagCombobox.EmptySearchResult}
+            </CommandEmpty>
             <CommandGroup>
               {tags.map((tag) => (
                 <CommandItem

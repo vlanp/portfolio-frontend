@@ -15,13 +15,16 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { TagCombobox } from "./left-sidebar/tag-combobox";
 import { IOctokitTagsResponse } from "@/types/ITagContent";
+import { IDictionary } from "@/app/[lang]/dictionaries";
 
 const LeftSidebarSkeleton = ({
   tags,
   displayName,
+  projectDict,
 }: {
   tags: IOctokitTagsResponse["data"];
   displayName: string;
+  projectDict: IDictionary["Projects"]["Project"];
 }) => {
   const [skeletonCount, setSkeletonCount] = useState(0);
   const sidebarRef = useRef<HTMLUListElement | null>(null);
@@ -64,7 +67,7 @@ const LeftSidebarSkeleton = ({
         <SidebarGroup className="min-h-full">
           <SidebarGroupLabel>{displayName}</SidebarGroupLabel>
           <SidebarGroupAction asChild>
-            <TagCombobox tags={tags} disabled />
+            <TagCombobox tags={tags} disabled projectDict={projectDict} />
           </SidebarGroupAction>
           <SidebarSeparator />
           <SidebarGroupContent className="gap-1 flex-1">

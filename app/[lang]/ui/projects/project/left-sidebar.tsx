@@ -18,6 +18,7 @@ import { TagCombobox } from "./left-sidebar/tag-combobox";
 import { constructNewUrl } from "@/lib/utils";
 import { ILang } from "@/types/ILang";
 import { IApiSuccessResponse } from "@/types/IApiResponse";
+import { IDictionary } from "@/app/[lang]/dictionaries";
 
 const LeftSidebar = async ({
   repoId,
@@ -28,6 +29,7 @@ const LeftSidebar = async ({
   repoDisplayName,
   tags,
   lang,
+  projectDict,
 }: {
   repoId: string;
   sha: string;
@@ -37,6 +39,7 @@ const LeftSidebar = async ({
   repoDisplayName: string;
   tags: IOctokitTagsResponse["data"];
   lang: ILang;
+  projectDict: IDictionary["Projects"]["Project"];
 }) => {
   const tagContentResponse = await axios.get<IApiSuccessResponse<ITagContent>>(
     checkedEnv.NEXT_PUBLIC_BACKEND_URL +
@@ -71,7 +74,7 @@ const LeftSidebar = async ({
         <SidebarGroup className="min-h-full">
           <SidebarGroupLabel>{repoDisplayName}</SidebarGroupLabel>
           <SidebarGroupAction asChild>
-            <TagCombobox tags={tags} />
+            <TagCombobox tags={tags} projectDict={projectDict} />
           </SidebarGroupAction>
           <SidebarSeparator />
           <SidebarGroupContent>

@@ -146,6 +146,7 @@ const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
             <LeftSidebarSkeleton
               tags={tags}
               displayName={repo.displayName.stringified}
+              projectDict={projectDict}
             />
           }
         >
@@ -158,6 +159,7 @@ const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
             tags={tags}
             filePath={filePath}
             lang={lang}
+            projectDict={projectDict}
           />
         </Suspense>
         <SidebarTrigger />

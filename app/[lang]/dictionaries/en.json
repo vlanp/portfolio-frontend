@@ -21,6 +21,12 @@
       "HtmlMarkdownContent": {
         "Previous": "Previous",
         "Next": "Next"
+      },
+      "LeftProjectSidebar": {
+        "TagCombobox": {
+          "SearchPlaceholder": "Search tag...",
+          "EmptySearchResult": "No tags found"
+        }
       }
     },
     "Video": "Video",
