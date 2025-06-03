@@ -34,6 +34,19 @@
     "Documentation": "Documentation",
     "FullStack": "Full Stack",
     "Repository": "Dépôt",
-    "Repositories": "Dépôts"
+    "Repositories": "Dépôts",
+    "ProjectsTabs": {
+      "ProjectTabs": {
+        "ShowMore": "Voir plus...",
+        "ShowLess": "Voir moins...",
+        "Platform": "Plateforme",
+        "LearnMore": "En savoir plus",
+        "ProgrammingLanguageCombobox": {
+          "FrameworksOfLanguage": "Frameworks %(programmingLanguage)s",
+          "SearchPlaceholder": "Rechercher un langage...",
+          "EmptySearchResult": "No language found"
+        }
+      }
+    }
   }
 }

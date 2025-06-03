@@ -2,7 +2,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import HtmlMarkdownContentSkeleton from "./file-display/html-markdown-content-skeleton";
 import { extraLargeBreakpoint } from "@/types/IBreakpoints";
 import RightSidebarSkeleton from "./file-display/right-sidebar-skeleton";
-import { IDictionary } from "@/app/[lang]/dictionaries";
+import { IDictionary } from "@/app/[lang]/dictionaries/generated";
 
 const FileDisplaySkeleton = ({
   projectDict,

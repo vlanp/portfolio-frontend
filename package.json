@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
+    "dict:watch": "tsx ./app/[lang]/dictionaries/scripts/generate-dictionaries.ts watch",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -44,6 +45,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.3.1",
     "tailwindcss": "^4",
+    "tsx": "^4.19.4",
     "tw-animate-css": "^1.2.9",
     "typescript": "^5"
   }

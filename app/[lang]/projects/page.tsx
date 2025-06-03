@@ -2,14 +2,16 @@ import checkedEnv from "@/lib/checkEnv";
 import { ZProject } from "@/types/IProject";
 import axios from "axios";
 import { z } from "zod/v4";
-import { getDictionary, IDictionary } from "../dictionaries";
+import { getDictionary } from "../dictionaries";
 import { getZApiSuccessResponse } from "@/types/IApiResponse";
 import ProjectsTabs from "../ui/projects/projects-tabs";
+import { IDictionary } from "../dictionaries/generated";
+import { ILang } from "@/types/ILang";
 
 const ProjectsPage = async ({
   params,
 }: {
-  params: Promise<{ lang: "en" | "fr" }>;
+  params: Promise<{ lang: ILang }>;
 }) => {
   const awaitedParams = await params;
   const lang = awaitedParams.lang;

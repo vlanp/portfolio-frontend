@@ -4,13 +4,16 @@ import { Badge } from "@/components/ui/badge";
 import ProgrammingLanguagesCombobox from "./technologies-section/programming-languages-combobox";
 import { JSX, useState } from "react";
 import { IRepo } from "@/types/IProject";
+import { IDictionary } from "@/app/[lang]/dictionaries/generated";
 
 const TechnologiesSection = ({
   getIconComponent,
   repo,
+  projectsDict,
 }: {
   getIconComponent: (iconName: string, color: string) => JSX.Element | null;
   repo: IRepo;
+  projectsDict: IDictionary["Projects"];
 }) => {
   const [programmingLanguage, setProgrammingLanguage] = useState<
     string | undefined
@@ -23,6 +26,7 @@ const TechnologiesSection = ({
         value={programmingLanguage}
         setValue={setProgrammingLanguage}
         getIconComponent={getIconComponent}
+        projectsDict={projectsDict}
       />
       <div>
         <div className="flex flex-wrap gap-1 justify-center">

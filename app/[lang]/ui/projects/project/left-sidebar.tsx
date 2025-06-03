@@ -18,7 +18,7 @@ import { TagCombobox } from "./left-sidebar/tag-combobox";
 import { constructNewUrl } from "@/lib/utils";
 import { ILang } from "@/types/ILang";
 import { IApiSuccessResponse } from "@/types/IApiResponse";
-import { IDictionary } from "@/app/[lang]/dictionaries";
+import { IDictionary } from "@/app/[lang]/dictionaries/generated";
 
 const LeftSidebar = async ({
   repoId,

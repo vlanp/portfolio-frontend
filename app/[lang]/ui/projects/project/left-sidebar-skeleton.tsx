@@ -15,7 +15,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { TagCombobox } from "./left-sidebar/tag-combobox";
 import { IOctokitTagsResponse } from "@/types/ITagContent";
-import { IDictionary } from "@/app/[lang]/dictionaries";
+import { IDictionary } from "@/app/[lang]/dictionaries/generated";
 
 const LeftSidebarSkeleton = ({
   tags,

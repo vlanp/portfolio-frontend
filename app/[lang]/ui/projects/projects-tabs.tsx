@@ -3,7 +3,6 @@
 import { getDistinctIconNames, IProject } from "@/types/IProject";
 import ProjectTabs from "./projects-tabs/project-tabs";
 import { ILang } from "@/types/ILang";
-import { IDictionary } from "../../dictionaries";
 import { useEffect, useState } from "react";
 import { getIconsFromReactIcons } from "@/lib/get-icons-from-react-icons";
 import { IconType } from "react-icons";
@@ -13,6 +12,7 @@ import {
   FetchDataSuccess,
   IFetchDataState,
 } from "@/types/IFetchDataState";
+import { IDictionary } from "../../dictionaries/generated";
 
 const ProjectsTabs = ({
   projects,

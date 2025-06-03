@@ -13,7 +13,7 @@ import { IOctokitTagsResponse } from "@/types/ITagContent";
 import { Suspense } from "react";
 import LeftSidebarSkeleton from "../../ui/projects/project/left-sidebar-skeleton";
 import FileDisplay from "../../ui/projects/project/file-display";
-import { getDictionary, IDictionary } from "../../dictionaries";
+import { getDictionary } from "../../dictionaries";
 import FileDisplaySkeleton from "../../ui/projects/project/file-display-skeleton";
 import { constructNewUrl } from "@/lib/utils";
 import { ZRepo } from "@/types/IProject";
@@ -22,6 +22,7 @@ import {
   IApiSuccessResponse,
 } from "@/types/IApiResponse";
 import z from "zod/v4";
+import { IDictionary } from "../../dictionaries/generated";
 
 const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
   const awaitedSearchParams = await searchParams;

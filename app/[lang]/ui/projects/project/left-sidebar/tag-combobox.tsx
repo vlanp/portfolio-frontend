@@ -20,7 +20,7 @@ import { useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IOctokitTagsResponse } from "@/types/ITagContent";
 import { EProjectPageSearchParamsKeys } from "@/types/IProjectPageProps";
-import { IDictionary } from "@/app/[lang]/dictionaries";
+import { IDictionary } from "@/app/[lang]/dictionaries/generated";
 
 export function TagCombobox({
   tags,

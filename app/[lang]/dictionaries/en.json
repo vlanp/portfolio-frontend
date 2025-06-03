@@ -34,6 +34,19 @@
     "Documentation": "Documentation",
     "FullStack": "Full Stack",
     "Repository": "Repository",
-    "Repositories": "Repositories"
+    "Repositories": "Repositories",
+    "ProjectsTabs": {
+      "ProjectTabs": {
+        "ShowMore": "Show more...",
+        "ShowLess": "Show less...",
+        "Platform": "Platform",
+        "LearnMore": "Learn more",
+        "ProgrammingLanguageCombobox": {
+          "FrameworksOfLanguage": "%(programmingLanguage)s frameworks",
+          "SearchPlaceholder": "Search a language...",
+          "EmptySearchResult": "No language found"
+        }
+      }
+    }
   }
 }

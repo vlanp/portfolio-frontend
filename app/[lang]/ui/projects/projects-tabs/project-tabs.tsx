@@ -15,7 +15,6 @@ import { LuChevronDown, LuLayers } from "react-icons/lu";
 import { SiYoutube, SiGithub, SiGoogledocs } from "react-icons/si";
 import { useLayoutEffect, useRef, useState } from "react";
 import { ILang } from "@/types/ILang";
-import { IDictionary } from "../../../dictionaries";
 import Link from "next/link";
 import { IconType } from "react-icons";
 import TechnologiesSection from "./project-tabs/technologies-section";
@@ -24,6 +23,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { IDictionary } from "@/app/[lang]/dictionaries/generated";
 
 const ProjectTabs = ({
   project,
@@ -237,7 +237,6 @@ const ProjectTabs = ({
                 </CardHeader>
                 <CardContent className="flex flex-col space-y-3 pt-0 flex-1 justify-between px-4 sm:px-6">
                   {/* Description */}
-                  {/* TODO Translate */}
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <p
@@ -251,7 +250,11 @@ const ProjectTabs = ({
                       </p>
                     </TooltipTrigger>
                     <TooltipContent>
-                      <p>{truncateDescription ? "Show more" : "Show less"}</p>
+                      <p>
+                        {truncateDescription
+                          ? projectsDict.ProjectsTabs.ProjectTabs.ShowMore
+                          : projectsDict.ProjectsTabs.ProjectTabs.ShowLess}
+                      </p>
                     </TooltipContent>
                   </Tooltip>
 
@@ -261,11 +264,14 @@ const ProjectTabs = ({
                       <TechnologiesSection
                         getIconComponent={getIconComponent}
                         repo={repo}
+                        projectsDict={projectsDict}
                       />
                       {/* Platforms */}
                       {repo.platforms.length > 0 && (
                         <div>
-                          <p className="text-md w-full text-center">Platform</p>
+                          <p className="text-md w-full text-center">
+                            {projectsDict.ProjectsTabs.ProjectTabs.Platform}
+                          </p>
                           <div className="flex flex-wrap gap-1 justify-center">
                             {repo.platforms.map((platform) => (
                               <Badge
@@ -289,7 +295,7 @@ const ProjectTabs = ({
                       {/* Links */}
                       <div className="flex flex-col">
                         <p className="text-md w-full text-center">
-                          En savoir plus
+                          {projectsDict.ProjectsTabs.ProjectTabs.LearnMore}
                         </p>
                         <div className="flex gap-2 h-8">
                           <Button asChild className="flex-1">
