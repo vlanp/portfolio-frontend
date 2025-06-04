@@ -6,7 +6,6 @@ import {
   SidebarGroup,
   SidebarGroupAction,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuSkeleton,
@@ -16,15 +15,20 @@ import { useEffect, useRef, useState } from "react";
 import { TagCombobox } from "./left-sidebar/tag-combobox";
 import { IOctokitTagsResponse } from "@/types/ITagContent";
 import { IDictionary } from "@/app/[lang]/dictionaries/generated";
+import { RepoCombobox } from "./left-sidebar/repo-combobox";
+import { IRepo } from "@/types/IProject";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const LeftSidebarSkeleton = ({
   tags,
-  displayName,
   projectDict,
+  repos,
+  repoId,
 }: {
   tags: IOctokitTagsResponse["data"];
-  displayName: string;
   projectDict: IDictionary["Projects"]["Project"];
+  repos: IRepo[];
+  repoId: string;
 }) => {
   const [skeletonCount, setSkeletonCount] = useState(0);
   const sidebarRef = useRef<HTMLUListElement | null>(null);
@@ -65,10 +69,23 @@ const LeftSidebarSkeleton = ({
     <Sidebar variant="floating" className="top-header-height">
       <SidebarContent>
         <SidebarGroup className="min-h-full">
-          <SidebarGroupLabel>{displayName}</SidebarGroupLabel>
-          <SidebarGroupAction asChild>
-            <TagCombobox tags={tags} disabled projectDict={projectDict} />
-          </SidebarGroupAction>
+          <div className="flex flex-col gap-2 p-2">
+            <Skeleton className="w-full h-[24px]" />
+            <Skeleton className="w-2/3 self-center h-[24px]" />
+          </div>
+          <div className="flex flex-col gap-2">
+            <SidebarGroupAction asChild>
+              <RepoCombobox
+                repos={repos}
+                projectDict={projectDict}
+                repoId={repoId}
+                disabled
+              />
+            </SidebarGroupAction>
+            <SidebarGroupAction asChild>
+              <TagCombobox tags={tags} disabled projectDict={projectDict} />
+            </SidebarGroupAction>
+          </div>
           <SidebarSeparator />
           <SidebarGroupContent className="gap-1 flex-1">
             <SidebarMenu ref={sidebarRef} className="min-h-full">

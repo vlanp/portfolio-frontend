@@ -5,11 +5,11 @@ import axios from "axios";
 import { ZFileContent } from "@/types/IFileContent";
 import checkedEnv from "@/lib/checkEnv";
 import { extraLargeBreakpoint } from "@/types/IBreakpoints";
-import { IDictionary } from "@/app/[lang]/dictionaries";
 import FileDisplaySkeleton from "./file-display-skeleton";
 import { ILang } from "@/types/ILang";
 import { getZApiSuccessResponse } from "@/types/IApiResponse";
 import z from "zod/v4";
+import { IDictionary } from "@/app/[lang]/dictionaries/generated";
 
 const FileDisplay = async ({
   repoId,

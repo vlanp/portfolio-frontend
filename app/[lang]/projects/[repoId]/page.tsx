@@ -146,8 +146,9 @@ const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
           fallback={
             <LeftSidebarSkeleton
               tags={tags}
-              displayName={repo.displayName.stringified}
               projectDict={projectDict}
+              repoId={repoId}
+              repos={[repo]}
             />
           }
         >
@@ -156,7 +157,6 @@ const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
             pathname={pathname}
             sha={sha}
             urlSearchParams={urlSearchParams}
-            repoDisplayName={repo.displayName.stringified}
             tags={tags}
             filePath={filePath}
             lang={lang}

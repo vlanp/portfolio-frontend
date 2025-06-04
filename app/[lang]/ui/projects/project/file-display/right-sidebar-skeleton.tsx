@@ -1,6 +1,6 @@
 "use client";
 
-import { IDictionary } from "@/app/[lang]/dictionaries";
+import { IDictionary } from "@/app/[lang]/dictionaries/generated";
 import {
   Sidebar,
   SidebarContent,

@@ -26,6 +26,10 @@
         "TagCombobox": {
           "SearchPlaceholder": "Rechercher un tag...",
           "EmptySearchResult": "Aucun tag n'a été trouvé"
+        },
+        "RepoCombobox": {
+          "SearchPlaceholder": "Rechercher un dépôt...",
+          "EmptySearchResult": "Aucun dépôt n'a été trouvé"
         }
       }
     },

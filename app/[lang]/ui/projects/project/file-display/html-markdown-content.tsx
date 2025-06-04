@@ -1,6 +1,5 @@
 import IFileContent from "@/types/IFileContent";
 import { EProjectPageSearchParamsKeys } from "@/types/IProjectPageProps";
-import { IDictionary } from "../../../../dictionaries";
 import axios from "axios";
 import { IFile, ITagContent } from "@/types/ITagContent";
 import checkedEnv from "@/lib/checkEnv";
@@ -8,6 +7,7 @@ import Link from "next/link";
 import { constructNewUrl } from "@/lib/utils";
 import { ILang } from "@/types/ILang";
 import { IApiSuccessResponse } from "@/types/IApiResponse";
+import { IDictionary } from "@/app/[lang]/dictionaries/generated";
 
 const HtmlMarkdownContent = async ({
   fileContent,

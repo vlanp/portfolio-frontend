@@ -17,8 +17,14 @@ import { redirect } from "next/navigation";
 import { TagCombobox } from "./left-sidebar/tag-combobox";
 import { constructNewUrl } from "@/lib/utils";
 import { ILang } from "@/types/ILang";
-import { IApiSuccessResponse } from "@/types/IApiResponse";
+import {
+  getZApiSuccessResponse,
+  IApiSuccessResponse,
+} from "@/types/IApiResponse";
 import { IDictionary } from "@/app/[lang]/dictionaries/generated";
+import { RepoCombobox } from "./left-sidebar/repo-combobox";
+import { ZProject } from "@/types/IProject";
+import { z } from "zod/v4";
 
 const LeftSidebar = async ({
   repoId,
@@ -26,7 +32,6 @@ const LeftSidebar = async ({
   filePath,
   pathname,
   urlSearchParams,
-  repoDisplayName,
   tags,
   lang,
   projectDict,
@@ -36,12 +41,11 @@ const LeftSidebar = async ({
   filePath: string | undefined;
   pathname: string;
   urlSearchParams: URLSearchParams;
-  repoDisplayName: string;
   tags: IOctokitTagsResponse["data"];
   lang: ILang;
   projectDict: IDictionary["Projects"]["Project"];
 }) => {
-  const tagContentResponse = await axios.get<IApiSuccessResponse<ITagContent>>(
+  const tagContentResponsePromise = axios.get<IApiSuccessResponse<ITagContent>>(
     checkedEnv.NEXT_PUBLIC_BACKEND_URL +
       checkedEnv.NEXT_PUBLIC_GET_TAG_URL.replace("{repoid}", repoId).replace(
         "{sha}",
@@ -49,9 +53,29 @@ const LeftSidebar = async ({
       ),
     { params: { lang } }
   );
+  const projectResponsePromise = axios.get<unknown>(
+    checkedEnv.NEXT_PUBLIC_BACKEND_URL +
+      checkedEnv.NEXT_PUBLIC_GET_PROJECT_FROM_REPO_URL.replace(
+        "{repoid}",
+        repoId
+      )
+  );
+  const responses = await Promise.all([
+    tagContentResponsePromise,
+    projectResponsePromise,
+  ]);
+  const [tagContentResponse, reposResponse] = responses;
+  const projectResponseParseResult = getZApiSuccessResponse(ZProject).safeParse(
+    reposResponse.data
+  );
+  if (!projectResponseParseResult.success) {
+    throw new Error(z.prettifyError(projectResponseParseResult.error));
+  }
+  const project = projectResponseParseResult.data.data;
   if (!filePath) {
     const firstFilePath =
       tagContentResponse.data.data.orderedDirs[0]?.orderedFiles[0]?.file?.path;
+
     if (!firstFilePath) {
       throw new Error(
         "Unable to find a file to display for repoid " +
@@ -72,10 +96,21 @@ const LeftSidebar = async ({
     <Sidebar variant="floating" className="top-header-height">
       <SidebarContent>
         <SidebarGroup className="min-h-full">
-          <SidebarGroupLabel>{repoDisplayName}</SidebarGroupLabel>
-          <SidebarGroupAction asChild>
-            <TagCombobox tags={tags} projectDict={projectDict} />
-          </SidebarGroupAction>
+          <SidebarGroupLabel className="text-center self-center">
+            {project.name}
+          </SidebarGroupLabel>
+          <div className="flex flex-col gap-2">
+            <SidebarGroupAction asChild>
+              <RepoCombobox
+                repos={project.repos}
+                projectDict={projectDict}
+                repoId={repoId}
+              />
+            </SidebarGroupAction>
+            <SidebarGroupAction asChild>
+              <TagCombobox tags={tags} projectDict={projectDict} />
+            </SidebarGroupAction>
+          </div>
           <SidebarSeparator />
           <SidebarGroupContent>
             <SidebarMenu>

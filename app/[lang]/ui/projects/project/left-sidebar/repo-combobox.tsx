@@ -1,7 +1,7 @@
 "use client";
 
 import { LuCheck, LuChevronsUpDown } from "react-icons/lu";
-import { cn, constructNewUrl } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -17,37 +17,28 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { IOctokitTagsResponse } from "@/types/ITagContent";
-import { EProjectPageSearchParamsKeys } from "@/types/IProjectPageProps";
+import { usePathname, useRouter } from "next/navigation";
 import { IDictionary } from "@/app/[lang]/dictionaries/generated";
+import { IRepo } from "@/types/IProject";
 
-export function TagCombobox({
-  tags,
+export function RepoCombobox({
+  repos,
   disabled,
   projectDict,
+  repoId,
 }: {
-  tags: IOctokitTagsResponse["data"];
+  repos: IRepo[];
   disabled?: boolean;
   projectDict: IDictionary["Projects"]["Project"];
+  repoId: string;
 }) {
   const router = useRouter();
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const searchParams = useSearchParams();
-  const urlSearchParams = new URLSearchParams(searchParams);
-  const selectedTag = tags.find(
-    (tag) =>
-      tag.commit.sha === searchParams.get(EProjectPageSearchParamsKeys.SHA)
-  )?.name;
+  const selectedRepo = repos.find((repo) => repo._id === repoId);
 
-  const handleTagSelection = async (sha: string) => {
-    const newUrl = constructNewUrl(
-      EProjectPageSearchParamsKeys.SHA,
-      sha,
-      pathname,
-      urlSearchParams
-    );
+  const handleRepoSelection = async (newRepoId: string) => {
+    const newUrl = pathname.replace(repoId, newRepoId);
     router.push(newUrl);
     setOpen(false);
   };
@@ -59,38 +50,40 @@ export function TagCombobox({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-fit min-w-[100px] max-w-full justify-between self-center truncate"
+          className="min-w-[150px] w-full truncate"
         >
-          {selectedTag}
+          {selectedRepo?.displayName.stringified}
           <LuChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-fit min-w-[100px] p-0">
+      <PopoverContent className="min-w-[150px] max-w-full p-0">
         <Command>
           <CommandInput
             placeholder={
-              projectDict.LeftProjectSidebar.TagCombobox.SearchPlaceholder
+              projectDict.LeftProjectSidebar.RepoCombobox.SearchPlaceholder
             }
           />
           <CommandList>
             <CommandEmpty>
-              {projectDict.LeftProjectSidebar.TagCombobox.EmptySearchResult}
+              {projectDict.LeftProjectSidebar.RepoCombobox.EmptySearchResult}
             </CommandEmpty>
             <CommandGroup>
-              {tags.map((tag) => (
+              {repos.map((repo) => (
                 <CommandItem
-                  key={tag.name}
+                  key={repo._id}
                   disabled={disabled}
-                  value={tag.name}
+                  value={repo.displayName.stringified}
                   onSelect={() => {
-                    handleTagSelection(tag.commit.sha);
+                    handleRepoSelection(repo._id);
                   }}
                 >
-                  {tag.name}
+                  {repo.displayName.stringified}
                   <LuCheck
                     className={cn(
                       "ml-auto",
-                      selectedTag === tag.name ? "opacity-100" : "opacity-0"
+                      selectedRepo?._id === repo._id
+                        ? "opacity-100"
+                        : "opacity-0"
                     )}
                   />
                 </CommandItem>

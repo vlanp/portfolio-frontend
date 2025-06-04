@@ -24,8 +24,12 @@
       },
       "LeftProjectSidebar": {
         "TagCombobox": {
-          "SearchPlaceholder": "Search tag...",
+          "SearchPlaceholder": "Search a tag...",
           "EmptySearchResult": "No tags found"
+        },
+        "RepoCombobox": {
+          "SearchPlaceholder": "Search a repo...",
+          "EmptySearchResult": "No repos found"
         }
       }
     },
