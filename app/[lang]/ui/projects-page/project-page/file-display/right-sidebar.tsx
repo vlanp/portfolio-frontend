@@ -1,3 +1,4 @@
+import { IDictionary } from "@/app/[lang]/dictionaries/generated";
 import {
   Sidebar,
   SidebarContent,
@@ -12,7 +13,6 @@ import {
   SidebarMenuSubItem,
   SidebarSeparator,
 } from "@/components/ui/sidebar";
-import { IDictionary } from "../../../../dictionaries";
 import IDocToC from "@/types/IDocToc";
 import Link from "next/link";
 

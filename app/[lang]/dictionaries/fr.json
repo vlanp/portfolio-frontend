@@ -51,6 +51,12 @@
           "EmptySearchResult": "No language found"
         }
       }
+    },
+    "ProjectsFilters": {
+      "AllFilters": "Tous les filtres",
+      "ProgrammingLanguages": "Langages",
+      "Frameworks": "Frameworks",
+      "Platforms": "Plateformes"
     }
   }
 }

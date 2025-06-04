@@ -7,6 +7,7 @@ interface EnvVariables {
   NEXT_PUBLIC_GET_FILE_EXIST_URL: string;
   NEXT_PUBLIC_GET_TAGS_URL: string;
   NEXT_PUBLIC_GET_PROJECT_FROM_REPO_URL: string;
+  NEXT_PUBLIC_GET_PROJECTS_FILTERS_URL: string;
 }
 
 const checkEnv = (): EnvVariables => {
@@ -36,6 +37,11 @@ const checkEnv = (): EnvVariables => {
       "Missing environment variable: NEXT_PUBLIC_GET_PROJECT_FROM_REPO_URL"
     );
   }
+  if (!process.env.NEXT_PUBLIC_GET_PROJECTS_FILTERS_URL) {
+    throw new Error(
+      "Missing environment variable: NEXT_PUBLIC_GET_PROJECTS_FILTERS_URL"
+    );
+  }
   return {
     NEXT_PUBLIC_BACKEND_URL: process.env.NEXT_PUBLIC_BACKEND_URL,
     NEXT_PUBLIC_GET_PROJECTS_URL: process.env.NEXT_PUBLIC_GET_PROJECTS_URL,
@@ -47,6 +53,8 @@ const checkEnv = (): EnvVariables => {
     NEXT_PUBLIC_GET_TAGS_URL: process.env.NEXT_PUBLIC_GET_TAGS_URL,
     NEXT_PUBLIC_GET_PROJECT_FROM_REPO_URL:
       process.env.NEXT_PUBLIC_GET_PROJECT_FROM_REPO_URL,
+    NEXT_PUBLIC_GET_PROJECTS_FILTERS_URL:
+      process.env.NEXT_PUBLIC_GET_PROJECTS_FILTERS_URL,
   };
 };
 

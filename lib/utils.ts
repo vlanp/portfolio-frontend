@@ -44,19 +44,37 @@ const constructNewUrl = (
   paramKey: string,
   paramValue: string,
   pathname: string,
-  urlSearchParams: URLSearchParams
+  urlSearchParams: URLSearchParams,
+  options?: {
+    append?: boolean;
+    oldParamValue?: string;
+  }
 ) => {
   if (paramValue) {
-    urlSearchParams.set(paramKey, paramValue);
+    if (options?.append && !urlSearchParams.has(paramKey, paramValue)) {
+      urlSearchParams.append(paramKey, paramValue);
+    } else {
+      urlSearchParams.set(paramKey, paramValue);
+    }
   } else {
-    urlSearchParams.delete(paramKey);
+    urlSearchParams.delete(paramKey, options?.oldParamValue);
   }
   return `${pathname}?${urlSearchParams.toString()}`;
 };
+
+function capitalizeFirstLetter(str: string) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+function camelToScreamingSnakeCase(str: string): string {
+  return str.replace(/([a-z])([A-Z])/g, "$1_$2").toUpperCase();
+}
 
 export {
   formatPathToDisplayName,
   constructNewUrl,
   arrayDistinct,
   arrayDistinctBy,
+  capitalizeFirstLetter,
+  camelToScreamingSnakeCase,
 };

@@ -10,8 +10,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { IDictionary } from "../dictionaries";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { IDictionary } from "../dictionaries/generated";
 
 export function LangToggle({ dictionary }: { dictionary: IDictionary }) {
   const router = useRouter();

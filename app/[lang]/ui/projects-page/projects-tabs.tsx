@@ -43,7 +43,7 @@ const ProjectsTabs = ({
   }
 
   return (
-    <section className="flex flex-1 justify-around flex-wrap gap-y-5">
+    <>
       {projects.map((project) => (
         <ProjectTabs
           key={project._id}
@@ -53,7 +53,7 @@ const ProjectsTabs = ({
           iconsComps={iconsCompsDataState.data}
         />
       ))}
-    </section>
+    </>
   );
 };
 

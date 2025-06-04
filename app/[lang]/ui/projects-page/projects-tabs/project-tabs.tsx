@@ -120,7 +120,7 @@ const ProjectTabs = ({
                   key={repo._id}
                   value={repo._id}
                   title={repo.displayName.name}
-                  className="px-1.5 md:px-4 py-1 md:py-2 text-xs md:text-sm whitespace-nowrap flex items-center gap-1 md:gap-2 h-6 md:h-8"
+                  className="px-1.5 md:px-4 py-1 md:py-2 text-xs md:text-sm whitespace-nowrap flex items-center gap-1 md:gap-2 h-6 md:h-8 hover:cursor-pointer"
                 >
                   <span className="hidden md:inline">
                     {getIconComponent(
@@ -241,7 +241,7 @@ const ProjectTabs = ({
                     <TooltipTrigger asChild>
                       <p
                         className={
-                          "text-sm text-muted-foreground text-center min-h-12 hover:cursor-pointer hover:opacity-60" +
+                          "text-sm text-muted-foreground text-center min-h-12 hover:cursor-pointer hover:opacity-60 mt-0" +
                           (truncateDescription ? " line-clamp-2" : "")
                         }
                         onClick={() => setTruncateDescription((p) => !p)}

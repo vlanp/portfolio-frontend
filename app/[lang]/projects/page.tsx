@@ -4,15 +4,12 @@ import axios from "axios";
 import { z } from "zod/v4";
 import { getDictionary } from "../dictionaries";
 import { getZApiSuccessResponse } from "@/types/IApiResponse";
-import ProjectsTabs from "../ui/projects/projects-tabs";
+import ProjectsTabs from "../ui/projects-page/projects-tabs";
 import { IDictionary } from "../dictionaries/generated";
-import { ILang } from "@/types/ILang";
+import ProjectsFilters from "../ui/projects-page/projects-filters";
+import IProjectsPageProps from "@/types/IProjectsPageProps";
 
-const ProjectsPage = async ({
-  params,
-}: {
-  params: Promise<{ lang: ILang }>;
-}) => {
+const ProjectsPage = async ({ params }: IProjectsPageProps) => {
   const awaitedParams = await params;
   const lang = awaitedParams.lang;
   const projectsDict: IDictionary["Projects"] = (await getDictionary(lang))
@@ -33,7 +30,14 @@ const ProjectsPage = async ({
   const projects = projectsResponseParseResult.data.data;
 
   return (
-    <ProjectsTabs projects={projects} lang={lang} projectsDict={projectsDict} />
+    <section className="flex flex-1 justify-around flex-wrap gap-y-5">
+      <ProjectsFilters projectsDict={projectsDict} />
+      <ProjectsTabs
+        projects={projects}
+        lang={lang}
+        projectsDict={projectsDict}
+      />
+    </section>
   );
 };
 

@@ -8,8 +8,8 @@ import {
   HiOutlineBriefcase,
   HiOutlineEnvelope,
 } from "react-icons/hi2";
-import { IDictionary } from "../dictionaries";
 import { Button } from "@/components/ui/button";
+import { IDictionary } from "../dictionaries/generated";
 
 const TopNav = ({ dictionary }: { dictionary: IDictionary }) => {
   const pathname = "/" + (usePathname().split("/")[2] || "");

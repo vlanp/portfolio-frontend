@@ -14,4 +14,3 @@ interface IProjectPageProps {
 
 export default IProjectPageProps;
 export { EProjectPageSearchParamsKeys };
-export type { ISearchParamsKeysType };
