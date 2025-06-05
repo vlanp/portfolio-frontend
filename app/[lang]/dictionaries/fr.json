@@ -56,7 +56,9 @@
       "AllFilters": "Tous les filtres",
       "ProgrammingLanguages": "Langages",
       "Frameworks": "Frameworks",
-      "Platforms": "Plateformes"
+      "Platforms": "Plateformes",
+      "SearchInProjects": "Rechercher parmis les projets",
+      "SearchInProjectsPlaceholder": "Recherchez par mots clés..."
     }
   }
 }

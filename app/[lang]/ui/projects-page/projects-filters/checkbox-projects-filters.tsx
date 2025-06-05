@@ -36,9 +36,9 @@ const CheckboxProjectsFilters = ({
   };
 
   return (
-    <div>
+    <div className="flex flex-col gap-5">
       <h6>{categoryName}</h6>
-      <div className="flex flex-row gap-5 flex-wrap mt-5">
+      <div className="flex flex-row gap-5 flex-wrap">
         {elements.map((element) => {
           return (
             <div className="flex items-center gap-2 min-w-30" key={element}>

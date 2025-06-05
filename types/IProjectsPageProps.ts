@@ -4,6 +4,7 @@ enum EProjectsPageSearchParamsKeys {
   PROGRAMMING_LANGUAGES = "pl",
   FRAMEWORKS = "fw",
   PLATFORMS = "pf",
+  SEARCH = "s",
 }
 
 type ISearchParamsKeysType = `${EProjectsPageSearchParamsKeys}`;

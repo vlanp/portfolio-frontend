@@ -19,6 +19,7 @@ import { getZApiSuccessResponse } from "@/types/IApiResponse";
 import CheckboxProjectsFilters from "./projects-filters/checkbox-projects-filters";
 import { camelToScreamingSnakeCase, capitalizeFirstLetter } from "@/lib/utils";
 import { EProjectsPageSearchParamsKeys } from "@/types/IProjectsPageProps";
+import SearchbarProjectsFilters from "./projects-filters/searchbar-projects-filters";
 
 const ProjectsFilters = async ({
   projectsDict,
@@ -44,7 +45,6 @@ const ProjectsFilters = async ({
       style={
         {
           "--sidebar-width": "30rem",
-          "--sidebar-width-mobile": "30rem",
         } as React.CSSProperties & Record<string, string>
       }
     >
@@ -57,6 +57,7 @@ const ProjectsFilters = async ({
             <SidebarSeparator />
             <SidebarGroupContent>
               <SidebarMenu className="px-5 gap-10">
+                <SearchbarProjectsFilters projectsDict={projectsDict} />
                 {Object.keys(projectsFilters).map((key) => {
                   const dictKey = capitalizeFirstLetter(
                     key
