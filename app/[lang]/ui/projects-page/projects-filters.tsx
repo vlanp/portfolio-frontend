@@ -20,6 +20,7 @@ import CheckboxProjectsFilters from "./projects-filters/checkbox-projects-filter
 import { camelToScreamingSnakeCase, capitalizeFirstLetter } from "@/lib/utils";
 import { EProjectsPageSearchParamsKeys } from "@/types/IProjectsPageProps";
 import SearchbarProjectsFilters from "./projects-filters/searchbar-projects-filters";
+import BehaviorProjectsFilters from "./projects-filters/behavior-projects-filters";
 
 const ProjectsFilters = async ({
   projectsDict,
@@ -57,6 +58,7 @@ const ProjectsFilters = async ({
             <SidebarSeparator />
             <SidebarGroupContent>
               <SidebarMenu className="px-5 gap-10">
+                <BehaviorProjectsFilters projectsDict={projectsDict} />
                 <SearchbarProjectsFilters projectsDict={projectsDict} />
                 {Object.keys(projectsFilters).map((key) => {
                   const dictKey = capitalizeFirstLetter(

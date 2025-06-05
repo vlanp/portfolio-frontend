@@ -58,7 +58,12 @@
       "Frameworks": "Frameworks",
       "Platforms": "Plateformes",
       "SearchInProjects": "Rechercher parmis les projets",
-      "SearchInProjectsPlaceholder": "Recherchez par mots clés..."
+      "SearchInProjectsPlaceholder": "Recherchez par mots clés...",
+      "Union": "Union",
+      "Intersection": "Intersection",
+      "FiltersBehavior": "Comportement des filtres",
+      "FiltersUnionTooltip": "Affiche les projets qui correspondent à au moins un des filtres sélectionnés",
+      "FiltersIntersectionTooltip": "Affiche uniquement les projets qui correspondent à tous les filtres sélectionnés"
     }
   }
 }

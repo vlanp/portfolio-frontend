@@ -5,6 +5,7 @@ enum EProjectsPageSearchParamsKeys {
   FRAMEWORKS = "fw",
   PLATFORMS = "pf",
   SEARCH = "s",
+  FILTERS_BEHAVIOR = "fb",
 }
 
 type ISearchParamsKeysType = `${EProjectsPageSearchParamsKeys}`;

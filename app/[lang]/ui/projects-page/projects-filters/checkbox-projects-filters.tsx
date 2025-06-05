@@ -44,18 +44,12 @@ const CheckboxProjectsFilters = ({
             <div className="flex items-center gap-2 min-w-30" key={element}>
               <Checkbox
                 id={"checkbox-" + element}
-                className="hover:cursor-pointer"
                 onCheckedChange={(checked) =>
                   handleCheckedChange(checked, element)
                 }
                 defaultChecked={params.includes(element) ? true : false}
               />
-              <Label
-                htmlFor={"checkbox-" + element}
-                className="hover:cursor-pointer"
-              >
-                {element}
-              </Label>
+              <Label htmlFor={"checkbox-" + element}>{element}</Label>
             </div>
           );
         })}
