@@ -165,6 +165,12 @@
   p {
     @apply mb-2 mt-1 leading-relaxed;
   }
+  p,
+  li,
+  code,
+  a {
+    @apply wrap-anywhere;
+  }
   a:not([data-slot="button"]) {
     @apply text-basic-link hover:text-basic-link/60 transition-colors duration-200;
   }

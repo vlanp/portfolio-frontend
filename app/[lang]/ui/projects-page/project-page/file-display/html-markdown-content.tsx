@@ -53,9 +53,9 @@ const HtmlMarkdownContent = async ({
   }
 
   return (
-    <section className="max-w-full flex flex-1 justify-center py-5">
+    <section className="justify-center py-5">
       <div className="max-w-6xl flex-1 flex flex-col items-center px-4">
-        <h1>{fileContent.matterContent.title}</h1>
+        <h1 className="text-center">{fileContent.matterContent.title}</h1>
         <p className="text-muted-foreground font-bold text-lg text-center">
           {fileContent.matterContent.description}
         </p>
