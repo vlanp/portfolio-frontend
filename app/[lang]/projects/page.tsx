@@ -6,13 +6,14 @@ import { getDictionary } from "../dictionaries";
 import { getZApiSuccessResponse } from "@/types/IApiResponse";
 import ProjectsTabs from "../ui/projects-page/projects-tabs";
 import { IDictionary } from "../dictionaries/generated";
-import ProjectsFilters from "../ui/projects-page/projects-filters";
+import ProjectsFiltersSidebar from "../ui/projects-page/projects-filters-sidebar";
 import IProjectsPageProps, {
   generateFrameworkParamKey,
 } from "@/types/IProjectsPageProps";
 import { ISelectedProjectsFilters } from "@/types/IProjectsFilters";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import PageContainer from "../ui/page-container";
 
 const ProjectsPage = async ({ params, searchParams }: IProjectsPageProps) => {
   const awaitedParams = await params;
@@ -103,14 +104,15 @@ const ProjectsPage = async ({ params, searchParams }: IProjectsPageProps) => {
   const projects = projectsResponseParseResult.data.data;
 
   return (
-    <section className="flex flex-1 justify-around flex-wrap gap-y-5">
-      <ProjectsFilters projectsDict={projectsDict} />
-      <ProjectsTabs
-        projects={projects}
-        lang={lang}
-        projectsDict={projectsDict}
-      />
-    </section>
+    <ProjectsFiltersSidebar projectsDict={projectsDict}>
+      <PageContainer className="flex justify-around flex-wrap gap-y-5">
+        <ProjectsTabs
+          projects={projects}
+          lang={lang}
+          projectsDict={projectsDict}
+        />
+      </PageContainer>
+    </ProjectsFiltersSidebar>
   );
 };
 

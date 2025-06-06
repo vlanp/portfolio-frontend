@@ -15,19 +15,21 @@ import axios from "axios";
 import checkedEnv from "@/lib/checkEnv";
 import { z } from "zod/v4";
 import { getZApiSuccessResponse } from "@/types/IApiResponse";
-import CheckboxProjectsFilters from "./projects-filters/checkbox-projects-filters";
+import CheckboxProjectsFilters from "./projects-filters-sidebar/checkbox-projects-filters";
 import {
   EProjectsPageSearchParamsKeys,
   generateFrameworkParamKey,
 } from "@/types/IProjectsPageProps";
-import SearchbarProjectsFilters from "./projects-filters/searchbar-projects-filters";
-import BehaviorProjectsFilters from "./projects-filters/behavior-projects-filters";
+import SearchbarProjectsFilters from "./projects-filters-sidebar/searchbar-projects-filters";
+import BehaviorProjectsFilters from "./projects-filters-sidebar/behavior-projects-filters";
 import { ZAllProjectsFilters } from "@/types/IProjectsFilters";
 
-const ProjectsFilters = async ({
+const ProjectsFiltersSidebar = async ({
   projectsDict,
+  children,
 }: {
   projectsDict: IDictionary["Projects"];
+  children: React.ReactNode;
 }) => {
   const projectsFiltersResponse = await axios.get<unknown>(
     checkedEnv.NEXT_PUBLIC_BACKEND_URL +
@@ -110,8 +112,9 @@ const ProjectsFilters = async ({
         </SidebarContent>
       </Sidebar>
       <SidebarTrigger />
+      {children}
     </SidebarProvider>
   );
 };
 
-export default ProjectsFilters;
+export default ProjectsFiltersSidebar;
