@@ -56,7 +56,6 @@ const ProjectsFiltersSidebar = async ({
   return (
     <SidebarProvider
       breakpoint={extraLargeBreakpoint}
-      className="w-fit"
       style={
         {
           "--sidebar-width": "30rem",

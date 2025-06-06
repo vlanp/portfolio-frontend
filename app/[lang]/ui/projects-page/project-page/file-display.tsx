@@ -10,6 +10,7 @@ import { ILang } from "@/types/ILang";
 import { getZApiSuccessResponse } from "@/types/IApiResponse";
 import z from "zod/v4";
 import { IDictionary } from "@/app/[lang]/dictionaries/generated";
+import PageContainer from "../../page-container";
 
 const FileDisplay = async ({
   repoId,
@@ -53,8 +54,8 @@ const FileDisplay = async ({
   const fileContent = fileContentParseResult.data.data;
 
   return (
-    <>
-      <section className="flex flex-1">
+    <SidebarProvider breakpoint={extraLargeBreakpoint}>
+      <PageContainer className="flex-1">
         <HtmlMarkdownContent
           fileContent={fileContent}
           projectDict={projectDict}
@@ -65,18 +66,13 @@ const FileDisplay = async ({
           pathname={pathname}
           lang={lang}
         />
-      </section>
-      <SidebarProvider
-        breakpoint={extraLargeBreakpoint}
-        className="relative w-fit"
-      >
-        <SidebarTrigger side="right" />
-        <RightSidebar
-          projectDict={projectDict}
-          tableOfContents={fileContent.tableOfContents}
-        />
-      </SidebarProvider>
-    </>
+      </PageContainer>
+      <SidebarTrigger side="right" />
+      <RightSidebar
+        projectDict={projectDict}
+        tableOfContents={fileContent.tableOfContents}
+      />
+    </SidebarProvider>
   );
 };
 

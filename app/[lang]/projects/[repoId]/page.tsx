@@ -139,32 +139,30 @@ const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
   }
 
   return (
-    <>
-      <SidebarProvider breakpoint={mobileBreakpoint} className="w-fit">
-        <Suspense
-          key={sha}
-          fallback={
-            <LeftSidebarSkeleton
-              tags={tags}
-              projectDict={projectDict}
-              repoId={repoId}
-              repos={[repo]}
-            />
-          }
-        >
-          <LeftSidebar
-            repoId={repoId}
-            pathname={pathname}
-            sha={sha}
-            urlSearchParams={urlSearchParams}
+    <SidebarProvider breakpoint={mobileBreakpoint}>
+      <Suspense
+        key={sha}
+        fallback={
+          <LeftSidebarSkeleton
             tags={tags}
-            filePath={filePath}
-            lang={lang}
             projectDict={projectDict}
+            repoId={repoId}
+            repos={[repo]}
           />
-        </Suspense>
-        <SidebarTrigger />
-      </SidebarProvider>
+        }
+      >
+        <LeftSidebar
+          repoId={repoId}
+          pathname={pathname}
+          sha={sha}
+          urlSearchParams={urlSearchParams}
+          tags={tags}
+          filePath={filePath}
+          lang={lang}
+          projectDict={projectDict}
+        />
+      </Suspense>
+      <SidebarTrigger />
       <Suspense
         key={sha + filePath}
         fallback={<FileDisplaySkeleton projectDict={projectDict} />}
@@ -179,7 +177,7 @@ const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
           lang={lang}
         />
       </Suspense>
-    </>
+    </SidebarProvider>
   );
 };
 
