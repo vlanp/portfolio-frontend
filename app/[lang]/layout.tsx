@@ -6,7 +6,9 @@ import Favicon from "./favicon.ico";
 import { ModeToggle } from "./ui/mode-toggle";
 import TopNav from "./ui/topnav";
 import { LangToggle } from "./ui/lang-toggle";
-import { getDictionary, IDictionary } from "./dictionaries";
+import { getDictionary } from "./dictionaries";
+import { IDictionary } from "./dictionaries/generated";
+import { ILang } from "@/types/ILang";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -31,7 +33,7 @@ export default async function RootLayout({
   params,
 }: Readonly<{
   children: React.ReactNode;
-  params: Promise<{ lang: "en" | "fr" }>;
+  params: Promise<{ lang: ILang }>;
 }>) {
   const { lang } = await params;
   const dict: IDictionary = await getDictionary(lang);
@@ -44,15 +46,13 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="min-h-screen w-full flex flex-col">
-            <header className="fixed w-full bg-sidebar-accent text-sidebar-foreground border-sidebar-border border-2 flex flex-row justify-between items-center px-5 h-header-height z-50">
-              <ModeToggle />
-              <TopNav dictionary={dict} />
-              <LangToggle dictionary={dict} />
-            </header>
-            <main className="mt-header-height flex flex-1 p-5">{children}</main>
-            <footer></footer>
-          </div>
+          <header className="sticky top-0 w-full bg-sidebar-accent text-sidebar-foreground border-sidebar-border border-2 flex flex-row justify-between items-center px-5 h-header-height z-50">
+            <ModeToggle />
+            <TopNav dictionary={dict} />
+            <LangToggle dictionary={dict} />
+          </header>
+          <main className="min-h-main-height flex flex-col">{children}</main>
+          <footer></footer>
         </ThemeProvider>
       </body>
     </html>
