@@ -13,14 +13,16 @@ import {
 import { extraLargeBreakpoint } from "@/types/IBreakpoints";
 import axios from "axios";
 import checkedEnv from "@/lib/checkEnv";
-import { ZProjectsFilters } from "@/types/IProjectsFilters";
 import { z } from "zod/v4";
 import { getZApiSuccessResponse } from "@/types/IApiResponse";
 import CheckboxProjectsFilters from "./projects-filters/checkbox-projects-filters";
-import { camelToScreamingSnakeCase, capitalizeFirstLetter } from "@/lib/utils";
-import { EProjectsPageSearchParamsKeys } from "@/types/IProjectsPageProps";
+import {
+  EProjectsPageSearchParamsKeys,
+  generateFrameworkParamKey,
+} from "@/types/IProjectsPageProps";
 import SearchbarProjectsFilters from "./projects-filters/searchbar-projects-filters";
 import BehaviorProjectsFilters from "./projects-filters/behavior-projects-filters";
+import { ZAllProjectsFilters } from "@/types/IProjectsFilters";
 
 const ProjectsFilters = async ({
   projectsDict,
@@ -32,12 +34,22 @@ const ProjectsFilters = async ({
       checkedEnv.NEXT_PUBLIC_GET_PROJECTS_FILTERS_URL
   );
   const projectsFiltersParseResult = getZApiSuccessResponse(
-    ZProjectsFilters
+    ZAllProjectsFilters
   ).safeParse(projectsFiltersResponse.data);
   if (!projectsFiltersParseResult.success) {
     throw new Error(z.prettifyError(projectsFiltersParseResult.error));
   }
   const projectsFilters = projectsFiltersParseResult.data.data;
+  const frameworksCategoriesNames: Record<string, string> = Object.fromEntries(
+    await Promise.all(
+      projectsFilters.programmingLanguages.map(async (programmingLanguage) => [
+        programmingLanguage,
+        await projectsDict.ProjectsFilters.FrameworksOfLanguage({
+          programmingLanguage: programmingLanguage.name,
+        }),
+      ])
+    )
+  );
 
   return (
     <SidebarProvider
@@ -60,27 +72,38 @@ const ProjectsFilters = async ({
               <SidebarMenu className="px-5 gap-10">
                 <BehaviorProjectsFilters projectsDict={projectsDict} />
                 <SearchbarProjectsFilters projectsDict={projectsDict} />
-                {Object.keys(projectsFilters).map((key) => {
-                  const dictKey = capitalizeFirstLetter(
-                    key
-                  ) as keyof (typeof projectsDict)["ProjectsFilters"];
-                  return (
-                    <CheckboxProjectsFilters
-                      key={key}
-                      categoryName={projectsDict.ProjectsFilters[dictKey]}
-                      elements={
-                        projectsFilters[key as keyof typeof projectsFilters]
-                      }
-                      searchParamsKey={
-                        EProjectsPageSearchParamsKeys[
-                          camelToScreamingSnakeCase(
-                            key
-                          ) as keyof typeof EProjectsPageSearchParamsKeys
-                        ]
-                      }
-                    />
-                  );
-                })}
+                <CheckboxProjectsFilters
+                  categoryName={
+                    projectsDict.ProjectsFilters.ProgrammingLanguages
+                  }
+                  elements={projectsFilters.programmingLanguages.map(
+                    (it) => it.name
+                  )}
+                  searchParamsKey={
+                    EProjectsPageSearchParamsKeys.PROGRAMMING_LANGUAGES
+                  }
+                />
+                {projectsFilters.programmingLanguages.map(
+                  (programmingLanguage) => {
+                    return (
+                      <CheckboxProjectsFilters
+                        key={programmingLanguage.name}
+                        categoryName={
+                          frameworksCategoriesNames[programmingLanguage.name]
+                        }
+                        elements={programmingLanguage.frameworks}
+                        searchParamsKey={generateFrameworkParamKey(
+                          programmingLanguage.name
+                        )}
+                      />
+                    );
+                  }
+                )}
+                <CheckboxProjectsFilters
+                  categoryName={projectsDict.ProjectsFilters.Platforms}
+                  elements={projectsFilters.platforms}
+                  searchParamsKey={EProjectsPageSearchParamsKeys.PLATFORMS}
+                />
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>

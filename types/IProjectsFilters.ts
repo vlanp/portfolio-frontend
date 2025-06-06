@@ -1,12 +1,23 @@
 import { z } from "zod/v4";
 
-const ZProjectsFilters = z.object({
-  programmingLanguages: z.array(z.string()),
-  frameworks: z.array(z.string()),
+const ZAllProjectsFilters = z.object({
+  programmingLanguages: z.array(
+    z.object({
+      name: z.string(),
+      frameworks: z.array(z.string()),
+    })
+  ),
   platforms: z.array(z.string()),
 });
 
-type IProjectsFilters = z.infer<typeof ZProjectsFilters>;
+type IAllProjectsFilters = z.infer<typeof ZAllProjectsFilters>;
 
-export type { IProjectsFilters };
-export { ZProjectsFilters };
+const ZSelectedProjectsFilters = ZAllProjectsFilters.extend({
+  search: z.string().optional(),
+  filtersBehavior: z.literal(["union", "intersection"]).optional(),
+});
+
+type ISelectedProjectsFilters = z.infer<typeof ZSelectedProjectsFilters>;
+
+export type { IAllProjectsFilters, ISelectedProjectsFilters };
+export { ZAllProjectsFilters, ZSelectedProjectsFilters };

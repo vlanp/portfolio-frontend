@@ -55,7 +55,7 @@
     "ProjectsFilters": {
       "AllFilters": "All filters",
       "ProgrammingLanguages": "Languages",
-      "Frameworks": "Frameworks",
+      "FrameworksOfLanguage": "%(programmingLanguage)s frameworks",
       "Platforms": "Platforms",
       "SearchInProjects": "Search among the projects",
       "SearchInProjectsPlaceholder": "Search per keywords...",
