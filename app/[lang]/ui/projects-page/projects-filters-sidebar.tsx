@@ -45,7 +45,7 @@ const ProjectsFiltersSidebar = async ({
   const frameworksCategoriesNames: Record<string, string> = Object.fromEntries(
     await Promise.all(
       projectsFilters.programmingLanguages.map(async (programmingLanguage) => [
-        programmingLanguage,
+        programmingLanguage.name,
         await projectsDict.ProjectsFilters.FrameworksOfLanguage({
           programmingLanguage: programmingLanguage.name,
         }),
