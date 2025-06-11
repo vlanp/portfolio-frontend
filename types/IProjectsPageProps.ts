@@ -1,7 +1,18 @@
 import { ILang } from "./ILang";
 
+const frameworkParamKeyPrefix = "fw_";
+
 const generateFrameworkParamKey = (programmingLanguage: string) => {
-  return `fw_${programmingLanguage}` as const;
+  return `${frameworkParamKeyPrefix}${programmingLanguage}` as const;
+};
+
+const retrieveProgrammingLanguageFromFrameworkParamKey = (
+  frameworkParamKey: string
+): string | null => {
+  if (frameworkParamKey.includes(frameworkParamKeyPrefix)) {
+    return frameworkParamKey.replace(frameworkParamKeyPrefix, "");
+  }
+  return null;
 };
 
 enum EProjectsPageSearchParamsKeys {
@@ -23,4 +34,8 @@ interface IProjectsPageProps {
 }
 
 export default IProjectsPageProps;
-export { EProjectsPageSearchParamsKeys, generateFrameworkParamKey };
+export {
+  EProjectsPageSearchParamsKeys,
+  generateFrameworkParamKey,
+  retrieveProgrammingLanguageFromFrameworkParamKey,
+};

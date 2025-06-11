@@ -9,11 +9,58 @@ import { IDictionary } from "../dictionaries/generated";
 import ProjectsFiltersSidebar from "../ui/projects-page/projects-filters-sidebar";
 import IProjectsPageProps, {
   generateFrameworkParamKey,
+  retrieveProgrammingLanguageFromFrameworkParamKey,
 } from "@/types/IProjectsPageProps";
 import { ISelectedProjectsFilters } from "@/types/IProjectsFilters";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import PageContainer from "../ui/page-container";
+
+const generatePLFilters = (
+  awaitedSearchParams: Awaited<IProjectsPageProps["searchParams"]>
+): ISelectedProjectsFilters["programmingLanguages"] => {
+  const plWithFw = Object.keys(awaitedSearchParams)
+    .map((it) => retrieveProgrammingLanguageFromFrameworkParamKey(it))
+    .filter((it) => it !== null);
+  const pl = awaitedSearchParams.pl;
+
+  const createPlWithFw = (
+    pl: string,
+    isSelected: boolean
+  ): ISelectedProjectsFilters["programmingLanguages"][number] => ({
+    name: {
+      value: pl,
+      isSelected,
+    },
+    frameworks: (() => {
+      const frameworks = awaitedSearchParams[generateFrameworkParamKey(pl)];
+      return frameworks
+        ? typeof frameworks === "string"
+          ? [frameworks]
+          : frameworks
+        : [];
+    })(),
+  });
+
+  if (typeof pl === "string") {
+    const remeaningProgrammingLanguages = plWithFw.filter((it) => it !== pl);
+    return [
+      createPlWithFw(pl, true),
+      ...remeaningProgrammingLanguages.map((it) => createPlWithFw(it, false)),
+    ];
+  }
+
+  if (Array.isArray(pl)) {
+    const remeaningProgrammingLanguages = plWithFw.filter(
+      (it) => !pl.includes(it)
+    );
+    return {
+      ...pl.map((it) => createPlWithFw(it, true)),
+      ...remeaningProgrammingLanguages.map((it) => createPlWithFw(it, false)),
+    };
+  }
+  return plWithFw.map((it) => createPlWithFw(it, false));
+};
 
 const ProjectsPage = async ({ params, searchParams }: IProjectsPageProps) => {
   const awaitedParams = await params;
@@ -24,7 +71,6 @@ const ProjectsPage = async ({ params, searchParams }: IProjectsPageProps) => {
   const platforms = awaitedSearchParams.pf;
   const filtersBehavior = awaitedSearchParams.fb;
   const search = awaitedSearchParams.s;
-  const programmingLanguages = awaitedSearchParams.pl;
   const headersList = await headers();
 
   const projectsResponse = await axios
@@ -42,39 +88,7 @@ const ProjectsPage = async ({ params, searchParams }: IProjectsPageProps) => {
             ? filtersBehavior
             : undefined,
         search: typeof search === "string" ? search : undefined,
-        programmingLanguages: programmingLanguages
-          ? typeof programmingLanguages === "string"
-            ? [
-                {
-                  name: programmingLanguages,
-                  frameworks: (() => {
-                    const frameworks =
-                      awaitedSearchParams[
-                        generateFrameworkParamKey(programmingLanguages)
-                      ];
-                    return frameworks
-                      ? typeof frameworks === "string"
-                        ? [frameworks]
-                        : frameworks
-                      : [];
-                  })(),
-                },
-              ]
-            : programmingLanguages.map((programmingLanguage) => ({
-                name: programmingLanguage,
-                frameworks: (() => {
-                  const frameworks =
-                    awaitedSearchParams[
-                      generateFrameworkParamKey(programmingLanguage)
-                    ];
-                  return frameworks
-                    ? typeof frameworks === "string"
-                      ? [frameworks]
-                      : frameworks
-                    : [];
-                })(),
-              }))
-          : [],
+        programmingLanguages: generatePLFilters(awaitedSearchParams),
       } satisfies ISelectedProjectsFilters
     )
     .catch((error) => {
@@ -105,7 +119,7 @@ const ProjectsPage = async ({ params, searchParams }: IProjectsPageProps) => {
 
   return (
     <ProjectsFiltersSidebar projectsDict={projectsDict}>
-      <PageContainer className="flex justify-around flex-wrap gap-y-5">
+      <PageContainer className="flex justify-around flex-wrap gap-y-5 w-full">
         <ProjectsTabs
           projects={projects}
           lang={lang}
