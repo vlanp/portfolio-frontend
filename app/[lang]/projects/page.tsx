@@ -89,7 +89,8 @@ const ProjectsPage = async ({ params, searchParams }: IProjectsPageProps) => {
             : undefined,
         search: typeof search === "string" ? search : undefined,
         programmingLanguages: generatePLFilters(awaitedSearchParams),
-      } satisfies ISelectedProjectsFilters
+      } satisfies ISelectedProjectsFilters,
+      { params: { lang } }
     )
     .catch((error) => {
       if (axios.isAxiosError(error) && error.response?.status === 400) {

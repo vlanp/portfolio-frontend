@@ -3,17 +3,10 @@
 import { getDistinctIconNames, IProject } from "@/types/IProject";
 import ProjectTabs from "./projects-tabs/project-tabs";
 import { ILang } from "@/types/ILang";
-import { useEffect, useState } from "react";
-import { getIconsFromReactIcons } from "@/lib/get-icons-from-react-icons";
-import { IconType } from "react-icons";
-import {
-  fetchDataIdle,
-  fetchDataLoading,
-  FetchDataSuccess,
-  IFetchDataState,
-} from "@/types/IFetchDataState";
+import { useContext, useEffect } from "react";
 import { IDictionary } from "../../dictionaries/generated";
 import ProjectsTabsSkeleton from "./projects-tabs-skeleton";
+import { ProjectsIconsContext } from "../../contexts/ProjectsIconsContext";
 
 const ProjectsTabs = ({
   projects,
@@ -24,21 +17,25 @@ const ProjectsTabs = ({
   lang: ILang;
   projectsDict: IDictionary["Projects"];
 }) => {
-  const [iconsCompsDataState, setIconsCompsDataState] =
-    useState<IFetchDataState<Map<string, IconType | null>>>(fetchDataIdle);
+  const projectsIconsContext = useContext(ProjectsIconsContext);
+  const iconsCompsDataState = projectsIconsContext.iconsCompsDataState;
+  const refreshIcons = projectsIconsContext.refreshIcons;
+  const iconsNames = getDistinctIconNames(projects);
+
+  let containsAllIcons: boolean = true;
+  if (iconsCompsDataState.status === "fetchDataSuccess") {
+    containsAllIcons = iconsNames.every((iconName) =>
+      iconsCompsDataState.data.has(iconName)
+    );
+  }
 
   useEffect(() => {
-    const getIconsComps = async () => {
-      setIconsCompsDataState(fetchDataLoading);
-      const iconsNames = getDistinctIconNames(projects);
-      setIconsCompsDataState(
-        new FetchDataSuccess(await getIconsFromReactIcons(iconsNames))
-      );
-    };
-    getIconsComps();
-  }, [projects]);
+    if (!containsAllIcons) {
+      refreshIcons();
+    }
+  }, [containsAllIcons, refreshIcons]);
 
-  if (iconsCompsDataState.status !== "fetchDataSuccess") {
+  if (iconsCompsDataState.status !== "fetchDataSuccess" || !containsAllIcons) {
     return <ProjectsTabsSkeleton />;
   }
 
