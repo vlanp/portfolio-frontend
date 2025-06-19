@@ -1,3 +1,4 @@
+import { IDocumentsHighlights } from "@/types/IDocumentsWithHighlights";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -70,6 +71,30 @@ function camelToScreamingSnakeCase(str: string): string {
   return str.replace(/([a-z])([A-Z])/g, "$1_$2").toUpperCase();
 }
 
+const getHighlightConcatsTexts = (
+  highlight: IDocumentsHighlights<unknown>["highlights"][number]
+) => {
+  const concatsTexts: string[] = [];
+  let prev: "hit" | "text" | undefined = undefined;
+  highlight.texts.forEach((text, index) => {
+    if (concatsTexts.length === 0) {
+      concatsTexts.push(text.value);
+    } else {
+      if (prev === "hit" && text.type === "hit") {
+        concatsTexts.push(text.value);
+      } else if (prev === "hit" && text.type === "text") {
+        concatsTexts[-1] = concatsTexts[-1] + text.value;
+      } else if (prev === "text" && text.type === "hit") {
+        concatsTexts.push(highlight.texts[index - 1].value + text.value);
+      } else if (prev === "text" && text.type === "text") {
+        // Already handled
+      }
+    }
+    prev = text.type;
+  });
+  return concatsTexts;
+};
+
 export {
   formatPathToDisplayName,
   constructNewUrl,
@@ -77,4 +102,5 @@ export {
   arrayDistinctBy,
   capitalizeFirstLetter,
   camelToScreamingSnakeCase,
+  getHighlightConcatsTexts,
 };

@@ -7,19 +7,22 @@ import { useContext, useEffect } from "react";
 import { IDictionary } from "../../dictionaries/generated";
 import ProjectsTabsSkeleton from "./projects-tabs-skeleton";
 import { ProjectsIconsContext } from "../../contexts/ProjectsIconsContext";
+import { IDocumentsWithHighlights } from "@/types/IDocumentsWithHighlights";
+import { ISearchPaths } from "@/types/generated/ISearchPaths";
 
 const ProjectsTabs = ({
-  projects,
+  projectsWithHighlights,
   lang,
   projectsDict,
 }: {
-  projects: IProject[];
+  projectsWithHighlights: IDocumentsWithHighlights<IProject, ISearchPaths>;
   lang: ILang;
   projectsDict: IDictionary["Projects"];
 }) => {
   const projectsIconsContext = useContext(ProjectsIconsContext);
   const iconsCompsDataState = projectsIconsContext.iconsCompsDataState;
   const refreshIcons = projectsIconsContext.refreshIcons;
+  const projects = projectsWithHighlights.documents;
   const iconsNames = getDistinctIconNames(projects);
 
   let containsAllIcons: boolean = true;
@@ -48,6 +51,9 @@ const ProjectsTabs = ({
           lang={lang}
           projectsDict={projectsDict}
           iconsComps={iconsCompsDataState.data}
+          projectHighlight={projectsWithHighlights.documentsHighlights.find(
+            (ph) => ph._id === project._id
+          )}
         />
       ))}
     </>

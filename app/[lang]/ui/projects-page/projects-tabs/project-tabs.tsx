@@ -13,7 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { IProject } from "@/types/IProject";
 import { LuChevronDown, LuLayers } from "react-icons/lu";
 import { SiYoutube, SiGithub, SiGoogledocs } from "react-icons/si";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { ILang } from "@/types/ILang";
 import Link from "next/link";
 import { IconType } from "react-icons";
@@ -24,19 +24,99 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { IDictionary } from "@/app/[lang]/dictionaries/generated";
+import { IDocumentsHighlights } from "@/types/IDocumentsWithHighlights";
+import { removePrefixOrThrow } from "@/types/IRemovePrefix";
+import { splitString } from "@/types/ISplitString";
+import { getNestedValue } from "@/types/IGetNestedValue";
+import { ISearchPaths } from "@/types/generated/ISearchPaths";
+import HighlightedText from "@/components/ui/main/highlighted-text";
+import { getHighlightConcatsTexts } from "@/lib/utils";
 
 const ProjectTabs = ({
   project,
   lang,
   projectsDict,
   iconsComps,
+  projectHighlight,
 }: {
   project: IProject;
   lang: ILang;
   projectsDict: IDictionary["Projects"];
   iconsComps: Map<string, IconType | null>;
+  projectHighlight: IDocumentsHighlights<ISearchPaths> | undefined;
 }) => {
-  const [selectedTab, setSelectedTab] = useState(project.repos[0]?._id);
+  const repoIdConcatsTextsMap = new Map<
+    IProject["repos"][number]["_id"],
+    string[][]
+  >();
+  project.repos.forEach((repo) => repoIdConcatsTextsMap.set(repo._id, []));
+  const highlightsWithReposIds:
+    | (IDocumentsHighlights<ISearchPaths>["highlights"][number] & {
+        _id: string;
+      })[]
+    | undefined = projectHighlight?.highlights
+    .filter((highlight) => highlight.path.startsWith("repos."))
+    .map((highlight) => {
+      const concatsTexts = getHighlightConcatsTexts(highlight);
+      const path = highlight.path;
+      const pathNoRepo = removePrefixOrThrow(path, "repos."); // Want to keep only the subdocuments path => repos path. Shouldn't throw an error since path is prefiltered
+      const splittedPath = splitString(pathNoRepo, ".");
+      let _id: string | undefined = undefined;
+      project.repos.forEach((repo) => {
+        const field = getNestedValue(repo, splittedPath);
+        const concatsTextsForRepoId = repoIdConcatsTextsMap.get(repo._id);
+        if (
+          concatsTexts.every((concatText) => field.includes(concatText)) &&
+          !concatsTextsForRepoId?.includes(concatsTexts)
+        ) {
+          _id = repo._id;
+          repoIdConcatsTextsMap.set(
+            repo._id,
+            concatsTextsForRepoId
+              ? [...concatsTextsForRepoId, concatsTexts]
+              : [concatsTexts]
+          );
+        }
+      });
+      if (!_id) {
+        throw new Error(
+          "No repo _id were found for the highlight : " +
+            JSON.stringify(highlight, undefined, 2)
+        );
+      }
+      return {
+        ...highlight,
+        _id,
+      };
+    });
+
+  const scoresByReposIds = highlightsWithReposIds?.reduce<
+    Record<string, number>
+  >((acc, item) => {
+    acc[item._id] = (acc[item._id] ?? 0) + item.score;
+    return acc;
+  }, {});
+
+  const repoIdWithBestScore =
+    scoresByReposIds &&
+    Object.entries(scoresByReposIds).sort(([, a], [, b]) => b - a)[0]?.[0];
+
+  const idOfInitialRepo = repoIdWithBestScore || project.repos[0]?._id;
+  const [selectedTab, setSelectedTab] = useState(idOfInitialRepo);
+  console.log(JSON.stringify(highlightsWithReposIds, undefined, 2));
+
+  const shouldTruncateDescription =
+    selectedTab && highlightsWithReposIds
+      ? highlightsWithReposIds
+          .filter((highlight) => highlight._id === selectedTab)
+          .filter((highlight) => highlight.path === `repos.description.${lang}`)
+          .length === 0
+        ? true
+        : false
+      : true;
+
+  console.log(shouldTruncateDescription);
+
   const [truncateDescription, setTruncateDescription] = useState<boolean>(true);
   const repoInfoCardRef = useRef<HTMLDivElement>(null);
   const [initialRepoInfoCardHeight, setInitialRepoInfoCardHeight] = useState<
@@ -54,7 +134,7 @@ const ProjectTabs = ({
     return () => {
       window.removeEventListener("resize", resetRepoInfoCard);
     };
-  }, []);
+  }, [shouldTruncateDescription]);
 
   useLayoutEffect(() => {
     if (repoInfoCardRef.current && !initialRepoInfoCardHeight) {
@@ -62,6 +142,16 @@ const ProjectTabs = ({
       setInitialRepoInfoCardHeight(height);
     }
   }, [initialRepoInfoCardHeight]);
+
+  useEffect(() => {
+    if (repoIdWithBestScore) {
+      setSelectedTab(repoIdWithBestScore);
+    }
+  }, [repoIdWithBestScore]);
+
+  useEffect(() => {
+    setTruncateDescription(shouldTruncateDescription);
+  }, [shouldTruncateDescription]);
 
   const MAX_VISIBLE_TABS = 4;
   const totalRepos = project.repos.length;
@@ -90,7 +180,18 @@ const ProjectTabs = ({
       <CardContent className="px-4 sm:px-6">
         {/* Project Header */}
         <div className="text-center mb-3">
-          <h4 className="flex flex-wrap justify-center mt-0">{project.name}</h4>
+          <h4 className="flex flex-wrap justify-center mt-0">
+            {projectHighlight ? (
+              <HighlightedText
+                text={project.name}
+                highlights={projectHighlight?.highlights.filter(
+                  (highlight) => highlight.path === "name"
+                )}
+              />
+            ) : (
+              project.name
+            )}
+          </h4>
           <div className="flex items-center justify-center gap-1 md:gap-3">
             {project.isFullStack && (
               <Badge variant="secondary" className="text-xs md:text-sm">
@@ -228,7 +329,19 @@ const ProjectTabs = ({
                 <CardHeader className="flex justify-center">
                   <CardTitle className="flex flex-col md:flex-row items-center gap-2 text-lg">
                     <span className="max-w-[220px] sm:max-w-[300px] truncate">
-                      {repo.displayName.name}
+                      {highlightsWithReposIds ? (
+                        <HighlightedText
+                          text={repo.displayName.name}
+                          highlights={highlightsWithReposIds
+                            .filter((highlight) => highlight._id === repo._id)
+                            .filter(
+                              (highlight) =>
+                                highlight.path === "repos.displayName.name"
+                            )}
+                        />
+                      ) : (
+                        repo.displayName.name
+                      )}
                     </span>
                     <Badge variant="secondary" className="text-xs">
                       {repo.displayName.type}
@@ -246,7 +359,19 @@ const ProjectTabs = ({
                         }
                         onClick={() => setTruncateDescription((p) => !p)}
                       >
-                        {repo.description[lang]}
+                        {highlightsWithReposIds ? (
+                          <HighlightedText
+                            text={repo.description[lang]}
+                            highlights={highlightsWithReposIds
+                              .filter((highlight) => highlight._id === repo._id)
+                              .filter(
+                                (highlight) =>
+                                  highlight.path === `repos.description.${lang}`
+                              )}
+                          />
+                        ) : (
+                          repo.description[lang]
+                        )}
                       </p>
                     </TooltipTrigger>
                     <TooltipContent>

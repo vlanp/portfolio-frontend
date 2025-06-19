@@ -1,4 +1,4 @@
-interface EnvVariables {
+interface IEnvVariables {
   NEXT_PUBLIC_BACKEND_URL: string;
   NEXT_PUBLIC_POST_PROJECTS_URL: string;
   NEXT_PUBLIC_GET_TAG_URL: string;
@@ -8,9 +8,10 @@ interface EnvVariables {
   NEXT_PUBLIC_GET_TAGS_URL: string;
   NEXT_PUBLIC_GET_PROJECT_FROM_REPO_URL: string;
   NEXT_PUBLIC_GET_PROJECTS_FILTERS_URL: string;
+  NEXT_PUBLIC_GET_SEARCH_PATHS_URL: string;
 }
 
-const checkEnv = (): EnvVariables => {
+const checkEnv = (): IEnvVariables => {
   if (!process.env.NEXT_PUBLIC_BACKEND_URL) {
     throw new Error("Missing environment variable: NEXT_PUBLIC_BACKEND_URL");
   }
@@ -48,6 +49,11 @@ const checkEnv = (): EnvVariables => {
       "Missing environment variable: NEXT_PUBLIC_GET_PROJECTS_FILTERS_URL"
     );
   }
+  if (!process.env.NEXT_PUBLIC_GET_SEARCH_PATHS_URL) {
+    throw new Error(
+      "Missing environment variable: NEXT_PUBLIC_GET_SEARCH_PATHS_URL"
+    );
+  }
   return {
     NEXT_PUBLIC_BACKEND_URL: process.env.NEXT_PUBLIC_BACKEND_URL,
     NEXT_PUBLIC_POST_PROJECTS_URL: process.env.NEXT_PUBLIC_POST_PROJECTS_URL,
@@ -61,6 +67,8 @@ const checkEnv = (): EnvVariables => {
       process.env.NEXT_PUBLIC_GET_PROJECT_FROM_REPO_URL,
     NEXT_PUBLIC_GET_PROJECTS_FILTERS_URL:
       process.env.NEXT_PUBLIC_GET_PROJECTS_FILTERS_URL,
+    NEXT_PUBLIC_GET_SEARCH_PATHS_URL:
+      process.env.NEXT_PUBLIC_GET_SEARCH_PATHS_URL,
   };
 };
 

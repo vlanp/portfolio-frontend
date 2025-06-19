@@ -22,6 +22,7 @@ import checkedEnv from "@/lib/checkEnv";
 import { getZApiSuccessResponse } from "@/types/IApiResponse";
 import z from "zod/v4";
 import { ILang } from "@/types/ILang";
+import { getZDocumentsWithHighlights } from "@/types/IDocumentsWithHighlights";
 
 const ProjectsIconsContext = createContext<{
   iconsCompsDataState: IFetchDataState<Map<string, IconType | null>>;
@@ -37,14 +38,14 @@ const fetchAllProjects = async (lang: ILang): Promise<IProject[]> => {
   );
 
   const projectsResponseParseResult = getZApiSuccessResponse(
-    ZProject.array()
+    getZDocumentsWithHighlights(ZProject)
   ).safeParse(projectsResponse.data);
 
   if (!projectsResponseParseResult.success) {
     throw new Error(z.prettifyError(projectsResponseParseResult.error));
   }
 
-  return projectsResponseParseResult.data.data;
+  return projectsResponseParseResult.data.data.documents;
 };
 
 const ProjectsIconsProvider = memo(function ProjectsIconsProvider({

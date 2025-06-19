@@ -15,6 +15,8 @@ import { ISelectedProjectsFilters } from "@/types/IProjectsFilters";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import PageContainer from "../ui/page-container";
+import { getZDocumentsWithHighlights } from "@/types/IDocumentsWithHighlights";
+import { ZESearchPaths } from "@/types/generated/ISearchPaths";
 
 const generatePLFilters = (
   awaitedSearchParams: Awaited<IProjectsPageProps["searchParams"]>
@@ -109,20 +111,19 @@ const ProjectsPage = async ({ params, searchParams }: IProjectsPageProps) => {
     });
 
   const projectsResponseParseResult = getZApiSuccessResponse(
-    ZProject.array()
+    getZDocumentsWithHighlights(ZProject, ZESearchPaths)
   ).safeParse(projectsResponse.data);
 
   if (!projectsResponseParseResult.success) {
     throw new Error(z.prettifyError(projectsResponseParseResult.error));
   }
 
-  const projects = projectsResponseParseResult.data.data;
-
+  const projectsWithHighlights = projectsResponseParseResult.data.data;
   return (
     <ProjectsFiltersSidebar projectsDict={projectsDict}>
       <PageContainer className="flex justify-around flex-wrap gap-y-5 w-full">
         <ProjectsTabs
-          projects={projects}
+          projectsWithHighlights={projectsWithHighlights}
           lang={lang}
           projectsDict={projectsDict}
         />
