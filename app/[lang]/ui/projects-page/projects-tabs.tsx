@@ -9,15 +9,18 @@ import ProjectsTabsSkeleton from "./projects-tabs-skeleton";
 import { ProjectsIconsContext } from "../../contexts/ProjectsIconsContext";
 import { IDocumentsWithHighlights } from "@/types/IDocumentsWithHighlights";
 import { ISearchPaths } from "@/types/generated/ISearchPaths";
+import IProjectsPageProps from "@/types/IProjectsPageProps";
 
 const ProjectsTabs = ({
   projectsWithHighlights,
   lang,
   projectsDict,
+  awaitedSearchParams,
 }: {
   projectsWithHighlights: IDocumentsWithHighlights<IProject, ISearchPaths>;
   lang: ILang;
   projectsDict: IDictionary["Projects"];
+  awaitedSearchParams: Awaited<IProjectsPageProps["searchParams"]>;
 }) => {
   const projectsIconsContext = useContext(ProjectsIconsContext);
   const iconsCompsDataState = projectsIconsContext.iconsCompsDataState;
@@ -54,6 +57,7 @@ const ProjectsTabs = ({
           projectHighlight={projectsWithHighlights.documentsHighlights.find(
             (ph) => ph._id === project._id
           )}
+          awaitedSearchParams={awaitedSearchParams}
         />
       ))}
     </>

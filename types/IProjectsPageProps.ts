@@ -38,4 +38,5 @@ export {
   EProjectsPageSearchParamsKeys,
   generateFrameworkParamKey,
   retrieveProgrammingLanguageFromFrameworkParamKey,
+  frameworkParamKeyPrefix,
 };

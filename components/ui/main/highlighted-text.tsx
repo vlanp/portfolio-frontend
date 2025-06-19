@@ -54,7 +54,7 @@ const HighlightedText = ({
     <span>
       {substrings.map((substring, index) => {
         return substring[1] ? (
-          <span key={index} className="text-red-800">
+          <span key={index} className="text-red-600">
             {substring[0]}
           </span>
         ) : (

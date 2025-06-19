@@ -126,6 +126,7 @@ const ProjectsPage = async ({ params, searchParams }: IProjectsPageProps) => {
           projectsWithHighlights={projectsWithHighlights}
           lang={lang}
           projectsDict={projectsDict}
+          awaitedSearchParams={awaitedSearchParams}
         />
       </PageContainer>
     </ProjectsFiltersSidebar>

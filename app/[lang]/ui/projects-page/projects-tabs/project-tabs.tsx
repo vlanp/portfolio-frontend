@@ -31,6 +31,9 @@ import { getNestedValue } from "@/types/IGetNestedValue";
 import { ISearchPaths } from "@/types/generated/ISearchPaths";
 import HighlightedText from "@/components/ui/main/highlighted-text";
 import { getHighlightConcatsTexts } from "@/lib/utils";
+import IProjectsPageProps, {
+  frameworkParamKeyPrefix,
+} from "@/types/IProjectsPageProps";
 
 const ProjectTabs = ({
   project,
@@ -38,13 +41,73 @@ const ProjectTabs = ({
   projectsDict,
   iconsComps,
   projectHighlight,
+  awaitedSearchParams,
 }: {
   project: IProject;
   lang: ILang;
   projectsDict: IDictionary["Projects"];
   iconsComps: Map<string, IconType | null>;
   projectHighlight: IDocumentsHighlights<ISearchPaths> | undefined;
+  awaitedSearchParams: Awaited<IProjectsPageProps["searchParams"]>;
 }) => {
+  const programmingLanguages = awaitedSearchParams.pl;
+  const platforms = awaitedSearchParams.pf;
+  const programmingLanguagesFrameworks = Object.keys(awaitedSearchParams)
+    .filter((key) => key.startsWith(frameworkParamKeyPrefix))
+    .map((key) => ({
+      key,
+      value:
+        awaitedSearchParams[
+          key as `${typeof frameworkParamKeyPrefix}${string}`
+        ],
+    }));
+  const reposExtraScore = project.repos
+    .map((repo) => {
+      let extraScore = 0;
+      const handleExtraScore = (
+        filter: string | string[] | undefined,
+        field: string[]
+      ) => {
+        if (!filter) {
+          return;
+        }
+        if (typeof filter === "string" && field.includes(filter)) {
+          extraScore += 5;
+        }
+        if (typeof filter === "object") {
+          for (const element in filter) {
+            if (field.includes(element)) {
+              extraScore += 5;
+            }
+          }
+        }
+      };
+      handleExtraScore(
+        programmingLanguages,
+        repo.programmingLanguages.map((pl) => pl.name)
+      );
+      handleExtraScore(
+        platforms,
+        repo.platforms.map((pf) => pf.name)
+      );
+      programmingLanguagesFrameworks.forEach((plfw) => {
+        const programmingLanguage = plfw.key.replace(
+          frameworkParamKeyPrefix,
+          ""
+        );
+        const field = repo.programmingLanguages
+          .find((pl) => pl.name === programmingLanguage)
+          ?.frameworks.map((fw) => fw.name);
+        if (field) {
+          handleExtraScore(plfw.value, field);
+        }
+      });
+      return {
+        _id: repo._id,
+        extraScore,
+      };
+    })
+    .sort((a, b) => b.extraScore - a.extraScore);
   const repoIdConcatsTextsMap = new Map<
     IProject["repos"][number]["_id"],
     string[][]
@@ -90,16 +153,18 @@ const ProjectTabs = ({
       };
     });
 
-  const scoresByReposIds = highlightsWithReposIds?.reduce<
-    Record<string, number>
-  >((acc, item) => {
-    acc[item._id] = (acc[item._id] ?? 0) + item.score;
-    return acc;
-  }, {});
+  const scoresByReposIds =
+    highlightsWithReposIds?.reduce<Record<string, number>>((acc, item) => {
+      acc[item._id] = (acc[item._id] ?? 0) + item.score;
+      return acc;
+    }, {}) || {};
+
+  const repoIdSortedByScores =
+    scoresByReposIds &&
+    Object.entries(scoresByReposIds).sort(([, a], [, b]) => b - a);
 
   const repoIdWithBestScore =
-    scoresByReposIds &&
-    Object.entries(scoresByReposIds).sort(([, a], [, b]) => b - a)[0]?.[0];
+    repoIdSortedByScores?.[0]?.[0] || reposExtraScore[0]._id;
 
   const idOfInitialRepo = repoIdWithBestScore || project.repos[0]?._id;
   const [selectedTab, setSelectedTab] = useState(idOfInitialRepo);
