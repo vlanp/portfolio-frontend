@@ -1,8 +1,8 @@
 {
   "topNav": {
-    "Home": "Home",
-    "Projects": "Projects",
     "About": "About",
+    "Projects": "Projects",
+    "Resume": "Resume",
     "Contact": "Contact"
   },
   "langToggle": {
@@ -66,7 +66,7 @@
       "FiltersIntersectionTooltip": "Shows only projects that match all selected filters simultaneously"
     }
   },
-  "HomePage": {
+  "About": {
     "MainTitle": "FullStack Application Developer",
     "MainSubTitle": "Seeking an 18-month apprenticeship",
     "WhoAmI": "Who Am I?",

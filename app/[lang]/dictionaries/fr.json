@@ -1,8 +1,8 @@
 {
   "topNav": {
-    "Home": "Acceuil",
-    "Projects": "Projets",
     "About": "À Propos",
+    "Projects": "Projets",
+    "Resume": "CV",
     "Contact": "Contact"
   },
   "langToggle": {
@@ -66,7 +66,7 @@
       "FiltersIntersectionTooltip": "Affiche uniquement les projets qui correspondent à tous les filtres sélectionnés"
     }
   },
-  "HomePage": {
+  "About": {
     "MainTitle": "Développeur d'application FullStack",
     "MainSubTitle": "À la recherche d'une alternance de 18 mois",
     "WhoAmI": "Qui Suis-je ?",

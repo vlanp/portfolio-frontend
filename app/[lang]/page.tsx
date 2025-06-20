@@ -25,8 +25,7 @@ export default async function HomePage({
 
   const lang = awaitedParams.lang;
 
-  const homePageDict: IDictionary["HomePage"] = (await getDictionary(lang))
-    .HomePage;
+  const homePageDict: IDictionary["About"] = (await getDictionary(lang)).About;
 
   const mainPictureParseResult = getZApiSuccessResponse(ZPicture).safeParse(
     mainPictureResponse.data

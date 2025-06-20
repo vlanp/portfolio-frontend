@@ -4,26 +4,26 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   HiOutlineIdentification,
-  HiOutlineHome,
   HiOutlineBriefcase,
   HiOutlineEnvelope,
 } from "react-icons/hi2";
 import { Button } from "@/components/ui/button";
 import { IDictionary } from "../dictionaries/generated";
+import { HiOutlineHand } from "react-icons/hi";
 
 const TopNav = ({ dictionary }: { dictionary: IDictionary }) => {
   const pathname = "/" + (usePathname().split("/")[2] || "");
 
   const links = [
-    { name: dictionary.topNav.Home, href: "/", icon: HiOutlineHome },
+    { name: dictionary.topNav.About, href: "/", icon: HiOutlineHand },
     {
       name: dictionary.topNav.Projects,
       href: "/projects",
       icon: HiOutlineBriefcase,
     },
     {
-      name: dictionary.topNav.About,
-      href: "/about",
+      name: dictionary.topNav.Resume,
+      href: "/resume",
       icon: HiOutlineIdentification,
     },
     {
