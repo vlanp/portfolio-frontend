@@ -41,7 +41,7 @@ export default async function HomePage({
   return (
     <PageContainer
       inCard
-      className="flex flex-row grow xl:w-[1280px] xl:self-center gap-2"
+      className="flex flex-col-reverse lg:flex-row grow xl:w-[1280px] xl:self-center gap-5"
     >
       <section className="flex-3 text-center">
         <h1>{homePageDict.MainTitle}</h1>
@@ -75,9 +75,7 @@ export default async function HomePage({
             className="flex flex-row gap-2"
           >
             <SiGithub color="white" className="size-6" />
-            <span className="hidden md:block">
-              {checkedEnv.NEXT_PUBLIC_GITHUB_URL}
-            </span>
+            <span>{checkedEnv.NEXT_PUBLIC_GITHUB_URL}</span>
           </Link>
           <Link
             href={checkedEnv.NEXT_PUBLIC_LINKEDIN_URL}
@@ -86,9 +84,7 @@ export default async function HomePage({
             className="flex flex-row gap-2"
           >
             <SiLinkedin color={"#0A66C2"} className="size-6" />
-            <span className="hidden md:block">
-              {checkedEnv.NEXT_PUBLIC_LINKEDIN_URL}
-            </span>
+            <span>{checkedEnv.NEXT_PUBLIC_LINKEDIN_URL}</span>
           </Link>
         </div>
       </section>
