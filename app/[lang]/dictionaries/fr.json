@@ -65,5 +65,18 @@
       "FiltersUnionTooltip": "Affiche les projets qui correspondent à au moins un des filtres sélectionnés",
       "FiltersIntersectionTooltip": "Affiche uniquement les projets qui correspondent à tous les filtres sélectionnés"
     }
+  },
+  "HomePage": {
+    "MainTitle": "Développeur d'application FullStack",
+    "MainSubTitle": "À la recherche d'une alternance de 18 mois",
+    "WhoAmI": "Qui Suis-je ?",
+    "TitleP1": "Parcours initial en métrologie",
+    "DescriptionP2": "Diplômé d'un DUT Mesures Physiques, je me suis spécialisé en métrologie à travers une licence professionnelle, suite à un stage de 10 semaines réalisé en 2017. J'ai poursuivi en alternance jusqu'à mon embauche fin 2018. Initialement intéressé par ce métier, j'effectuais diverses tâches stimulantes nécessitant réflexion et analyse, notamment des calculs d'incertitudes de mesures. Cependant, ces missions valorisantes se sont progressivement raréfiées, laissant place à des tâches de plus en plus répétitives. J'ai alors réalisé que ce métier ne correspondait plus à mes aspirations professionnelles.",
+    "TitleP3": "Découverte et intérêt pour le développement",
+    "DescriptionP4": "En 2022, j'ai commencé à apprendre la programmation sur mon temps personnel, y prenant rapidement goût et y voyant une opportunité de m'épanouir davantage. D'un autre côté à mon poste, dès que j'en avais le temps, je recherchais des améliorations pouvant être bénéfiques pour l'entreprise tout en me permettant de me rapprocher du développement.",
+    "DescriptionP5": "Ainsi, je me suis progressivement autoformé à la création et au déploiement de rapports Power BI, utilisant notamment les langages DAX et Power Query M. Ces compétences ont apporté des améliorations notables dans mon service et, mes aptitudes étant reconnues, j'ai été sollicité pour développer et maintenir les rapports d'un autre service. Bien que ces projets présentaient un réel intérêt pour moi, ils ne constituaient qu'une petite partie de mes activités, renforçant mon désir de reconversion.",
+    "TitleP6": "Transition vers le développement",
+    "DescriptionP7": "De mai à juillet 2024, j'ai entrepris un processus de reconversion professionnelle grâce au dispositif PTP de Transition Pro Normandie, qui m'a permis de suivre un bootcamp de 10 semaines dispensé par Le Reacteur.",
+    "DescriptionP8": "Conformément au dispositif, j'ai repris mon poste de technicien métrologue après la formation. Ne possédant pas d'autres moyens afin de compléter ma reconversion, j'ai pris la décision de démissionner en mars 2025, après 7 années d'expérience en métrologie. Depuis, je consacre mon temps au perfectionnement de mes compétences de développeur et me prépare activement pour la formation en alternance proposée par Le Reacteur, pour laquelle je recherche actuellement une entreprise d'accueil."
   }
 }

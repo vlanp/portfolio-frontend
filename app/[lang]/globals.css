@@ -145,7 +145,7 @@
     @apply font-inter scroll-mt-[calc(var(--header-height)+1rem)];
   }
   h1 {
-    @apply text-5xl font-bold tracking-tighter;
+    @apply text-5xl/14 font-bold tracking-tighter;
   }
   h2 {
     @apply mb-4 mt-6 text-4xl font-semibold tracking-tight;

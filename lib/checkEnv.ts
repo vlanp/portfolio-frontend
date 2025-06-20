@@ -9,6 +9,9 @@ interface IEnvVariables {
   NEXT_PUBLIC_GET_PROJECT_FROM_REPO_URL: string;
   NEXT_PUBLIC_GET_PROJECTS_FILTERS_URL: string;
   NEXT_PUBLIC_GET_SEARCH_PATHS_URL: string;
+  NEXT_PUBLIC_GET_MAIN_PICTURE_URL: string;
+  NEXT_PUBLIC_GITHUB_URL: string;
+  NEXT_PUBLIC_LINKEDIN_URL: string;
 }
 
 const checkEnv = (): IEnvVariables => {
@@ -54,6 +57,17 @@ const checkEnv = (): IEnvVariables => {
       "Missing environment variable: NEXT_PUBLIC_GET_SEARCH_PATHS_URL"
     );
   }
+  if (!process.env.NEXT_PUBLIC_GET_MAIN_PICTURE_URL) {
+    throw new Error(
+      "Missing environment variable: NEXT_PUBLIC_GET_MAIN_PICTURE_URL"
+    );
+  }
+  if (!process.env.NEXT_PUBLIC_GITHUB_URL) {
+    throw new Error("Missing environment variable: NEXT_PUBLIC_GITHUB_URL");
+  }
+  if (!process.env.NEXT_PUBLIC_LINKEDIN_URL) {
+    throw new Error("Missing environment variable: NEXT_PUBLIC_LINKEDIN_URL");
+  }
   return {
     NEXT_PUBLIC_BACKEND_URL: process.env.NEXT_PUBLIC_BACKEND_URL,
     NEXT_PUBLIC_POST_PROJECTS_URL: process.env.NEXT_PUBLIC_POST_PROJECTS_URL,
@@ -69,6 +83,10 @@ const checkEnv = (): IEnvVariables => {
       process.env.NEXT_PUBLIC_GET_PROJECTS_FILTERS_URL,
     NEXT_PUBLIC_GET_SEARCH_PATHS_URL:
       process.env.NEXT_PUBLIC_GET_SEARCH_PATHS_URL,
+    NEXT_PUBLIC_GET_MAIN_PICTURE_URL:
+      process.env.NEXT_PUBLIC_GET_MAIN_PICTURE_URL,
+    NEXT_PUBLIC_GITHUB_URL: process.env.NEXT_PUBLIC_GITHUB_URL,
+    NEXT_PUBLIC_LINKEDIN_URL: process.env.NEXT_PUBLIC_LINKEDIN_URL,
   };
 };
 
