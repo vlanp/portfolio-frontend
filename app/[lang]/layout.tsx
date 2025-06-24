@@ -9,6 +9,7 @@ import { LangToggle } from "./ui/lang-toggle";
 import { getDictionary } from "./dictionaries";
 import { IDictionary } from "./dictionaries/generated";
 import { ILang } from "@/types/ILang";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -52,6 +53,7 @@ export default async function RootLayout({
             <LangToggle dictionary={dict} />
           </header>
           <main className="min-h-main-height flex flex-col">{children}</main>
+          <Toaster />
           <footer></footer>
         </ThemeProvider>
       </body>

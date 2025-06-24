@@ -1,9 +1,11 @@
 {
   "topNav": {
     "About": "About",
+    "Timeline": "Timeline",
     "Projects": "Projects",
     "Resume": "Resume",
-    "Contact": "Contact"
+    "Articles": "Articles",
+    "PageNameToast": "Welcome to the page : %(pageName)s"
   },
   "langToggle": {
     "English": "English",

@@ -8,7 +8,7 @@ import * as React from "react";
 export function useIsBelowBP(
   breakpoint: IMobileBreakpoint | ILargeBreakpoint | IExtraLargeBreakPoint
 ) {
-  const [isMobile, setIsBelowBP] = React.useState<boolean | undefined>(
+  const [isBelowBP, setIsBelowBP] = React.useState<boolean | undefined>(
     undefined
   );
 
@@ -22,5 +22,5 @@ export function useIsBelowBP(
     return () => mql.removeEventListener("change", onChange);
   }, [breakpoint]);
 
-  return !!isMobile;
+  return !!isBelowBP;
 }
