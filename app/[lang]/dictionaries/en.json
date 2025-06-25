@@ -80,5 +80,10 @@
     "TitleP6": "Transition to development",
     "DescriptionP7": "From May to July 2024, I undertook a professional retraining process through the PTP program of Transition Pro Normandie, which allowed me to follow a 10-week bootcamp provided by Le Reacteur.",
     "DescriptionP8": "In accordance with the program, I resumed my position as a metrology technician after the training. Having no other means to complete my career transition, I made the decision to resign in March 2025, after 7 years of experience in metrology. Since then, I have been dedicating my time to improving my developer skills and actively preparing for the apprenticeship training offered by Le Reacteur, for which I am currently seeking a host company."
+  },
+  "Timeline": {
+    "Studies": "Studies",
+    "Experiences": "Experiences",
+    "Projects": "Projects"
   }
 }

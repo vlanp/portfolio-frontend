@@ -4,10 +4,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   HiOutlineIdentification,
-  HiOutlineBriefcase,
   HiOutlineCalendarDateRange,
   HiOutlineNewspaper,
 } from "react-icons/hi2";
+import { IoHammerOutline } from "react-icons/io5";
 import { Button } from "@/components/ui/button";
 import { IDictionary } from "../dictionaries/generated";
 import { HiOutlineHand } from "react-icons/hi";
@@ -32,7 +32,7 @@ const TopNav = ({ dictionary }: { dictionary: IDictionary }) => {
       {
         name: dictionary.topNav.Projects,
         href: "/projects",
-        icon: HiOutlineBriefcase,
+        icon: IoHammerOutline,
       },
       {
         name: dictionary.topNav.Resume,

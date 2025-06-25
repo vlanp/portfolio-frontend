@@ -11,7 +11,7 @@ import {
   SidebarMenuSkeleton,
   SidebarSeparator,
 } from "@/components/ui/sidebar";
-import { useEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { TagCombobox } from "./left-sidebar/tag-combobox";
 import { IOctokitTagsResponse } from "@/types/ITagContent";
 import { IDictionary } from "@/app/[lang]/dictionaries/generated";
@@ -33,7 +33,7 @@ const LeftSidebarSkeleton = ({
   const [skeletonCount, setSkeletonCount] = useState(0);
   const sidebarRef = useRef<HTMLUListElement | null>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const calculateSkeletonCount = () => {
       if (!sidebarRef.current) return;
 

@@ -80,5 +80,10 @@
     "TitleP6": "Transition vers le développement",
     "DescriptionP7": "De mai à juillet 2024, j'ai entrepris un processus de reconversion professionnelle grâce au dispositif PTP de Transition Pro Normandie, qui m'a permis de suivre un bootcamp de 10 semaines dispensé par Le Reacteur.",
     "DescriptionP8": "Conformément au dispositif, j'ai repris mon poste de technicien métrologue après la formation. Ne possédant pas d'autres moyens afin de compléter ma reconversion, j'ai pris la décision de démissionner en mars 2025, après 7 années d'expérience en métrologie. Depuis, je consacre mon temps au perfectionnement de mes compétences de développeur et me prépare activement pour la formation en alternance proposée par Le Reacteur, pour laquelle je recherche actuellement une entreprise d'accueil."
+  },
+  "Timeline": {
+    "Studies": "Études",
+    "Experiences": "Expériences",
+    "Projects": "Projets"
   }
 }
