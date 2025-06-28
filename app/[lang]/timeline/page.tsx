@@ -43,8 +43,8 @@ const timelineDatas: ITimelineDatas = {
         en: "Technical Degree in Computer Science",
         fr: "DUT Informatique",
       },
-      startDate: new Date(2015, 8), // Septembre 2015
-      endDate: new Date(2017, 5), // Juin 2017
+      startDate: new Date(2015, 1), // Septembre 2015
+      endDate: new Date(2015, 2), // Juin 2017
       description: {
         en: "Strong foundation in development and computer systems.",
         fr: "Bases solides en développement et systèmes informatiques.",

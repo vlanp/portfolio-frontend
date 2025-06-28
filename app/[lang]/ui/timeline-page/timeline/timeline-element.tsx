@@ -25,10 +25,10 @@ const TimelineElement = ({
     | ITimelineStudiesData[];
   startYear: number;
 }) => {
-  const startDate = new Date(startYear, 0, 1);
+  const startDate = new Date(startYear, 1, 1);
   const startYearHeightPx = yearDivHeightPx / 2;
   return (
-    <div className="flex flex-col flex-1 gap-2">
+    <div className="flex flex-col flex-1">
       <Card
         className="flex flex-col justify-center w-full"
         style={{ height: `${titleContainerSizePx}px` }}
@@ -41,8 +41,8 @@ const TimelineElement = ({
         </CardContent>
       </Card>
       <div className="relative flex flex-col flex-1">
-        <div className="absolute flex top-0 left-0 right-0 bottom-0 justify-center">
-          <p className={cn("w-2 h-full rounded-sm", themeColor)}></p>
+        <div className="absolute flex top-0 left-0 right-0 bottom-0 justify-center my-2">
+          <span className={cn("w-2 h-full rounded-sm", themeColor)}></span>
         </div>
         {datas.map((data) => {
           const fromTop =
@@ -54,7 +54,7 @@ const TimelineElement = ({
               yearDivHeightPx
             : 20;
           return (
-            <p
+            <span
               key={data._id}
               className={cn("absolute w-6 rounded-sm self-center", themeColor)}
               style={{ top: fromTop, height }}

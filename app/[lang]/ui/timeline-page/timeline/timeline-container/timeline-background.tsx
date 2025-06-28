@@ -19,7 +19,7 @@ const TimelineBackground = ({
         {years.map((year) => {
           return (
             <div className="flex flex-1 items-center" key={year}>
-              <p className="h-px w-full border-t border-dashed border-border"></p>
+              <span className="h-px w-full border-t border-dashed border-border"></span>
             </div>
           );
         })}

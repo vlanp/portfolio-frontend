@@ -24,9 +24,9 @@ const YearTimeline = ({
             className={`flex flex-row items-center gap-2 px-2`}
             style={{ minHeight: `${yearDivHeightPx}px` }}
           >
-            <p className="flex-1 h-px bg-border"></p>
-            <p>{year}</p>
-            <p className="flex-1 h-px bg-border"></p>
+            <span className="flex-1 h-px bg-border"></span>
+            <span>{year}</span>
+            <span className="flex-1 h-px bg-border"></span>
           </div>
         );
       })}
