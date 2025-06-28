@@ -1,9 +1,12 @@
+"use client";
+
 import TimelineContainer from "./timeline/timeline-container";
 import TimelineElement from "./timeline/timeline-element";
 import { IoSchoolOutline, IoHammerOutline } from "react-icons/io5";
 import { HiOutlineBriefcase } from "react-icons/hi2";
 import { ITimelineDatas } from "@/types/ITimelineData";
 import { IDictionary } from "../../dictionaries/generated";
+import dynamic from "next/dynamic";
 
 const Timeline = ({
   timelineDatas,
@@ -59,4 +62,7 @@ const Timeline = ({
   );
 };
 
-export default Timeline;
+// UseLayoutEffect is used in one of the child component, so we need to disable ssr for all the ui to be rendered in client side, allowing the useLayoutEffect to work properly
+export default dynamic(() => Promise.resolve(Timeline), {
+  ssr: false,
+});
