@@ -7,31 +7,42 @@ import {
   ITimelineElement,
   ITimelineExperiencesData,
   ITimelineStudiesData,
-  ITimelinProjectsData,
+  ITimelineProjectsData,
   selectTimeline,
 } from "@/types/ITimelineData";
 import { yearDivHeightPx } from "./timeline-container/year-timeline";
 import TimelineElementBody, {
   linesWidhtPx,
 } from "./timeline-element/timeline-element-body";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import TimelineElementTooltipContent from "./timeline-element/timeline-element-tooltip-content";
+import { ILang } from "@/types/ILang";
 
 const TimelineElement = ({
   elementTitle,
   bgThemeColor,
+  borderThemeColor,
   Icon,
   datas,
   startYear,
   timelineElement,
+  lang,
 }: {
   elementTitle: string;
   bgThemeColor: `bg-chart-${number}`;
+  borderThemeColor: `border-chart-${number}`;
   Icon: IconType;
   datas:
     | ITimelineExperiencesData[]
-    | ITimelinProjectsData[]
+    | ITimelineProjectsData[]
     | ITimelineStudiesData[];
   startYear: number;
   timelineElement: ITimelineElement;
+  lang: ILang;
 }) => {
   const startDate = new Date(startYear, 1, 1);
   const startYearHeightPx = yearDivHeightPx / 2;
@@ -44,7 +55,7 @@ const TimelineElement = ({
       startYearHeightPx;
     const heightPx = data.endDate
       ? calculateYearsDifference(data.startDate, data.endDate) * yearDivHeightPx
-      : 20;
+      : 5;
     const timeline = selectTimeline(
       dispatchedTimelineDatas,
       fromTopPx,
@@ -70,16 +81,36 @@ const TimelineElement = ({
       fromTopPx,
       heightPx,
       jsxElement: (
-        <span
-          key={data._id}
-          className={cn("absolute rounded-sm", bgThemeColor)}
-          style={{
-            top: fromTopPx,
-            height: heightPx,
-            width: widthPx,
-            left: -(widthPx / 2 - linesWidhtPx / 2),
-          }}
-        />
+        <Tooltip key={data._id}>
+          <TooltipTrigger asChild>
+            <span
+              key={data._id}
+              className={cn(
+                "absolute rounded-sm hover:cursor-pointer flex justify-center items-center",
+                bgThemeColor
+              )}
+              style={{
+                top: fromTopPx,
+                height: heightPx,
+                width: widthPx,
+                left: -(widthPx / 2 - linesWidhtPx / 2),
+              }}
+            >
+              {heightPx >= 20 && <Icon size={16} />}
+            </span>
+          </TooltipTrigger>
+          <TooltipContent
+            side="right"
+            avoidCollisions
+            disableArrow
+            className={cn(
+              "text-popover-foreground bg-popover border-4 m-2",
+              borderThemeColor
+            )}
+          >
+            <TimelineElementTooltipContent data={data} lang={lang} />
+          </TooltipContent>
+        </Tooltip>
       ),
     });
   });

@@ -21,6 +21,7 @@ const timelineDatas: ITimelineDatas = {
       },
       establishement: "Université de Technologie",
       place: "Paris, France",
+      type: "studies",
     },
     {
       _id: "licence-informatique",
@@ -36,6 +37,7 @@ const timelineDatas: ITimelineDatas = {
       },
       establishement: "Université Paris-Sud",
       place: "Orsay, France",
+      type: "studies",
     },
     {
       _id: "dut-informatique",
@@ -51,6 +53,7 @@ const timelineDatas: ITimelineDatas = {
       },
       establishement: "IUT de Cachan",
       place: "Cachan, France",
+      type: "studies",
     },
   ],
   experiences: [
@@ -68,6 +71,7 @@ const timelineDatas: ITimelineDatas = {
       },
       enterprise: "TechCorp Solutions",
       place: "Paris, France",
+      type: "experiences",
     },
     {
       _id: "fullstack-dev",
@@ -83,6 +87,7 @@ const timelineDatas: ITimelineDatas = {
       },
       enterprise: "StartupInnovante",
       place: "Lyon, France",
+      type: "experiences",
     },
     {
       _id: "web-dev-intern",
@@ -98,6 +103,7 @@ const timelineDatas: ITimelineDatas = {
       },
       enterprise: "WebAgency Pro",
       place: "Marseille, France",
+      type: "experiences",
     },
     {
       _id: "student-job-tech",
@@ -113,6 +119,7 @@ const timelineDatas: ITimelineDatas = {
       },
       enterprise: "TechSupport Ltd",
       place: "Paris, France",
+      type: "experiences",
     },
   ],
   projects: [
@@ -132,6 +139,7 @@ const timelineDatas: ITimelineDatas = {
         en: "Creation in progress",
         fr: "En cours de création",
       },
+      type: "projects",
     },
     {
       _id: "fitness-mobile-app",
@@ -150,6 +158,7 @@ const timelineDatas: ITimelineDatas = {
         en: "Completed",
         fr: "Terminé",
       },
+      type: "projects",
     },
     {
       _id: "personal-portfolio",
@@ -168,6 +177,7 @@ const timelineDatas: ITimelineDatas = {
         en: "Completed",
         fr: "Terminé",
       },
+      type: "projects",
     },
     {
       _id: "discord-bot",
@@ -186,6 +196,7 @@ const timelineDatas: ITimelineDatas = {
         en: "Completed",
         fr: "Terminé",
       },
+      type: "projects",
     },
     {
       _id: "ecommerce-api",
@@ -204,6 +215,7 @@ const timelineDatas: ITimelineDatas = {
         en: "Completed",
         fr: "Terminé",
       },
+      type: "projects",
     },
   ],
 } satisfies ITimelineDatas;
@@ -219,7 +231,11 @@ const TimelinePage = async ({
     .Timeline;
   return (
     <PageContainer className="flex grow justify-center">
-      <Timeline timelineDatas={timelineDatas} timelineDict={timelineDict} />
+      <Timeline
+        timelineDatas={timelineDatas}
+        timelineDict={timelineDict}
+        lang={lang}
+      />
     </PageContainer>
   );
 };

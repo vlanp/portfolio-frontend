@@ -1,4 +1,5 @@
 import { IDocumentsHighlights } from "@/types/IDocumentsWithHighlights";
+import { ILang } from "@/types/ILang";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -101,6 +102,14 @@ function calculateYearsDifference(startDate: Date, endDate: Date) {
   return diffInYears;
 }
 
+const formatDate = (date: Date, lang: ILang) => {
+  return date.toLocaleDateString(lang, { month: "short", year: "numeric" });
+};
+
+const formatDateRange = (startDate: Date, endDate: Date, lang: ILang) => {
+  return `${formatDate(startDate, lang)} - ${formatDate(endDate, lang)}`;
+};
+
 export {
   formatPathToDisplayName,
   constructNewUrl,
@@ -110,4 +119,6 @@ export {
   camelToScreamingSnakeCase,
   getHighlightConcatsTexts,
   calculateYearsDifference,
+  formatDate,
+  formatDateRange,
 };

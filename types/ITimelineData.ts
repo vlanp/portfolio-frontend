@@ -12,6 +12,7 @@ const ZTimelineData = z.strictObject({
   startDate: z.date(),
   endDate: z.date().optional(),
   description: z.record(ZELang, z.string()),
+  type: ZETimelineElements,
 });
 
 type ITimelineData = z.infer<typeof ZTimelineData>;
@@ -20,6 +21,7 @@ const ZTimelineStudiesData = z.strictObject({
   ...ZTimelineData.shape,
   establishement: z.string(),
   place: z.string().optional(),
+  type: z.literal(ZETimelineElements.enum.studies),
 });
 
 type ITimelineStudiesData = z.infer<typeof ZTimelineStudiesData>;
@@ -28,6 +30,7 @@ const ZTimelineExperiencesData = z.strictObject({
   ...ZTimelineData.shape,
   enterprise: z.string().optional(),
   place: z.string().optional(),
+  type: z.literal(ZETimelineElements.enum.experiences),
 });
 
 type ITimelineExperiencesData = z.infer<typeof ZTimelineExperiencesData>;
@@ -49,9 +52,10 @@ const ZTimelineProjectsData = z.strictObject({
       "Terminé",
     ]),
   }),
+  type: z.literal(ZETimelineElements.enum.projects),
 });
 
-type ITimelinProjectsData = z.infer<typeof ZTimelineProjectsData>;
+type ITimelineProjectsData = z.infer<typeof ZTimelineProjectsData>;
 
 const ZTimelineDatas = z.strictObject({
   [ZETimelineElements.enum.experiences]: z.array(ZTimelineExperiencesData),
@@ -115,7 +119,7 @@ export type {
   ITimelineData,
   ITimelineElement,
   ITimelineDatas,
-  ITimelinProjectsData,
+  ITimelineProjectsData,
   ITimelineExperiencesData,
   ITimelineStudiesData,
   IDispatchedTimelineDatas,

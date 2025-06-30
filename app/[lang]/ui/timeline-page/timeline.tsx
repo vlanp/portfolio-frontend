@@ -7,13 +7,16 @@ import { HiOutlineBriefcase } from "react-icons/hi2";
 import { ITimelineDatas, ZETimelineElements } from "@/types/ITimelineData";
 import { IDictionary } from "../../dictionaries/generated";
 import dynamic from "next/dynamic";
+import { ILang } from "@/types/ILang";
 
 const Timeline = ({
   timelineDatas,
   timelineDict,
+  lang,
 }: {
   timelineDatas: ITimelineDatas;
   timelineDict: IDictionary["Timeline"];
+  lang: ILang;
 }) => {
   const ascendingDates = Object.values(timelineDatas)
     .flat()
@@ -39,26 +42,32 @@ const Timeline = ({
         <TimelineElement
           Icon={IoSchoolOutline}
           bgThemeColor="bg-chart-1"
+          borderThemeColor="border-chart-1"
           elementTitle={timelineDict.Studies}
           datas={timelineDatas.studies}
           startYear={startDate.getFullYear()}
           timelineElement={ZETimelineElements.enum.studies}
+          lang={lang}
         />
         <TimelineElement
           Icon={HiOutlineBriefcase}
           bgThemeColor="bg-chart-2"
+          borderThemeColor="border-chart-2"
           elementTitle={timelineDict.Experiences}
           datas={timelineDatas.experiences}
           startYear={startDate.getFullYear()}
           timelineElement={ZETimelineElements.enum.experiences}
+          lang={lang}
         />
         <TimelineElement
           Icon={IoHammerOutline}
           bgThemeColor="bg-chart-4"
+          borderThemeColor="border-chart-4"
           elementTitle={timelineDict.Projects}
           datas={timelineDatas.projects}
           startYear={startDate.getFullYear()}
           timelineElement={ZETimelineElements.enum.projects}
+          lang={lang}
         />
       </div>
     </TimelineContainer>
