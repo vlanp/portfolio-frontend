@@ -90,8 +90,8 @@ const timelineDatas: ITimelineDatas = {
         en: "Web Developer Intern",
         fr: "Stagiaire Développeur Web",
       },
-      startDate: new Date(2020, 5), // Juin 2020
-      endDate: new Date(2020, 7), // Août 2020
+      startDate: new Date(2021, 5), // Juin 2020
+      endDate: new Date(2021, 7), // Août 2020
       description: {
         en: "First professional contact with modern web technologies. Development of showcase and e-commerce websites.",
         fr: "Premier contact professionnel avec les technologies web modernes. Développement de sites vitrines et e-commerce.",

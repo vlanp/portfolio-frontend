@@ -1,5 +1,6 @@
 import { z } from "zod/v4";
 import { ZELang } from "./ILang";
+import { JSX } from "react";
 
 const ZETimelineElements = z.enum(["studies", "experiences", "projects"]);
 
@@ -60,6 +61,56 @@ const ZTimelineDatas = z.strictObject({
 
 type ITimelineDatas = z.infer<typeof ZTimelineDatas>;
 
+type IDispatchedTimelineDatas<N extends number> = {
+  [T in `timeline${N}`]: {
+    fromTopPx: number;
+    heightPx: number;
+    jsxElement: JSX.Element;
+  }[];
+};
+
+const createDispatchedTimelineDatas = <N extends number>(
+  numbers: N[]
+): IDispatchedTimelineDatas<N> => {
+  const createTimelineEntries = () => {
+    return numbers.reduce((acc, number) => {
+      acc[`timeline${number}`] = [];
+      return acc;
+    }, {} as IDispatchedTimelineDatas<N>);
+  };
+
+  return createTimelineEntries();
+};
+
+const selectTimeline = <N extends number>(
+  dispatchedTimelineDatas: IDispatchedTimelineDatas<N>,
+  fromTopPx: number,
+  heightPx: number
+): `timeline${N}` | undefined => {
+  const timelines = Object.keys(
+    dispatchedTimelineDatas
+  ) as (keyof IDispatchedTimelineDatas<N>)[];
+  const ascendingTimelines = timelines.sort((a, b) => {
+    const numberA = Number(a.replace("timeline", ""));
+    const numberB = Number(b.replace("timeline", ""));
+    return numberA - numberB;
+  });
+  for (const timeline of ascendingTimelines) {
+    const dispatchedForTimeline = dispatchedTimelineDatas[timeline];
+    const hasEnoughSpace = dispatchedForTimeline.every((value) => {
+      const newElementEnd = fromTopPx + heightPx;
+      const existingElementEnd = value.fromTopPx + value.heightPx;
+      return (
+        newElementEnd <= value.fromTopPx || fromTopPx >= existingElementEnd
+      );
+    });
+    if (hasEnoughSpace) {
+      return timeline;
+    }
+  }
+  return undefined;
+};
+
 export type {
   ITimelineData,
   ITimelineElement,
@@ -67,6 +118,7 @@ export type {
   ITimelinProjectsData,
   ITimelineExperiencesData,
   ITimelineStudiesData,
+  IDispatchedTimelineDatas,
 };
 export {
   ZTimelineData,
@@ -75,4 +127,6 @@ export {
   ZTimelineExperiencesData,
   ZTimelineProjectsData,
   ZTimelineStudiesData,
+  createDispatchedTimelineDatas,
+  selectTimeline,
 };

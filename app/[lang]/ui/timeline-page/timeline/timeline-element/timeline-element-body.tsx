@@ -1,18 +1,23 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { IDispatchedTimelineDatas } from "@/types/ITimelineData";
 import { useLayoutEffect, useRef, useState } from "react";
 
-const ElementBackground = ({
+const linesWidhtPx = 8;
+
+const TimelineElementBody = ({
   bgThemeColor,
   startYearHeightPx,
+  containerRelativeWidth,
+  dispatchedTimelineDatas,
 }: {
   bgThemeColor: `bg-chart-${number}`;
   startYearHeightPx: number;
+  containerRelativeWidth: number;
+  dispatchedTimelineDatas: IDispatchedTimelineDatas<3 | 1 | 2>;
 }) => {
   const marginYPx = 8;
-  const linesWidhtPx = 8;
-  const containerRelativeWidth = 3 / 4;
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState<number>(0);
   useLayoutEffect(() => {
@@ -37,11 +42,15 @@ const ElementBackground = ({
       className="absolute flex top-0 left-0 right-0 bottom-0 justify-center"
       style={{ marginTop: marginYPx, marginBottom: marginYPx }}
     >
-      <span
+      <div
+        id="timeline-1"
         className={cn("absolute h-full rounded-sm", bgThemeColor)}
         style={{ width: linesWidhtPx }}
-      />
+      >
+        {dispatchedTimelineDatas.timeline1.map((t) => t.jsxElement)}
+      </div>
       <div
+        id="timeline-2"
         className="absolute top-0 bottom-0 flex"
         style={{
           left: `${(100 * (1 - containerRelativeWidth)) / 2 + 1}%`,
@@ -51,8 +60,10 @@ const ElementBackground = ({
         }}
       >
         <span className={cn("flex-1 rounded-sm", bgThemeColor)} />
+        {dispatchedTimelineDatas.timeline2.map((t) => t.jsxElement)}
       </div>
       <div
+        id="timeline-3"
         className="absolute top-0 bottom-0 flex"
         style={{
           right: `${(100 * (1 - containerRelativeWidth)) / 2 + 1}%`,
@@ -62,6 +73,7 @@ const ElementBackground = ({
         }}
       >
         <span className={cn("flex-1 rounded-sm", bgThemeColor)} />
+        {dispatchedTimelineDatas.timeline3.map((t) => t.jsxElement)}
       </div>
       <div
         className="relative"
@@ -136,4 +148,5 @@ const ElementBackground = ({
   );
 };
 
-export default ElementBackground;
+export default TimelineElementBody;
+export { linesWidhtPx };

@@ -3,12 +3,17 @@ import { titleContainerSizePx } from "./timeline-container";
 import { calculateYearsDifference, cn } from "@/lib/utils";
 import { IconType } from "react-icons";
 import {
+  createDispatchedTimelineDatas,
+  ITimelineElement,
   ITimelineExperiencesData,
   ITimelineStudiesData,
   ITimelinProjectsData,
+  selectTimeline,
 } from "@/types/ITimelineData";
 import { yearDivHeightPx } from "./timeline-container/year-timeline";
-import ElementBackground from "./timeline-element/element-background";
+import TimelineElementBody, {
+  linesWidhtPx,
+} from "./timeline-element/timeline-element-body";
 
 const TimelineElement = ({
   elementTitle,
@@ -16,6 +21,7 @@ const TimelineElement = ({
   Icon,
   datas,
   startYear,
+  timelineElement,
 }: {
   elementTitle: string;
   bgThemeColor: `bg-chart-${number}`;
@@ -25,9 +31,58 @@ const TimelineElement = ({
     | ITimelinProjectsData[]
     | ITimelineStudiesData[];
   startYear: number;
+  timelineElement: ITimelineElement;
 }) => {
   const startDate = new Date(startYear, 1, 1);
   const startYearHeightPx = yearDivHeightPx / 2;
+  const dispatchedTimelineDatas = createDispatchedTimelineDatas([1, 2, 3]);
+  const elementContainerRelativeWidth = 3 / 4;
+
+  datas.forEach((data) => {
+    const fromTopPx =
+      calculateYearsDifference(startDate, data.startDate) * yearDivHeightPx +
+      startYearHeightPx;
+    const heightPx = data.endDate
+      ? calculateYearsDifference(data.startDate, data.endDate) * yearDivHeightPx
+      : 20;
+    const timeline = selectTimeline(
+      dispatchedTimelineDatas,
+      fromTopPx,
+      heightPx
+    );
+    if (!timeline) {
+      console.warn(
+        "Wasn't able to display this element into a timeline because there wasn't enough place available.",
+        {
+          element: timelineElement,
+          data,
+          calculatedPosition: {
+            fromTopPx,
+            heightPx,
+          },
+          dispatchedTimelineDatas,
+        }
+      );
+      return undefined;
+    }
+    const widthPx = 24;
+    dispatchedTimelineDatas[timeline].push({
+      fromTopPx,
+      heightPx,
+      jsxElement: (
+        <span
+          key={data._id}
+          className={cn("absolute rounded-sm", bgThemeColor)}
+          style={{
+            top: fromTopPx,
+            height: heightPx,
+            width: widthPx,
+            left: -(widthPx / 2 - linesWidhtPx / 2),
+          }}
+        />
+      ),
+    });
+  });
 
   return (
     <div className="flex flex-col flex-1">
@@ -43,30 +98,12 @@ const TimelineElement = ({
         </CardContent>
       </Card>
       <div className="relative flex flex-col flex-1">
-        <ElementBackground
+        <TimelineElementBody
           bgThemeColor={bgThemeColor}
           startYearHeightPx={startYearHeightPx}
+          containerRelativeWidth={elementContainerRelativeWidth}
+          dispatchedTimelineDatas={dispatchedTimelineDatas}
         />
-        {datas.map((data) => {
-          const fromTop =
-            calculateYearsDifference(startDate, data.startDate) *
-              yearDivHeightPx +
-            startYearHeightPx;
-          const height = data.endDate
-            ? calculateYearsDifference(data.startDate, data.endDate) *
-              yearDivHeightPx
-            : 20;
-          return (
-            <span
-              key={data._id}
-              className={cn(
-                "absolute w-6 rounded-sm self-center",
-                bgThemeColor
-              )}
-              style={{ top: fromTop, height }}
-            />
-          );
-        })}
       </div>
     </div>
   );

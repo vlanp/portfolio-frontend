@@ -4,7 +4,7 @@ import TimelineContainer from "./timeline/timeline-container";
 import TimelineElement from "./timeline/timeline-element";
 import { IoSchoolOutline, IoHammerOutline } from "react-icons/io5";
 import { HiOutlineBriefcase } from "react-icons/hi2";
-import { ITimelineDatas } from "@/types/ITimelineData";
+import { ITimelineDatas, ZETimelineElements } from "@/types/ITimelineData";
 import { IDictionary } from "../../dictionaries/generated";
 import dynamic from "next/dynamic";
 
@@ -42,6 +42,7 @@ const Timeline = ({
           elementTitle={timelineDict.Studies}
           datas={timelineDatas.studies}
           startYear={startDate.getFullYear()}
+          timelineElement={ZETimelineElements.enum.studies}
         />
         <TimelineElement
           Icon={HiOutlineBriefcase}
@@ -49,6 +50,7 @@ const Timeline = ({
           elementTitle={timelineDict.Experiences}
           datas={timelineDatas.experiences}
           startYear={startDate.getFullYear()}
+          timelineElement={ZETimelineElements.enum.experiences}
         />
         <TimelineElement
           Icon={IoHammerOutline}
@@ -56,6 +58,7 @@ const Timeline = ({
           elementTitle={timelineDict.Projects}
           datas={timelineDatas.projects}
           startYear={startDate.getFullYear()}
+          timelineElement={ZETimelineElements.enum.projects}
         />
       </div>
     </TimelineContainer>
