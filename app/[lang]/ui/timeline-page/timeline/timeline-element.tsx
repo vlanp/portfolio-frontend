@@ -22,6 +22,8 @@ import {
 import TimelineElementTooltipContent from "./timeline-element/timeline-element-tooltip-content";
 import { ILang } from "@/types/ILang";
 
+const startYearHeightPx = yearDivHeightPx / 2;
+
 const TimelineElement = ({
   elementTitle,
   bgThemeColor,
@@ -47,9 +49,7 @@ const TimelineElement = ({
   years: number[];
 }) => {
   const startDate = new Date(startYear, 1, 1);
-  const startYearHeightPx = yearDivHeightPx / 2;
   const dispatchedTimelineDatas = createDispatchedTimelineDatas([1, 2, 3]);
-  const elementContainerRelativeWidth = 3 / 4;
 
   datas.forEach((data) => {
     const fromTopPx =
@@ -136,8 +136,6 @@ const TimelineElement = ({
       >
         <TimelineElementBody
           bgThemeColor={bgThemeColor}
-          startYearHeightPx={startYearHeightPx}
-          containerRelativeWidth={elementContainerRelativeWidth}
           dispatchedTimelineDatas={dispatchedTimelineDatas}
         />
       </div>
@@ -146,3 +144,4 @@ const TimelineElement = ({
 };
 
 export default TimelineElement;
+export { startYearHeightPx };

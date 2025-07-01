@@ -3,21 +3,19 @@
 import { cn } from "@/lib/utils";
 import { IDispatchedTimelineDatas } from "@/types/ITimelineData";
 import { useLayoutEffect, useRef, useState } from "react";
+import { startYearHeightPx } from "../timeline-element";
 
 const linesWidhtPx = 8;
+const containerRelativeWidth = 3 / 4;
+const marginYPx = 8;
 
 const TimelineElementBody = ({
   bgThemeColor,
-  startYearHeightPx,
-  containerRelativeWidth,
   dispatchedTimelineDatas,
 }: {
   bgThemeColor: `bg-chart-${number}`;
-  startYearHeightPx: number;
-  containerRelativeWidth: number;
   dispatchedTimelineDatas: IDispatchedTimelineDatas<3 | 1 | 2>;
 }) => {
-  const marginYPx = 8;
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState<number>(0);
   useLayoutEffect(() => {
@@ -149,4 +147,4 @@ const TimelineElementBody = ({
 };
 
 export default TimelineElementBody;
-export { linesWidhtPx };
+export { linesWidhtPx, marginYPx, containerRelativeWidth };

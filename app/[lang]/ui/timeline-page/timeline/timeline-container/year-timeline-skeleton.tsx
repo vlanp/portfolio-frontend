@@ -4,10 +4,15 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useLayoutEffect, useRef, useState } from "react";
 import { titleContainerSizePx } from "../timeline-container";
 import { yearDivHeightPx } from "./year-timeline";
+import { useIsBelowBP } from "@/hooks/useIsBelowBP";
+import { largeBreakpoint, mobileBreakpoint } from "@/types/IBreakpoints";
+import { cn } from "@/lib/utils";
 
 const YearTimeline = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [yearCount, setYearCount] = useState(0);
+  const isBelowMobileBp = useIsBelowBP(mobileBreakpoint);
+  const isBelowLargeBp = useIsBelowBP(largeBreakpoint);
 
   useLayoutEffect(() => {
     const calculateYearCount = () => {
@@ -15,7 +20,7 @@ const YearTimeline = () => {
 
       const containerHeight = containerRef.current.clientHeight;
 
-      const yearCount = Math.floor(containerHeight / yearDivHeightPx);
+      const yearCount = Math.floor(containerHeight / yearDivHeightPx) - 1;
 
       setYearCount(yearCount);
     };
@@ -29,11 +34,14 @@ const YearTimeline = () => {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [isBelowLargeBp, isBelowMobileBp]);
 
   return (
     <div
-      className="flex flex-col flex-1"
+      className={cn(
+        "flex flex-col flex-1 min-w-[100px]",
+        isBelowMobileBp && "min-h-[400px]"
+      )}
       style={{ paddingTop: `${titleContainerSizePx}px` }}
       ref={containerRef}
     >
