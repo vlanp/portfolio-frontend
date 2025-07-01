@@ -8,6 +8,10 @@ import { ITimelineDatas, ZETimelineElements } from "@/types/ITimelineData";
 import { IDictionary } from "../../dictionaries/generated";
 import dynamic from "next/dynamic";
 import { ILang } from "@/types/ILang";
+import { useIsBelowBP } from "@/hooks/useIsBelowBP";
+import { mobileBreakpoint } from "@/types/IBreakpoints";
+import YearTimeline from "./timeline/timeline-container/year-timeline";
+import { cn } from "@/lib/utils";
 
 const Timeline = ({
   timelineDatas,
@@ -37,42 +41,82 @@ const Timeline = ({
   const years = [...Array(endYear - startYear + 2).keys()].map(
     (i) => i + startYear
   );
+
+  const isBelowMobileBp = useIsBelowBP(mobileBreakpoint);
+
+  const timelineElement1 = (
+    <TimelineElement
+      Icon={IoSchoolOutline}
+      bgThemeColor="bg-chart-1"
+      borderThemeColor="border-chart-1"
+      elementTitle={timelineDict.Studies}
+      datas={timelineDatas.studies}
+      startYear={startDate.getFullYear()}
+      timelineElement={ZETimelineElements.enum.studies}
+      lang={lang}
+      years={years}
+    />
+  );
+
+  const timelineElement2 = (
+    <TimelineElement
+      Icon={HiOutlineBriefcase}
+      bgThemeColor="bg-chart-2"
+      borderThemeColor="border-chart-2"
+      elementTitle={timelineDict.Experiences}
+      datas={timelineDatas.experiences}
+      startYear={startDate.getFullYear()}
+      timelineElement={ZETimelineElements.enum.experiences}
+      lang={lang}
+      years={years}
+    />
+  );
+
+  const timelineElement3 = (
+    <TimelineElement
+      Icon={IoHammerOutline}
+      bgThemeColor="bg-chart-4"
+      borderThemeColor="border-chart-4"
+      elementTitle={timelineDict.Projects}
+      datas={timelineDatas.projects}
+      startYear={startDate.getFullYear()}
+      timelineElement={ZETimelineElements.enum.projects}
+      lang={lang}
+      years={years}
+    />
+  );
   return (
     <TimelineContainer years={years}>
-      <div className="flex flex-row flex-1 gap-2">
-        <TimelineElement
-          Icon={IoSchoolOutline}
-          bgThemeColor="bg-chart-1"
-          borderThemeColor="border-chart-1"
-          elementTitle={timelineDict.Studies}
-          datas={timelineDatas.studies}
-          startYear={startDate.getFullYear()}
-          timelineElement={ZETimelineElements.enum.studies}
-          lang={lang}
-          years={years}
-        />
-        <TimelineElement
-          Icon={HiOutlineBriefcase}
-          bgThemeColor="bg-chart-2"
-          borderThemeColor="border-chart-2"
-          elementTitle={timelineDict.Experiences}
-          datas={timelineDatas.experiences}
-          startYear={startDate.getFullYear()}
-          timelineElement={ZETimelineElements.enum.experiences}
-          lang={lang}
-          years={years}
-        />
-        <TimelineElement
-          Icon={IoHammerOutline}
-          bgThemeColor="bg-chart-4"
-          borderThemeColor="border-chart-4"
-          elementTitle={timelineDict.Projects}
-          datas={timelineDatas.projects}
-          startYear={startDate.getFullYear()}
-          timelineElement={ZETimelineElements.enum.projects}
-          lang={lang}
-          years={years}
-        />
+      <div
+        className={cn(
+          "flex flex-row gap-2",
+          isBelowMobileBp && "flex-col gap-10"
+        )}
+      >
+        {isBelowMobileBp ? (
+          <div className="flex flex-row">
+            <YearTimeline years={years} />
+            {timelineElement1}
+          </div>
+        ) : (
+          timelineElement1
+        )}
+        {isBelowMobileBp ? (
+          <div className="flex flex-row">
+            <YearTimeline years={years} />
+            {timelineElement2}
+          </div>
+        ) : (
+          timelineElement2
+        )}
+        {isBelowMobileBp ? (
+          <div className="flex flex-row">
+            <YearTimeline years={years} />
+            {timelineElement3}
+          </div>
+        ) : (
+          timelineElement3
+        )}
       </div>
     </TimelineContainer>
   );

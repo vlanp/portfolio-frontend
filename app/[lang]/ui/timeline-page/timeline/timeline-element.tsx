@@ -1,3 +1,5 @@
+"use client";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { titleContainerSizePx } from "./timeline-container";
 import { calculateYearsDifference, cn } from "@/lib/utils";
@@ -21,6 +23,9 @@ import {
 } from "@/components/ui/tooltip";
 import TimelineElementTooltipContent from "./timeline-element/timeline-element-tooltip-content";
 import { ILang } from "@/types/ILang";
+import { useIsBelowBP } from "@/hooks/useIsBelowBP";
+import { mobileBreakpoint } from "@/types/IBreakpoints";
+import TimelineBackground from "./timeline-container/timeline-background";
 
 const startYearHeightPx = yearDivHeightPx / 2;
 
@@ -50,6 +55,8 @@ const TimelineElement = ({
 }) => {
   const startDate = new Date(startYear, 1, 1);
   const dispatchedTimelineDatas = createDispatchedTimelineDatas([1, 2, 3]);
+
+  const isBelowMobileBp = useIsBelowBP(mobileBreakpoint);
 
   datas.forEach((data) => {
     const fromTopPx =
@@ -118,7 +125,8 @@ const TimelineElement = ({
   });
 
   return (
-    <div className="flex flex-col flex-1">
+    <div className="relative flex flex-col w-[200px]">
+      {isBelowMobileBp && <TimelineBackground years={years} />}
       <Card
         className="flex flex-col justify-center w-full"
         style={{ height: `${titleContainerSizePx}px` }}

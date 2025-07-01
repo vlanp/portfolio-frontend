@@ -12,7 +12,7 @@ const YearTimeline = ({ years }: { years: number[] }) => {
         return (
           <div
             key={year}
-            className={`flex flex-row items-center gap-2 px-2`}
+            className={`flex flex-row items-center gap-2 px-2 min-w-[100px]`}
             style={{ minHeight: `${yearDivHeightPx}px` }}
           >
             <span className="flex-1 h-px bg-border"></span>
