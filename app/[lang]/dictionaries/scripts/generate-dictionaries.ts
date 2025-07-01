@@ -8,12 +8,12 @@ import {
 import { resolve } from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
-import { ELang } from "@/types/ILang";
+import { ELangs } from "@/types/ILang";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const locales = Object.values(ELang);
+const locales = Object.values(ELangs);
 
 function parseTemplateParams(template: string): string[] {
   const matches = template.match(/%\(([^)]+)\)s/g);

@@ -1,11 +1,11 @@
 import { z } from "zod/v4";
 
-enum ELang {
+enum ELangs {
   FR = "fr",
   EN = "en",
 }
-const ZELang = z.enum(ELang);
-type ILang = `${ELang}`;
+const ZELangs = z.enum(ELangs);
+type ILang = `${ELangs}`;
 
 export type { ILang };
-export { ELang, ZELang };
+export { ELangs, ZELangs };

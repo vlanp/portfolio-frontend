@@ -1,5 +1,5 @@
 import { z } from "zod/v4";
-import { ZELang } from "./ILang";
+import { ZELangs } from "./ILang";
 import { JSX } from "react";
 
 const ZETimelineElements = z.enum(["studies", "experiences", "projects"]);
@@ -8,10 +8,10 @@ type ITimelineElement = z.infer<typeof ZETimelineElements>;
 
 const ZTimelineData = z.strictObject({
   _id: z.string(),
-  title: z.record(ZELang, z.string()),
+  title: z.record(ZELangs, z.string()),
   startDate: z.date(),
   endDate: z.date().optional(),
-  description: z.record(ZELang, z.string()),
+  description: z.record(ZELangs, z.string()),
   type: ZETimelineElements,
 });
 
@@ -39,13 +39,13 @@ const ZTimelineProjectsData = z.strictObject({
   ...ZTimelineData.shape,
   technologies: z.string(),
   status: z.object({
-    [ZELang.enum.EN]: z.enum([
+    [ZELangs.enum.EN]: z.enum([
       "Creation in progress",
       "Update in progress",
       "Paused",
       "Completed",
     ]),
-    [ZELang.enum.FR]: z.enum([
+    [ZELangs.enum.FR]: z.enum([
       "En cours de création",
       "Mise à jour en cours",
       "En pause",
