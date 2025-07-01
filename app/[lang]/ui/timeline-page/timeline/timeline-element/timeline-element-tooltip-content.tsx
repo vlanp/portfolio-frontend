@@ -16,7 +16,7 @@ const TimelineElementTooltipContent = ({
   lang: ILang;
 }) => {
   return (
-    <div className="max-w-[400px]">
+    <div className="max-w-[300px]">
       <h5>{data.title[lang]}</h5>
 
       {data.type === "studies" && <h6>{data.establishement}</h6>}

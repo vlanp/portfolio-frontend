@@ -26,6 +26,7 @@ import { ILang } from "@/types/ILang";
 import { useIsBelowBP } from "@/hooks/useIsBelowBP";
 import { mobileBreakpoint } from "@/types/IBreakpoints";
 import TimelineBackground from "./timeline-container/timeline-background";
+import { useState } from "react";
 
 const startYearHeightPx = yearDivHeightPx / 2;
 
@@ -57,6 +58,7 @@ const TimelineElement = ({
   const dispatchedTimelineDatas = createDispatchedTimelineDatas([1, 2, 3]);
 
   const isBelowMobileBp = useIsBelowBP(mobileBreakpoint);
+  const [isTooltipOpen, setIsTooltipOpen] = useState(false);
 
   datas.forEach((data) => {
     const fromTopPx =
@@ -90,10 +92,17 @@ const TimelineElement = ({
       fromTopPx,
       heightPx,
       jsxElement: (
-        <Tooltip key={data._id}>
+        <Tooltip
+          key={data._id}
+          open={isTooltipOpen}
+          onOpenChange={setIsTooltipOpen}
+        >
           <TooltipTrigger asChild>
             <span
               key={data._id}
+              onClick={
+                isBelowMobileBp ? () => setIsTooltipOpen((p) => !p) : undefined
+              }
               className={cn(
                 "absolute rounded-sm hover:cursor-pointer flex justify-center items-center",
                 bgThemeColor
@@ -109,7 +118,7 @@ const TimelineElement = ({
             </span>
           </TooltipTrigger>
           <TooltipContent
-            side="right"
+            side={isBelowMobileBp ? "top" : "right"}
             avoidCollisions
             disableArrow
             className={cn(
