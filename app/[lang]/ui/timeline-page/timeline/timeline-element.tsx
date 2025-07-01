@@ -31,6 +31,7 @@ const TimelineElement = ({
   startYear,
   timelineElement,
   lang,
+  years,
 }: {
   elementTitle: string;
   bgThemeColor: `bg-chart-${number}`;
@@ -43,6 +44,7 @@ const TimelineElement = ({
   startYear: number;
   timelineElement: ITimelineElement;
   lang: ILang;
+  years: number[];
 }) => {
   const startDate = new Date(startYear, 1, 1);
   const startYearHeightPx = yearDivHeightPx / 2;
@@ -128,7 +130,10 @@ const TimelineElement = ({
           <CardTitle className="text-center">{elementTitle}</CardTitle>
         </CardContent>
       </Card>
-      <div className="relative flex flex-col flex-1">
+      <div
+        className="relative flex flex-col flex-1"
+        style={{ maxHeight: years.length * yearDivHeightPx }}
+      >
         <TimelineElementBody
           bgThemeColor={bgThemeColor}
           startYearHeightPx={startYearHeightPx}

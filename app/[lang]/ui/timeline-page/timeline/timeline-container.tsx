@@ -6,21 +6,19 @@ const titleContainerSizePx = 120;
 
 const TimelineContainer = ({
   children,
-  startYear,
-  endYear,
+  years,
 }: {
   children: ReactNode;
-  startYear: number;
-  endYear: number;
+  years: number[];
 }) => {
   return (
     <section className="flex flex-1 max-w-[1024px]">
-      <YearTimeline startYear={startYear} endYear={endYear} />
+      <YearTimeline years={years} />
       <div className="flex relative flex-3">
-        <TimelineBackground startYear={startYear} endYear={endYear} />
+        <TimelineBackground years={years} />
         {children}
       </div>
-      <YearTimeline startYear={startYear} endYear={endYear} />
+      <YearTimeline years={years} />
     </section>
   );
 };

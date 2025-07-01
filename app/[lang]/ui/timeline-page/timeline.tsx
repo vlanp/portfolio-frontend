@@ -32,12 +32,13 @@ const Timeline = ({
 
   const startDate: Date | undefined = ascendingDates[0];
   const endDate: Date | undefined = ascendingDates[ascendingDates.length - 1];
-
+  const startYear = startDate.getFullYear();
+  const endYear = endDate.getFullYear();
+  const years = [...Array(endYear - startYear + 2).keys()].map(
+    (i) => i + startYear
+  );
   return (
-    <TimelineContainer
-      startYear={startDate.getFullYear()}
-      endYear={endDate.getFullYear()}
-    >
+    <TimelineContainer years={years}>
       <div className="flex flex-row flex-1 gap-2">
         <TimelineElement
           Icon={IoSchoolOutline}
@@ -48,6 +49,7 @@ const Timeline = ({
           startYear={startDate.getFullYear()}
           timelineElement={ZETimelineElements.enum.studies}
           lang={lang}
+          years={years}
         />
         <TimelineElement
           Icon={HiOutlineBriefcase}
@@ -58,6 +60,7 @@ const Timeline = ({
           startYear={startDate.getFullYear()}
           timelineElement={ZETimelineElements.enum.experiences}
           lang={lang}
+          years={years}
         />
         <TimelineElement
           Icon={IoHammerOutline}
@@ -68,6 +71,7 @@ const Timeline = ({
           startYear={startDate.getFullYear()}
           timelineElement={ZETimelineElements.enum.projects}
           lang={lang}
+          years={years}
         />
       </div>
     </TimelineContainer>

@@ -6,18 +6,18 @@ const ZETimelineElements = z.enum(["studies", "experiences", "projects"]);
 
 type ITimelineElement = z.infer<typeof ZETimelineElements>;
 
-const ZTimelineData = z.strictObject({
+const ZTimelineData = z.object({
   _id: z.string(),
   title: z.record(ZELangs, z.string()),
-  startDate: z.date(),
-  endDate: z.date().optional(),
+  startDate: z.coerce.date(),
+  endDate: z.coerce.date().optional(),
   description: z.record(ZELangs, z.string()),
   type: ZETimelineElements,
 });
 
 type ITimelineData = z.infer<typeof ZTimelineData>;
 
-const ZTimelineStudiesData = z.strictObject({
+const ZTimelineStudiesData = z.object({
   ...ZTimelineData.shape,
   establishement: z.string(),
   place: z.string().optional(),
@@ -26,7 +26,7 @@ const ZTimelineStudiesData = z.strictObject({
 
 type ITimelineStudiesData = z.infer<typeof ZTimelineStudiesData>;
 
-const ZTimelineExperiencesData = z.strictObject({
+const ZTimelineExperiencesData = z.object({
   ...ZTimelineData.shape,
   enterprise: z.string().optional(),
   place: z.string().optional(),
@@ -35,7 +35,7 @@ const ZTimelineExperiencesData = z.strictObject({
 
 type ITimelineExperiencesData = z.infer<typeof ZTimelineExperiencesData>;
 
-const ZTimelineProjectsData = z.strictObject({
+const ZTimelineProjectsData = z.object({
   ...ZTimelineData.shape,
   technologies: z.string(),
   status: z.object({
@@ -57,7 +57,7 @@ const ZTimelineProjectsData = z.strictObject({
 
 type ITimelineProjectsData = z.infer<typeof ZTimelineProjectsData>;
 
-const ZTimelineDatas = z.strictObject({
+const ZTimelineDatas = z.object({
   [ZETimelineElements.enum.experiences]: z.array(ZTimelineExperiencesData),
   [ZETimelineElements.enum.projects]: z.array(ZTimelineProjectsData),
   [ZETimelineElements.enum.studies]: z.array(ZTimelineStudiesData),

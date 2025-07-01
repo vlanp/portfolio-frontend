@@ -2,16 +2,7 @@ import { titleContainerSizePx } from "../timeline-container";
 
 const yearDivHeightPx = 80;
 
-const YearTimeline = ({
-  startYear,
-  endYear,
-}: {
-  startYear: number;
-  endYear: number;
-}) => {
-  const years = [...Array(endYear - startYear + 2).keys()].map(
-    (i) => i + startYear
-  );
+const YearTimeline = ({ years }: { years: number[] }) => {
   return (
     <div
       className={`flex flex-col flex-1`}

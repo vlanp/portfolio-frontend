@@ -12,6 +12,8 @@ interface IEnvVariables {
   NEXT_PUBLIC_GET_MAIN_PICTURE_URL: string;
   NEXT_PUBLIC_GITHUB_URL: string;
   NEXT_PUBLIC_LINKEDIN_URL: string;
+  NEXT_PUBLIC_GET_TIMELINE_DATAS_NO_MD: string;
+  NEXT_PUBLIC_GET_TIMELINE_DATA_MD_CONTENT: string;
 }
 
 const checkEnv = (): IEnvVariables => {
@@ -68,6 +70,16 @@ const checkEnv = (): IEnvVariables => {
   if (!process.env.NEXT_PUBLIC_LINKEDIN_URL) {
     throw new Error("Missing environment variable: NEXT_PUBLIC_LINKEDIN_URL");
   }
+  if (!process.env.NEXT_PUBLIC_GET_TIMELINE_DATAS_NO_MD) {
+    throw new Error(
+      "Missing environment variable: NEXT_PUBLIC_GET_TIMELINE_DATA_NO_MD"
+    );
+  }
+  if (!process.env.NEXT_PUBLIC_GET_TIMELINE_DATA_MD_CONTENT) {
+    throw new Error(
+      "Missing environment variable: NEXT_PUBLIC_GET_TIMELINE_DATA_MD_CONTENT"
+    );
+  }
   return {
     NEXT_PUBLIC_BACKEND_URL: process.env.NEXT_PUBLIC_BACKEND_URL,
     NEXT_PUBLIC_POST_PROJECTS_URL: process.env.NEXT_PUBLIC_POST_PROJECTS_URL,
@@ -87,6 +99,10 @@ const checkEnv = (): IEnvVariables => {
       process.env.NEXT_PUBLIC_GET_MAIN_PICTURE_URL,
     NEXT_PUBLIC_GITHUB_URL: process.env.NEXT_PUBLIC_GITHUB_URL,
     NEXT_PUBLIC_LINKEDIN_URL: process.env.NEXT_PUBLIC_LINKEDIN_URL,
+    NEXT_PUBLIC_GET_TIMELINE_DATAS_NO_MD:
+      process.env.NEXT_PUBLIC_GET_TIMELINE_DATAS_NO_MD,
+    NEXT_PUBLIC_GET_TIMELINE_DATA_MD_CONTENT:
+      process.env.NEXT_PUBLIC_GET_TIMELINE_DATA_MD_CONTENT,
   };
 };
 
