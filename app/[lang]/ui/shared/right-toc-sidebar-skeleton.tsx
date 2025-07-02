@@ -14,10 +14,10 @@ import {
 } from "@/components/ui/sidebar";
 import { useEffect, useRef, useState } from "react";
 
-const RightSidebarSkeleton = ({
-  projectDict,
+const RightTocSidebarSkeleton = ({
+  rightTocSidebarDict,
 }: {
-  projectDict: IDictionary["Projects"]["Project"];
+  rightTocSidebarDict: IDictionary["shared"]["RightTocSidebar"];
 }) => {
   const [skeletonCount, setSkeletonCount] = useState(0);
   const sidebarRef = useRef<HTMLUListElement | null>(null);
@@ -58,9 +58,7 @@ const RightSidebarSkeleton = ({
     <Sidebar side="right" variant="floating" className="top-header-height">
       <SidebarContent>
         <SidebarGroup className="min-h-full">
-          <SidebarGroupLabel>
-            {projectDict.RightProjectSidebar.Title}
-          </SidebarGroupLabel>
+          <SidebarGroupLabel>{rightTocSidebarDict.Title}</SidebarGroupLabel>
           <SidebarSeparator />
           <SidebarGroupContent className="gap-1 flex-1">
             <SidebarMenu ref={sidebarRef} className="min-h-full">
@@ -77,4 +75,4 @@ const RightSidebarSkeleton = ({
   );
 };
 
-export default RightSidebarSkeleton;
+export default RightTocSidebarSkeleton;

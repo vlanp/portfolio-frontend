@@ -1,13 +1,13 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import HtmlMarkdownContentSkeleton from "./file-display/html-markdown-content-skeleton";
+import HtmlMarkdownContentSkeleton from "../../../shared/html-markdown-content-skeleton";
 import { extraLargeBreakpoint } from "@/types/IBreakpoints";
-import RightSidebarSkeleton from "./file-display/right-sidebar-skeleton";
+import RightTocSidebarSkeleton from "../../../shared/right-toc-sidebar-skeleton";
 import { IDictionary } from "@/app/[lang]/dictionaries/generated";
 
 const FileDisplaySkeleton = ({
-  projectDict,
+  rightTocSidebarDict,
 }: {
-  projectDict: IDictionary["Projects"]["Project"];
+  rightTocSidebarDict: IDictionary["shared"]["RightTocSidebar"];
 }) => {
   return (
     <>
@@ -19,7 +19,7 @@ const FileDisplaySkeleton = ({
         className="relative w-fit"
       >
         <SidebarTrigger side="right" />
-        <RightSidebarSkeleton projectDict={projectDict} />
+        <RightTocSidebarSkeleton rightTocSidebarDict={rightTocSidebarDict} />
       </SidebarProvider>
     </>
   );

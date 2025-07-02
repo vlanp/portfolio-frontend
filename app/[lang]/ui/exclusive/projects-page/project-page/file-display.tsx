@@ -1,6 +1,6 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import HtmlMarkdownContent from "./file-display/html-markdown-content";
-import RightSidebar from "./file-display/right-sidebar";
+import Content from "./file-display/content";
+import RightTocSidebar from "../../../shared/right-toc-sidebar";
 import axios from "axios";
 import { getZFileContent } from "@/types/IFileContent";
 import checkedEnv from "@/lib/checkEnv";
@@ -18,20 +18,22 @@ const FileDisplay = async ({
   filePath,
   sha,
   urlSearchParams,
-  projectDict,
   pathname,
   lang,
+  htmlMarkdownContentDict,
+  rightTocSidebarDict,
 }: {
   repoId: string;
   filePath: string | undefined;
   sha: string;
   urlSearchParams: URLSearchParams;
-  projectDict: IDictionary["Projects"]["Project"];
   pathname: string;
   lang: ILang;
+  htmlMarkdownContentDict: IDictionary["shared"]["HtmlMarkdownContent"];
+  rightTocSidebarDict: IDictionary["shared"]["RightTocSidebar"];
 }) => {
   if (!filePath) {
-    return <FileDisplaySkeleton projectDict={projectDict} />;
+    return <FileDisplaySkeleton rightTocSidebarDict={rightTocSidebarDict} />;
   }
 
   const encodedFilepath = encodeURIComponent(filePath);
@@ -56,10 +58,10 @@ const FileDisplay = async ({
 
   return (
     <SidebarProvider breakpoint={extraLargeBreakpoint}>
-      <PageContainer className="flex-1">
-        <HtmlMarkdownContent
+      <PageContainer className="flex flex-grow justify-center">
+        <Content
           fileContent={fileContent}
-          projectDict={projectDict}
+          htmlMarkdownContentDict={htmlMarkdownContentDict}
           filePath={filePath}
           repoId={repoId}
           sha={sha}
@@ -69,8 +71,8 @@ const FileDisplay = async ({
         />
       </PageContainer>
       <SidebarTrigger side="right" />
-      <RightSidebar
-        projectDict={projectDict}
+      <RightTocSidebar
+        rightTocSidebarDict={rightTocSidebarDict}
         tableOfContents={fileContent.tableOfContents}
       />
     </SidebarProvider>

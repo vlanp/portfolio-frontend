@@ -30,9 +30,12 @@ const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
   const awaitedParams = await params;
 
   const lang = awaitedParams.lang;
-  const projectDict: IDictionary["Projects"]["Project"] = (
-    await getDictionary(lang)
-  ).Projects.Project;
+  const dict = await getDictionary(lang);
+  const projectDict: IDictionary["Projects"]["Project"] = dict.Projects.Project;
+  const htmlMarkdownContentDict: IDictionary["shared"]["HtmlMarkdownContent"] =
+    dict.shared.HtmlMarkdownContent;
+  const rightTocSidebarDict: IDictionary["shared"]["RightTocSidebar"] =
+    dict.shared.RightTocSidebar;
 
   const headerList = await headers();
   const pathname = headerList.get("x-current-path");
@@ -165,16 +168,19 @@ const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
       <SidebarTrigger />
       <Suspense
         key={sha + filePath}
-        fallback={<FileDisplaySkeleton projectDict={projectDict} />}
+        fallback={
+          <FileDisplaySkeleton rightTocSidebarDict={rightTocSidebarDict} />
+        }
       >
         <FileDisplay
           repoId={repoId}
           filePath={filePath}
           sha={sha}
           urlSearchParams={urlSearchParams}
-          projectDict={projectDict}
           pathname={pathname}
           lang={lang}
+          htmlMarkdownContentDict={htmlMarkdownContentDict}
+          rightTocSidebarDict={rightTocSidebarDict}
         />
       </Suspense>
     </SidebarProvider>

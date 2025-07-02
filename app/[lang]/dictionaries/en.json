@@ -1,4 +1,13 @@
 {
+  "shared": {
+    "HtmlMarkdownContent": {
+      "Previous": "Previous",
+      "Next": "Next"
+    },
+    "RightTocSidebar": {
+      "Title": "On this page"
+    }
+  },
   "topNav": {
     "About": "About",
     "Timeline": "Timeline",
@@ -17,13 +26,6 @@
   },
   "Projects": {
     "Project": {
-      "RightProjectSidebar": {
-        "Title": "On this page"
-      },
-      "HtmlMarkdownContent": {
-        "Previous": "Previous",
-        "Next": "Next"
-      },
       "LeftProjectSidebar": {
         "TagCombobox": {
           "SearchPlaceholder": "Search a tag...",

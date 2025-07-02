@@ -16,20 +16,18 @@ import {
 import IDocToC from "@/types/IDocToc";
 import Link from "next/link";
 
-const RightSidebar = ({
-  projectDict,
+const RightTocSidebar = ({
+  rightTocSidebarDict,
   tableOfContents,
 }: {
-  projectDict: IDictionary["Projects"]["Project"];
+  rightTocSidebarDict: IDictionary["shared"]["RightTocSidebar"];
   tableOfContents: IDocToC[];
 }) => {
   return (
     <Sidebar side="right" variant="floating" className="top-header-height">
       <SidebarContent>
         <SidebarGroup className="min-h-full">
-          <SidebarGroupLabel>
-            {projectDict.RightProjectSidebar.Title}
-          </SidebarGroupLabel>
+          <SidebarGroupLabel>{rightTocSidebarDict.Title}</SidebarGroupLabel>
           <SidebarSeparator />
           <SidebarGroupContent>
             <SidebarMenu>
@@ -61,4 +59,4 @@ const RightSidebar = ({
   );
 };
 
-export default RightSidebar;
+export default RightTocSidebar;

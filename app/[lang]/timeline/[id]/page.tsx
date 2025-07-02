@@ -1,16 +1,25 @@
 import checkedEnv from "@/lib/checkEnv";
 import { getZApiSuccessResponse } from "@/types/IApiResponse";
-import { getZFileContent } from "@/types/IFileContent";
+import { getZFileContentWithTitle } from "@/types/IFileContent";
 import ITimelineDataPageProps from "@/types/ITimelineDataPageProps";
 import axios, { AxiosError } from "axios";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod/v4";
+import HtmlMarkdownContent from "../../ui/shared/html-markdown-content";
+import { getDictionary } from "../../dictionaries";
+import PageContainer from "../../ui/shared/page-container";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { extraLargeBreakpoint } from "@/types/IBreakpoints";
+import RightTocSidebar from "../../ui/shared/right-toc-sidebar";
 
 const TimelineDataPage = async ({ params }: ITimelineDataPageProps) => {
   const awaitedParams = await params;
   const id = awaitedParams.id;
   const lang = awaitedParams.lang;
+  const dict = await getDictionary(lang);
+  const htmlMarkdownContentDict = dict.shared.HtmlMarkdownContent;
+  const rightTocSidebarDict = dict.shared.RightTocSidebar;
 
   const headerList = await headers();
   const pathname = headerList.get("x-current-path");
@@ -37,7 +46,7 @@ const TimelineDataPage = async ({ params }: ITimelineDataPageProps) => {
     });
 
   const fileContentParseResult = getZApiSuccessResponse(
-    getZFileContent(z.unknown())
+    getZFileContentWithTitle(z.unknown())
   ).safeParse(fileContentResponse.data);
 
   if (!fileContentParseResult.success) {
@@ -46,7 +55,22 @@ const TimelineDataPage = async ({ params }: ITimelineDataPageProps) => {
 
   const fileContent = fileContentParseResult.data.data;
 
-  return <p>{}</p>;
+  return (
+    <SidebarProvider breakpoint={extraLargeBreakpoint}>
+      <PageContainer className="flex grow justify-end">
+        <HtmlMarkdownContent
+          htmlContent={fileContent.htmlContent}
+          htmlMarkdownContentDict={htmlMarkdownContentDict}
+          title={fileContent.title[lang]}
+        />
+      </PageContainer>
+      <SidebarTrigger side="right" />
+      <RightTocSidebar
+        rightTocSidebarDict={rightTocSidebarDict}
+        tableOfContents={fileContent.tableOfContents}
+      />
+    </SidebarProvider>
+  );
 };
 
 export default TimelineDataPage;

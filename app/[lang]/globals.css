@@ -142,7 +142,7 @@
   h4,
   h5,
   h6 {
-    @apply font-inter scroll-mt-[calc(var(--header-height)+1rem)];
+    @apply font-inter scroll-mt-[calc(var(--header-height)+0.8rem)];
   }
   h1 {
     @apply text-5xl/14 font-bold tracking-tighter;
