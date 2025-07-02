@@ -5,7 +5,7 @@ import TimelineElement from "./timeline/timeline-element";
 import { IoSchoolOutline, IoHammerOutline } from "react-icons/io5";
 import { HiOutlineBriefcase } from "react-icons/hi2";
 import { ITimelineDatas, ZETimelineElements } from "@/types/ITimelineData";
-import { IDictionary } from "../../dictionaries/generated";
+import { IDictionary } from "../../../dictionaries/generated";
 import dynamic from "next/dynamic";
 import { ILang } from "@/types/ILang";
 import { useIsBelowBP } from "@/hooks/useIsBelowBP";

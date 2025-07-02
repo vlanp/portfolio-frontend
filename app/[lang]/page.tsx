@@ -1,5 +1,5 @@
 import { ILang } from "@/types/ILang";
-import PageContainer from "./ui/page-container";
+import PageContainer from "./ui/shared/page-container";
 import Image from "next/image";
 import axios from "axios";
 import checkedEnv from "@/lib/checkEnv";

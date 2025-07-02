@@ -1,6 +1,6 @@
 import { ZTimelineDatas } from "@/types/ITimelineData";
-import PageContainer from "../ui/page-container";
-import Timeline from "../ui/timeline-page/timeline";
+import PageContainer from "../ui/shared/page-container";
+import Timeline from "../ui/exclusive/timeline-page/timeline";
 import { ILang } from "@/types/ILang";
 import { IDictionary } from "../dictionaries/generated";
 import { getDictionary } from "../dictionaries";

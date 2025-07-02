@@ -4,9 +4,9 @@ import axios from "axios";
 import { z } from "zod/v4";
 import { getDictionary } from "../dictionaries";
 import { getZApiSuccessResponse } from "@/types/IApiResponse";
-import ProjectsTabs from "../ui/projects-page/projects-tabs";
+import ProjectsTabs from "../ui/exclusive/projects-page/projects-tabs";
 import { IDictionary } from "../dictionaries/generated";
-import ProjectsFiltersSidebar from "../ui/projects-page/projects-filters-sidebar";
+import ProjectsFiltersSidebar from "../ui/exclusive/projects-page/projects-filters-sidebar";
 import IProjectsPageProps, {
   generateFrameworkParamKey,
   retrieveProgrammingLanguageFromFrameworkParamKey,
@@ -14,7 +14,7 @@ import IProjectsPageProps, {
 import { ISelectedProjectsFilters } from "@/types/IProjectsFilters";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import PageContainer from "../ui/page-container";
+import PageContainer from "../ui/shared/page-container";
 import { getZDocumentsWithHighlights } from "@/types/IDocumentsWithHighlights";
 import { ZESearchPaths } from "@/types/generated/ISearchPaths";
 

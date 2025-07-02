@@ -27,7 +27,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "app/[lang]/ui/projects-page/projects-tabs"
+    "app/[lang]/ui/exclusive/projects-page/projects-tabs"
   ],
   "exclude": ["node_modules"]
 }

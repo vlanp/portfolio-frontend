@@ -9,7 +9,7 @@ import {
 } from "react-icons/hi2";
 import { IoHammerOutline } from "react-icons/io5";
 import { Button } from "@/components/ui/button";
-import { IDictionary } from "../dictionaries/generated";
+import { IDictionary } from "../../dictionaries/generated";
 import { HiOutlineHand } from "react-icons/hi";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";

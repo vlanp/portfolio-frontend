@@ -29,7 +29,7 @@ import { removePrefixOrThrow } from "@/types/IRemovePrefix";
 import { splitString } from "@/types/ISplitString";
 import { getNestedValue } from "@/types/IGetNestedValue";
 import { ISearchPaths } from "@/types/generated/ISearchPaths";
-import HighlightedText from "@/components/ui/main/highlighted-text";
+import HighlightedText from "@/app/[lang]/ui/shared/highlighted-text";
 import { getHighlightConcatsTexts } from "@/lib/utils";
 import IProjectsPageProps, {
   frameworkParamKeyPrefix,

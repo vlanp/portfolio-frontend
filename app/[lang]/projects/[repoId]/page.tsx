@@ -1,5 +1,5 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import LeftSidebar from "../../ui/projects-page/project-page/left-sidebar";
+import LeftSidebar from "../../ui/exclusive/projects-page/project-page/left-sidebar";
 import axios, { AxiosError } from "axios";
 import checkedEnv from "@/lib/checkEnv";
 import IFileExist, { ZFileExist } from "@/types/IFileExist";
@@ -11,10 +11,10 @@ import { mobileBreakpoint } from "@/types/IBreakpoints";
 import { redirect } from "next/navigation";
 import { IOctokitTagsResponse } from "@/types/ITagContent";
 import { Suspense } from "react";
-import LeftSidebarSkeleton from "../../ui/projects-page/project-page/left-sidebar-skeleton";
-import FileDisplay from "../../ui/projects-page/project-page/file-display";
+import LeftSidebarSkeleton from "../../ui/exclusive/projects-page/project-page/left-sidebar-skeleton";
+import FileDisplay from "../../ui/exclusive/projects-page/project-page/file-display";
 import { getDictionary } from "../../dictionaries";
-import FileDisplaySkeleton from "../../ui/projects-page/project-page/file-display-skeleton";
+import FileDisplaySkeleton from "../../ui/exclusive/projects-page/project-page/file-display-skeleton";
 import { constructNewUrl } from "@/lib/utils";
 import { ZRepo } from "@/types/IProject";
 import {

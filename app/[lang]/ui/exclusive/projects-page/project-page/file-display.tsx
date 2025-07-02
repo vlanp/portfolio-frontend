@@ -10,7 +10,7 @@ import { ILang } from "@/types/ILang";
 import { getZApiSuccessResponse } from "@/types/IApiResponse";
 import z from "zod/v4";
 import { IDictionary } from "@/app/[lang]/dictionaries/generated";
-import PageContainer from "../../page-container";
+import PageContainer from "../../../shared/page-container";
 import { ZProjectFrontMatterContent } from "@/types/IProjectFrontMatterContent";
 
 const FileDisplay = async ({

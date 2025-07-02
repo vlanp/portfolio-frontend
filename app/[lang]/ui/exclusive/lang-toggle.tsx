@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { IDictionary } from "../dictionaries/generated";
+import { IDictionary } from "../../dictionaries/generated";
 
 export function LangToggle({ dictionary }: { dictionary: IDictionary }) {
   const router = useRouter();

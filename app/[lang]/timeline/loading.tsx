@@ -1,5 +1,5 @@
-import PageContainer from "../ui/page-container";
-import TimelineSkeleton from "../ui/timeline-page/timeline-skeleton";
+import PageContainer from "../ui/shared/page-container";
+import TimelineSkeleton from "../ui/exclusive/timeline-page/timeline-skeleton";
 
 const Loading = () => {
   return (
