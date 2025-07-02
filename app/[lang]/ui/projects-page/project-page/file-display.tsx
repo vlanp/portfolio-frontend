@@ -2,7 +2,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import HtmlMarkdownContent from "./file-display/html-markdown-content";
 import RightSidebar from "./file-display/right-sidebar";
 import axios from "axios";
-import { ZFileContent } from "@/types/IFileContent";
+import { getZFileContent } from "@/types/IFileContent";
 import checkedEnv from "@/lib/checkEnv";
 import { extraLargeBreakpoint } from "@/types/IBreakpoints";
 import FileDisplaySkeleton from "./file-display-skeleton";
@@ -11,6 +11,7 @@ import { getZApiSuccessResponse } from "@/types/IApiResponse";
 import z from "zod/v4";
 import { IDictionary } from "@/app/[lang]/dictionaries/generated";
 import PageContainer from "../../page-container";
+import { ZProjectFrontMatterContent } from "@/types/IProjectFrontMatterContent";
 
 const FileDisplay = async ({
   repoId,
@@ -43,9 +44,9 @@ const FileDisplay = async ({
     { params: { ref: sha } }
   );
 
-  const fileContentParseResult = getZApiSuccessResponse(ZFileContent).safeParse(
-    fileContentResponse.data
-  );
+  const fileContentParseResult = getZApiSuccessResponse(
+    getZFileContent(ZProjectFrontMatterContent)
+  ).safeParse(fileContentResponse.data);
 
   if (!fileContentParseResult.success) {
     throw new Error(z.prettifyError(fileContentParseResult.error));

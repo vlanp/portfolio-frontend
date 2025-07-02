@@ -1,4 +1,4 @@
-import IFrontMatterContent from "./IFrontMatterContent";
+import IProjectFrontMatterContent from "./IProjectFrontMatterContent";
 import type { Endpoints } from "@octokit/types";
 
 export type IOctokitContentResponse =
@@ -23,7 +23,7 @@ interface IDir {
 
 interface IFile {
   file: IOctokitTreeResponse["data"]["tree"][0];
-  matterContent: IFrontMatterContent;
+  matterContent: IProjectFrontMatterContent;
 }
 
 export type { ITagContent, IDir, IFile };

@@ -1,14 +1,21 @@
 import { z } from "zod/v4";
 import { ZDocToc } from "./IDocToc";
-import { ZFrontMatterContent } from "./IFrontMatterContent";
 
-const ZFileContent = z.object({
-  htmlContent: z.string(),
-  matterContent: ZFrontMatterContent,
-  tableOfContents: ZDocToc.array(),
-});
+const getZFileContent = <ZMatterContent extends z.ZodType = z.ZodType>(
+  zMatterContent: ZMatterContent
+) => {
+  return z.object({
+    htmlContent: z.string(),
+    matterContent: zMatterContent,
+    tableOfContents: ZDocToc.array(),
+  });
+};
 
-type IFileContent = z.infer<typeof ZFileContent>;
+type IFileContent<MatterContent> = z.infer<
+  ReturnType<typeof getZFileContent>
+> & {
+  matterContent: MatterContent;
+};
 
-export { ZFileContent };
+export { getZFileContent };
 export default IFileContent;

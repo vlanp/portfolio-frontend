@@ -8,6 +8,7 @@ import { constructNewUrl } from "@/lib/utils";
 import { ILang } from "@/types/ILang";
 import { IApiSuccessResponse } from "@/types/IApiResponse";
 import { IDictionary } from "@/app/[lang]/dictionaries/generated";
+import IProjectFrontMatterContent from "@/types/IProjectFrontMatterContent";
 
 const HtmlMarkdownContent = async ({
   fileContent,
@@ -19,7 +20,7 @@ const HtmlMarkdownContent = async ({
   pathname,
   lang,
 }: {
-  fileContent: IFileContent;
+  fileContent: IFileContent<IProjectFrontMatterContent>;
   projectDict: IDictionary["Projects"]["Project"];
   filePath: string;
   repoId: string;

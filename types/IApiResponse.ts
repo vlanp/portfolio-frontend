@@ -1,6 +1,6 @@
 import z from "zod/v4";
 
-const getZApiSuccessResponse = <ZResponseType extends z.ZodTypeAny = z.ZodAny>(
+const getZApiSuccessResponse = <ZResponseType extends z.ZodType = z.ZodType>(
   zResponseType: ZResponseType
 ) => {
   return z.object({

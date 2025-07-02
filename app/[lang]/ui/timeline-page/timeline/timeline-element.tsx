@@ -27,6 +27,7 @@ import { useIsBelowBP } from "@/hooks/useIsBelowBP";
 import { mobileBreakpoint } from "@/types/IBreakpoints";
 import TimelineBackground from "./timeline-container/timeline-background";
 import { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 
 const startYearHeightPx = yearDivHeightPx / 2;
 
@@ -59,6 +60,8 @@ const TimelineElement = ({
 
   const isBelowMobileBp = useIsBelowBP(mobileBreakpoint);
   const [isTooltipOpen, setIsTooltipOpen] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
 
   datas.forEach((data) => {
     const fromTopPx =
@@ -101,7 +104,9 @@ const TimelineElement = ({
             <span
               key={data._id}
               onClick={
-                isBelowMobileBp ? () => setIsTooltipOpen((p) => !p) : undefined
+                isBelowMobileBp
+                  ? () => setIsTooltipOpen((p) => !p)
+                  : () => router.push(`${pathname}/${data._id}`)
               }
               className={cn(
                 "absolute rounded-sm hover:cursor-pointer flex justify-center items-center",
