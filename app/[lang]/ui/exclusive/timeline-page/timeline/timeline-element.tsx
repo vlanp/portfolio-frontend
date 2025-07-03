@@ -28,6 +28,8 @@ import { mobileBreakpoint } from "@/types/IBreakpoints";
 import TimelineBackground from "./timeline-container/timeline-background";
 import { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { TimelineElementCombobox } from "../timeline-data-page/left-sidebar/timeline-element-combobox";
+import { IDictionary } from "@/app/[lang]/dictionaries/generated";
 
 const startYearHeightPx = yearDivHeightPx / 2;
 
@@ -41,6 +43,9 @@ const TimelineElement = ({
   timelineElement,
   lang,
   years,
+  replaceCurrentPath,
+  withCombobox,
+  timelineDict,
 }: {
   elementTitle: string;
   bgThemeColor: `bg-chart-${number}`;
@@ -54,7 +59,17 @@ const TimelineElement = ({
   timelineElement: ITimelineElement;
   lang: ILang;
   years: number[];
-}) => {
+  replaceCurrentPath?: boolean;
+} & (
+  | {
+      withCombobox: true;
+      timelineDict: IDictionary["Timeline"];
+    }
+  | {
+      withCombobox?: false;
+      timelineDict?: undefined;
+    }
+)) => {
   const startDate = new Date(startYear, 1, 1);
   const dispatchedTimelineDatas = createDispatchedTimelineDatas([1, 2, 3]);
 
@@ -106,7 +121,12 @@ const TimelineElement = ({
               onClick={
                 isBelowMobileBp
                   ? () => setIsTooltipOpen((p) => !p)
-                  : () => router.push(`${pathname}/${data._id}`)
+                  : () =>
+                      replaceCurrentPath
+                        ? router.push(
+                            `${pathname.split("/").slice(0, -1).join("/")}/${data._id}?el=${data.type}`
+                          )
+                        : router.push(`${pathname}/${data._id}?el=${data.type}`)
               }
               className={cn(
                 "absolute rounded-sm hover:cursor-pointer flex justify-center items-center",
@@ -149,7 +169,16 @@ const TimelineElement = ({
           <Icon size={40} className={cn("p-2 rounded-full", bgThemeColor)} />
         </CardHeader>
         <CardContent>
-          <CardTitle className="text-center">{elementTitle}</CardTitle>
+          <CardTitle className="text-center">
+            {withCombobox ? (
+              <TimelineElementCombobox
+                timelineDict={timelineDict}
+                selectedElement={timelineElement}
+              />
+            ) : (
+              elementTitle
+            )}
+          </CardTitle>
         </CardContent>
       </Card>
       <div

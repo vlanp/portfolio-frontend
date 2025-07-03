@@ -6,6 +6,23 @@ const ZETimelineElements = z.enum(["studies", "experiences", "projects"]);
 
 type ITimelineElement = z.infer<typeof ZETimelineElements>;
 
+type ICapitalizedTimelineElements = {
+  [K in ITimelineElement]: Capitalize<K>;
+}[keyof typeof ZETimelineElements.enum];
+
+const getTimelineElementDictKey = (
+  timelineElement: ITimelineElement
+): Capitalize<typeof timelineElement> => {
+  return (timelineElement.charAt(0).toUpperCase() +
+    timelineElement.slice(1)) as Capitalize<typeof timelineElement>;
+};
+
+const getTimelineElementsDictKeys = (): ICapitalizedTimelineElements[] => {
+  return ZETimelineElements.options.map((element) =>
+    getTimelineElementDictKey(element)
+  );
+};
+
 const ZTimelineData = z.object({
   _id: z.string(),
   title: z.record(ZELangs, z.string()),
@@ -115,6 +132,29 @@ const selectTimeline = <N extends number>(
   return undefined;
 };
 
+const getYears = (timelineDatas: ITimelineDatas) => {
+  const ascendingDates = Object.values(timelineDatas)
+    .flat()
+    .map((it) => {
+      if (it.endDate) {
+        return [it.startDate, it.endDate];
+      } else {
+        return [it.startDate];
+      }
+    })
+    .flat()
+    .sort((a, b) => a.getTime() - b.getTime());
+
+  const startDate: Date | undefined = ascendingDates[0];
+  const endDate: Date | undefined = ascendingDates[ascendingDates.length - 1];
+  const startYear = startDate.getFullYear();
+  const endYear = endDate.getFullYear();
+  const years = [...Array(endYear - startYear + 2).keys()].map(
+    (i) => i + startYear
+  );
+  return { years, startDate, endDate };
+};
+
 export type {
   ITimelineData,
   ITimelineElement,
@@ -123,6 +163,7 @@ export type {
   ITimelineExperiencesData,
   ITimelineStudiesData,
   IDispatchedTimelineDatas,
+  ICapitalizedTimelineElements,
 };
 export {
   ZTimelineData,
@@ -133,4 +174,7 @@ export {
   ZTimelineStudiesData,
   createDispatchedTimelineDatas,
   selectTimeline,
+  getTimelineElementsDictKeys,
+  getTimelineElementDictKey,
+  getYears,
 };

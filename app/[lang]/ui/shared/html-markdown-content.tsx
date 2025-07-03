@@ -3,7 +3,7 @@ import { IFile } from "@/types/ITagContent";
 import Link from "next/link";
 import { IDictionary } from "@/app/[lang]/dictionaries/generated";
 
-const HtmlMarkdownContent = async ({
+const HtmlMarkdownContent = ({
   htmlContent,
   htmlMarkdownContentDict,
   title,

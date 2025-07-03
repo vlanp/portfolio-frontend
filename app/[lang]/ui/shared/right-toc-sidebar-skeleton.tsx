@@ -1,6 +1,5 @@
 "use client";
 
-import { IDictionary } from "@/app/[lang]/dictionaries/generated";
 import {
   Sidebar,
   SidebarContent,
@@ -12,13 +11,10 @@ import {
   SidebarMenuSkeleton,
   SidebarSeparator,
 } from "@/components/ui/sidebar";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useEffect, useRef, useState } from "react";
 
-const RightTocSidebarSkeleton = ({
-  rightTocSidebarDict,
-}: {
-  rightTocSidebarDict: IDictionary["shared"]["RightTocSidebar"];
-}) => {
+const RightTocSidebarSkeleton = () => {
   const [skeletonCount, setSkeletonCount] = useState(0);
   const sidebarRef = useRef<HTMLUListElement | null>(null);
 
@@ -58,7 +54,9 @@ const RightTocSidebarSkeleton = ({
     <Sidebar side="right" variant="floating" className="top-header-height">
       <SidebarContent>
         <SidebarGroup className="min-h-full">
-          <SidebarGroupLabel>{rightTocSidebarDict.Title}</SidebarGroupLabel>
+          <SidebarGroupLabel className="w-full">
+            <Skeleton className="w-full h-[30px]" />
+          </SidebarGroupLabel>
           <SidebarSeparator />
           <SidebarGroupContent className="gap-1 flex-1">
             <SidebarMenu ref={sidebarRef} className="min-h-full">

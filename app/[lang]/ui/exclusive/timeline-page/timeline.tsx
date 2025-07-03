@@ -4,7 +4,11 @@ import TimelineContainer from "./timeline/timeline-container";
 import TimelineElement from "./timeline/timeline-element";
 import { IoSchoolOutline, IoHammerOutline } from "react-icons/io5";
 import { HiOutlineBriefcase } from "react-icons/hi2";
-import { ITimelineDatas, ZETimelineElements } from "@/types/ITimelineData";
+import {
+  getYears,
+  ITimelineDatas,
+  ZETimelineElements,
+} from "@/types/ITimelineData";
 import { IDictionary } from "../../../dictionaries/generated";
 import dynamic from "next/dynamic";
 import { ILang } from "@/types/ILang";
@@ -22,25 +26,7 @@ const Timeline = ({
   timelineDict: IDictionary["Timeline"];
   lang: ILang;
 }) => {
-  const ascendingDates = Object.values(timelineDatas)
-    .flat()
-    .map((it) => {
-      if (it.endDate) {
-        return [it.startDate, it.endDate];
-      } else {
-        return [it.startDate];
-      }
-    })
-    .flat()
-    .sort((a, b) => a.getTime() - b.getTime());
-
-  const startDate: Date | undefined = ascendingDates[0];
-  const endDate: Date | undefined = ascendingDates[ascendingDates.length - 1];
-  const startYear = startDate.getFullYear();
-  const endYear = endDate.getFullYear();
-  const years = [...Array(endYear - startYear + 2).keys()].map(
-    (i) => i + startYear
-  );
+  const { years, startDate } = getYears(timelineDatas);
 
   const isBelowMobileBp = useIsBelowBP(mobileBreakpoint);
 

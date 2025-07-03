@@ -1,6 +1,8 @@
 import { ILang } from "./ILang";
 
-enum ETimelineDataPageSearchParamsKeys {}
+enum ETimelineDataPageSearchParamsKeys {
+  EL = "el",
+}
 
 type ISearchParamsKeysType = `${ETimelineDataPageSearchParamsKeys}`;
 

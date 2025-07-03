@@ -1,6 +1,5 @@
 import { z } from "zod/v4";
 import { ZDocToc } from "./IDocToc";
-import { ZELangs } from "./ILang";
 
 const getZFileContent = <ZMatterContent extends z.ZodType = z.ZodType>(
   zMatterContent: ZMatterContent
@@ -18,20 +17,25 @@ type IFileContent<MatterContent> = z.infer<
   matterContent: MatterContent;
 };
 
-const getZFileContentWithTitle = <ZMatterContent extends z.ZodType = z.ZodType>(
-  zMatterContent: ZMatterContent
+const getZFileContentWithExtraData = <
+  ZMatterContent extends z.ZodType = z.ZodType,
+  ZExtraData extends z.ZodType = z.ZodType,
+>(
+  zMatterContent: ZMatterContent,
+  zExtraData: ZExtraData
 ) => {
   return z.object({
     ...getZFileContent(zMatterContent).shape,
-    title: z.record(ZELangs, z.string()),
+    extraData: zExtraData,
   });
 };
 
-type IFileContentWithTitle<MatterContent> = z.infer<
-  ReturnType<typeof getZFileContentWithTitle>
+type IFileContentWithExtraData<MatterContent, ExtraData> = z.infer<
+  ReturnType<typeof getZFileContentWithExtraData>
 > & {
   matterContent: MatterContent;
+  extraData: ExtraData;
 };
 
-export { getZFileContent, getZFileContentWithTitle };
-export type { IFileContent, IFileContentWithTitle };
+export { getZFileContent, getZFileContentWithExtraData };
+export type { IFileContent, IFileContentWithExtraData };

@@ -1,18 +1,27 @@
+import { cn } from "@/lib/utils";
 import { titleContainerSizePx } from "../timeline-container";
 
 const yearDivHeightPx = 80;
 
-const YearTimeline = ({ years }: { years: number[] }) => {
+const YearTimeline = ({
+  years,
+  hidden,
+}: {
+  years: number[];
+  hidden?: boolean;
+}) => {
   return (
     <div
-      className={`flex flex-col flex-1`}
+      className={cn(`flex flex-col flex-1`, hidden && "invisible w-0 flex-0")}
       style={{ paddingTop: `${titleContainerSizePx}px` }}
     >
       {years.map((year) => {
         return (
           <div
             key={year}
-            className={`flex flex-row items-center gap-2 px-2 min-w-[100px]`}
+            className={cn(
+              `flex flex-row items-center gap-2 px-2 min-w-[100px]`
+            )}
             style={{ minHeight: `${yearDivHeightPx}px` }}
           >
             <span className="flex-1 h-px bg-border"></span>
