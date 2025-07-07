@@ -23,6 +23,7 @@ import { getZApiSuccessResponse } from "@/types/IApiResponse";
 import z from "zod/v4";
 import { ILang } from "@/types/ILang";
 import { getZDocumentsWithHighlights } from "@/types/IDocumentsWithHighlights";
+import { ZESearchPaths } from "@/types/generated/ISearchPaths";
 
 const ProjectsIconsContext = createContext<{
   iconsCompsDataState: IFetchDataState<Map<string, IconType | null>>;
@@ -38,7 +39,7 @@ const fetchAllProjects = async (lang: ILang): Promise<IProject[]> => {
   );
 
   const projectsResponseParseResult = getZApiSuccessResponse(
-    getZDocumentsWithHighlights(ZProject)
+    getZDocumentsWithHighlights(ZProject, ZESearchPaths)
   ).safeParse(projectsResponse.data);
 
   if (!projectsResponseParseResult.success) {
