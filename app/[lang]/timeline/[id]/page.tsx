@@ -45,7 +45,8 @@ const TimelineDataPage = async ({
   const fileContentResponse = await axios
     .get<unknown>(
       checkedEnv.NEXT_PUBLIC_BACKEND_URL +
-        checkedEnv.NEXT_PUBLIC_GET_TIMELINE_DATA_MD_CONTENT.replace("{id}", id)
+        checkedEnv.NEXT_PUBLIC_GET_TIMELINE_DATA_MD_CONTENT.replace("{id}", id),
+      { params: { lang } }
     )
     .catch((error: Error | AxiosError) => {
       if (
