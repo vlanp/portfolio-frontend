@@ -44,7 +44,7 @@ function formatPathToDisplayName(path: string): string {
 
 const constructNewUrl = (
   paramKey: string,
-  paramValue: string,
+  paramValue: string | string[],
   pathname: string,
   urlSearchParams: URLSearchParams,
   options?: {
@@ -52,11 +52,33 @@ const constructNewUrl = (
     oldParamValue?: string;
   }
 ) => {
-  if (paramValue) {
-    if (options?.append && !urlSearchParams.has(paramKey, paramValue)) {
-      urlSearchParams.append(paramKey, paramValue);
+  if (
+    paramValue &&
+    (typeof paramValue === "string" || paramValue.length !== 0)
+  ) {
+    if (options?.append) {
+      if (typeof paramValue === "string") {
+        if (!urlSearchParams.has(paramKey, paramValue)) {
+          urlSearchParams.append(paramKey, paramValue);
+        }
+      } else {
+        paramValue.forEach((v) => {
+          if (!urlSearchParams.has(paramKey, v)) {
+            urlSearchParams.append(paramKey, v);
+          }
+        });
+      }
     } else {
-      urlSearchParams.set(paramKey, paramValue);
+      if (typeof paramValue === "string") {
+        urlSearchParams.set(paramKey, paramValue);
+      } else {
+        urlSearchParams.delete(paramKey);
+        paramValue.forEach((v) => {
+          if (!urlSearchParams.has(paramKey, v)) {
+            urlSearchParams.append(paramKey, v);
+          }
+        });
+      }
     }
   } else {
     urlSearchParams.delete(paramKey, options?.oldParamValue);
@@ -110,6 +132,26 @@ const formatDateRange = (startDate: Date, endDate: Date, lang: ILang) => {
   return `${formatDate(startDate, lang)} - ${formatDate(endDate, lang)}`;
 };
 
+function createURLSearchParams(
+  searchParamsRecord: Partial<Record<string, string | string[]>>
+): URLSearchParams {
+  const urlSearchParams = new URLSearchParams();
+
+  Object.entries(searchParamsRecord).forEach(([key, value]) => {
+    if (value !== undefined) {
+      if (Array.isArray(value)) {
+        value.forEach((item) => {
+          urlSearchParams.append(key, item);
+        });
+      } else {
+        urlSearchParams.set(key, value);
+      }
+    }
+  });
+
+  return urlSearchParams;
+}
+
 export {
   formatPathToDisplayName,
   constructNewUrl,
@@ -121,4 +163,5 @@ export {
   calculateYearsDifference,
   formatDate,
   formatDateRange,
+  createURLSearchParams,
 };

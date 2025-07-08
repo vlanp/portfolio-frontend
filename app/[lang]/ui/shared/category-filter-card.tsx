@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { IDictionary } from "../../dictionaries/generated";
 import { LiaFilterSolid } from "react-icons/lia";
 import { getParentId, ICategories, isChild } from "@/types/ICategories";
-import { Dispatch, JSX, SetStateAction, useState } from "react";
+import { JSX, useState } from "react";
 import { cn } from "@/lib/utils";
 import { LuChevronRight, LuChevronDown } from "react-icons/lu";
 
@@ -13,36 +13,72 @@ const CategoryFilterCard = ({
   categories,
   value,
   setValue,
+  expanded,
+  setExpanded,
 }: {
   categoryFilterCardDict: IDictionary["shared"]["CategoryFilterCardDict"];
   categories: ICategories;
 } & (
   | { value?: undefined; setValue?: undefined }
-  | { value: string[]; setValue: Dispatch<SetStateAction<string[]>> }
-)) => {
-  const [_selectedCategories, _setSelectedCategories] = useState<string[]>([]);
-  const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
+  | {
+      value: string[];
+      setValue: (ids: string[]) => void;
+    }
+) &
+  (
+    | { expanded?: undefined; setExpanded?: undefined }
+    | {
+        expanded: string[];
+        setExpanded: (ids: string[]) => void;
+      }
+  )) => {
+  const [_selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [_expandedCategories, setExpandedCategories] = useState<string[]>([]);
 
-  const setSelectedCategories = setValue ? setValue : _setSelectedCategories;
   const selectedCategories = value ? value : _selectedCategories;
+  const expandedCategories = expanded ? expanded : _expandedCategories;
 
   const handleClick = (id: string) => {
     if (selectedCategories.includes(id)) {
-      setSelectedCategories((p) => p.filter((sc) => sc !== id));
+      if (setValue) {
+        setValue(value.filter((sc) => sc !== id));
+      } else {
+        setSelectedCategories((p) => p.filter((sc) => sc !== id));
+      }
     } else {
       const parentId = getParentId(categories, id);
-      setSelectedCategories((p) => [...p.filter((sc) => sc !== parentId), id]);
+      if (setValue) {
+        setValue([...value.filter((sc) => sc !== parentId), id]);
+      } else {
+        setSelectedCategories((p) => [
+          ...p.filter((sc) => sc !== parentId),
+          id,
+        ]);
+      }
+
       if (!expandedCategories.includes(id)) {
-        setExpandedCategories((p) => [...p, id]);
+        if (setExpanded) {
+          setExpanded([...expanded, id]);
+        } else {
+          setExpandedCategories((p) => [...p, id]);
+        }
       }
     }
   };
 
   const handleChevronClick = (id: string) => {
     if (!expandedCategories.includes(id)) {
-      setExpandedCategories((p) => [...p, id]);
+      if (setExpanded) {
+        setExpanded([...expanded, id]);
+      } else {
+        setExpandedCategories((p) => [...p, id]);
+      }
     } else {
-      setExpandedCategories((p) => p.filter((it) => it !== id));
+      if (setExpanded) {
+        setExpanded(expanded.filter((it) => it !== id));
+      } else {
+        setExpandedCategories((p) => p.filter((it) => it !== id));
+      }
     }
   };
 

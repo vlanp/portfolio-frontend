@@ -1,12 +1,17 @@
 import { ILang } from "./ILang";
 
-enum EArticlesPageSearchParamsKeys {}
+enum EArticlesPageSearchParamsKeys {
+  FILTERS = "f",
+  EXPANDED = "e",
+}
 
 type ISearchParamsKeysType = `${EArticlesPageSearchParamsKeys}`;
 
 interface IArticlesPageProps {
   params: Promise<{ lang: ILang }>;
-  searchParams: Promise<Partial<Record<ISearchParamsKeysType, string>>>;
+  searchParams: Promise<
+    Partial<Record<ISearchParamsKeysType, string | string[]>>
+  >;
 }
 
 export default IArticlesPageProps;

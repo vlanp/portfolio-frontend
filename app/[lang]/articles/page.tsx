@@ -1,8 +1,13 @@
-import IArticlesPageProps from "@/types/IArticlesPageProps";
+import IArticlesPageProps, {
+  EArticlesPageSearchParamsKeys,
+} from "@/types/IArticlesPageProps";
 import CategoryFilterCard from "../ui/shared/category-filter-card";
 import PageContainer from "../ui/shared/page-container";
 import { getDictionary } from "../dictionaries";
 import { ICategories } from "@/types/ICategories";
+import { headers } from "next/headers";
+import { constructNewUrl, createURLSearchParams } from "@/lib/utils";
+import { redirect } from "next/navigation";
 
 const languagesAndFrameworks: ICategories = {
   JavaScript: {
@@ -270,16 +275,64 @@ const languagesAndFrameworks: ICategories = {
   },
 };
 
-const ArticlesPage = async ({ params }: IArticlesPageProps) => {
+const ArticlesPage = async ({ params, searchParams }: IArticlesPageProps) => {
   const awaitedParams = await params;
   const lang = awaitedParams.lang;
+  const awaitedSearchParams = await searchParams;
+  const filters =
+    typeof awaitedSearchParams.f === "string"
+      ? [awaitedSearchParams.f]
+      : awaitedSearchParams.f === undefined
+        ? []
+        : awaitedSearchParams.f;
+  const expanded =
+    typeof awaitedSearchParams.e === "string"
+      ? [awaitedSearchParams.e]
+      : awaitedSearchParams.e === undefined
+        ? []
+        : awaitedSearchParams.e;
   const dict = await getDictionary(lang);
   const categoryFilterCardDict = dict.shared.CategoryFilterCardDict;
+  const headerList = await headers();
+  const pathname = headerList.get("x-current-path");
+
+  if (!pathname) {
+    throw new Error("No pathname found in headers");
+  }
+
+  const setFilters = async (ids: string[]) => {
+    "use server";
+    const urlSearchParams = createURLSearchParams(awaitedSearchParams);
+    const newUrl = constructNewUrl(
+      EArticlesPageSearchParamsKeys.FILTERS,
+      ids,
+      pathname,
+      urlSearchParams
+    );
+    redirect(newUrl);
+  };
+
+  const setExpanded = async (ids: string[]) => {
+    "use server";
+    const urlSearchParams = createURLSearchParams(awaitedSearchParams);
+    const newUrl = constructNewUrl(
+      EArticlesPageSearchParamsKeys.EXPANDED,
+      ids,
+      pathname,
+      urlSearchParams
+    );
+    redirect(newUrl);
+  };
+
   return (
     <PageContainer className="flex grow justify-center">
       <CategoryFilterCard
         categoryFilterCardDict={categoryFilterCardDict}
         categories={languagesAndFrameworks}
+        value={filters}
+        setValue={setFilters}
+        expanded={expanded}
+        setExpanded={setExpanded}
       />
     </PageContainer>
   );
