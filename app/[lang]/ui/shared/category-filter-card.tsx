@@ -62,10 +62,10 @@ const CategoryFilterCard = ({
         );
         compContent.push(
           <div key={currentCategory.id}>
-            <div className="flex flex-row items-center">
-              <p
+            <div className="flex flex-row items-center h-[40px] m-[10px] gap-2">
+              <span
                 className={cn(
-                  "flex-1 overflow-hidden rounded-md p-2 text-left ring-sidebar-ring disabled:pointer-events-none disabled:opacity-50",
+                  "flex flex-1 h-full items-center overflow-hidden rounded-md px-2 text-left ring-sidebar-ring disabled:pointer-events-none disabled:opacity-50",
                   selectedCategories.includes(currentCategory.id) &&
                     "bg-sidebar-accent text-sidebar-accent-foreground",
                   !someChildAreSelected &&
@@ -79,23 +79,24 @@ const CategoryFilterCard = ({
                 }
               >
                 {filter}
-              </p>
-              {nextFilters.length !== 0 &&
-                (expandedCategories.includes(currentCategory.id) ? (
-                  <div className="flex h-full text-xl px-2">
+              </span>
+              <span className="flex items-center justify-center bg-accent rounded-full aspect-square h-full p-2">
+                {currentCategory.numberOfElements}
+              </span>
+              <div className="flex items-center h-full text-xl px-2 aspect-square">
+                {nextFilters.length !== 0 &&
+                  (expandedCategories.includes(currentCategory.id) ? (
                     <LuChevronDown
                       className="hover:cursor-pointer"
                       onClick={() => handleChevronClick(currentCategory.id)}
                     />
-                  </div>
-                ) : (
-                  <div className="flex h-full text-xl px-2">
+                  ) : (
                     <LuChevronRight
                       className="hover:cursor-pointer"
                       onClick={() => handleChevronClick(currentCategory.id)}
                     />
-                  </div>
-                ))}
+                  ))}
+              </div>
             </div>
             <div
               className={cn(
