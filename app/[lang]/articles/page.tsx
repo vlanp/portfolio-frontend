@@ -6,6 +6,7 @@ import PageContainer from "../ui/shared/page-container";
 import { getDictionary } from "../dictionaries";
 import { ICategories } from "@/types/ICategories";
 import { searchParamsValueArray } from "@/lib/utils";
+import CategoryFilterCardSkeleton from "../ui/shared/category-filter-card-skeleton";
 
 const languagesAndFrameworks: ICategories = {
   JavaScript: {
