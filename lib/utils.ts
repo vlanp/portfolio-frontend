@@ -42,7 +42,19 @@ function formatPathToDisplayName(path: string): string {
   return formattedName;
 }
 
-const constructNewUrl = (
+function constructNewUrl(
+  paramKey: string,
+  paramValue: string | string[],
+  pathname: string,
+  urlSearchParams: URLSearchParams,
+  options: {
+    append?: boolean;
+    oldParamValue?: string;
+    returnUrlSearchParams: true;
+  }
+): URLSearchParams;
+
+function constructNewUrl(
   paramKey: string,
   paramValue: string | string[],
   pathname: string,
@@ -50,8 +62,21 @@ const constructNewUrl = (
   options?: {
     append?: boolean;
     oldParamValue?: string;
+    returnUrlSearchParams?: false;
   }
-) => {
+): string;
+
+function constructNewUrl(
+  paramKey: string,
+  paramValue: string | string[],
+  pathname: string,
+  urlSearchParams: URLSearchParams,
+  options?: {
+    append?: boolean;
+    oldParamValue?: string;
+    returnUrlSearchParams?: boolean;
+  }
+): URLSearchParams | string {
   if (
     paramValue &&
     (typeof paramValue === "string" || paramValue.length !== 0)
@@ -83,8 +108,12 @@ const constructNewUrl = (
   } else {
     urlSearchParams.delete(paramKey, options?.oldParamValue);
   }
-  return `${pathname}?${urlSearchParams.toString()}`;
-};
+  if (options?.returnUrlSearchParams) {
+    return urlSearchParams;
+  } else {
+    return `${pathname}?${urlSearchParams.toString()}`;
+  }
+}
 
 function capitalizeFirstLetter(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
@@ -152,6 +181,17 @@ function createURLSearchParams(
   return urlSearchParams;
 }
 
+const searchParamsValueArray = (
+  searchParams: Record<string, string | string[]>,
+  searchParamKey: string
+): string[] => {
+  return typeof searchParams[searchParamKey] === "string"
+    ? [searchParams[searchParamKey]]
+    : searchParams[searchParamKey] === undefined
+      ? []
+      : searchParams[searchParamKey];
+};
+
 export {
   formatPathToDisplayName,
   constructNewUrl,
@@ -164,4 +204,5 @@ export {
   formatDate,
   formatDateRange,
   createURLSearchParams,
+  searchParamsValueArray,
 };

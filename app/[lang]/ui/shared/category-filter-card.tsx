@@ -4,9 +4,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { IDictionary } from "../../dictionaries/generated";
 import { LiaFilterSolid } from "react-icons/lia";
 import { getParentId, ICategories, isChild } from "@/types/ICategories";
-import { JSX, useState } from "react";
-import { cn } from "@/lib/utils";
+import { Dispatch, JSX, SetStateAction, useState } from "react";
+import { cn, constructNewUrl, createURLSearchParams } from "@/lib/utils";
 import { LuChevronRight, LuChevronDown } from "react-icons/lu";
+import { usePathname, useRouter } from "next/navigation";
 
 const CategoryFilterCard = ({
   categoryFilterCardDict,
@@ -15,67 +16,166 @@ const CategoryFilterCard = ({
   setValue,
   expanded,
   setExpanded,
+  method,
+  searchParams,
+  valueSearchParamKey,
+  expandedSearchParamKey,
 }: {
   categoryFilterCardDict: IDictionary["shared"]["CategoryFilterCardDict"];
   categories: ICategories;
 } & (
-  | { value?: undefined; setValue?: undefined }
   | {
+      method: "UrlSearchParams";
+      searchParams: Record<string, string | string[]>;
+      valueSearchParamKey: string;
+      expandedSearchParamKey: string;
       value: string[];
-      setValue: (ids: string[]) => void;
+      setValue?: undefined;
+      expanded: string[];
+      setExpanded?: undefined;
     }
-) &
-  (
-    | { expanded?: undefined; setExpanded?: undefined }
-    | {
-        expanded: string[];
-        setExpanded: (ids: string[]) => void;
-      }
-  )) => {
-  const [_selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [_expandedCategories, setExpandedCategories] = useState<string[]>([]);
-
+  | ({
+      method: "StatesHooks";
+      searchParams?: undefined;
+      valueSearchParamKey?: undefined;
+      expandedSearchParamKey?: undefined;
+    } & (
+      | { value?: undefined; setValue?: undefined }
+      | {
+          value: string[];
+          setValue: Dispatch<SetStateAction<string[]>>;
+        }
+    ) &
+      (
+        | { expanded?: undefined; setExpanded?: undefined }
+        | {
+            expanded: string[];
+            setExpanded: Dispatch<SetStateAction<string[]>>;
+          }
+      ))
+)) => {
+  const [_selectedCategories, _setSelectedCategories] = useState<string[]>(
+    value || []
+  );
+  const [_expandedCategories, _setExpandedCategories] = useState<string[]>(
+    expanded || []
+  );
+  const router = useRouter();
+  const pathname = usePathname();
   const selectedCategories = value ? value : _selectedCategories;
+  const setSelectedCategories = setValue ? setValue : _setSelectedCategories;
   const expandedCategories = expanded ? expanded : _expandedCategories;
+  const setExpandedCategories = setExpanded
+    ? setExpanded
+    : _setExpandedCategories;
 
   const handleClick = (id: string) => {
+    if (method === "StatesHooks") {
+      handleStates(id, setSelectedCategories, setExpandedCategories);
+    } else {
+      handleUrlSearchParams(
+        id,
+        searchParams,
+        valueSearchParamKey,
+        expandedSearchParamKey
+      );
+    }
+  };
+
+  const handleStates = (
+    id: string,
+    setSelectedCategories: Dispatch<SetStateAction<string[]>>,
+    setExpandedCategories: Dispatch<SetStateAction<string[]>>
+  ) => {
     if (selectedCategories.includes(id)) {
-      if (setValue) {
-        setValue(value.filter((sc) => sc !== id));
-      } else {
-        setSelectedCategories((p) => p.filter((sc) => sc !== id));
-      }
+      setSelectedCategories((p) => p.filter((sc) => sc !== id));
     } else {
       const parentId = getParentId(categories, id);
-      if (setValue) {
-        setValue([...value.filter((sc) => sc !== parentId), id]);
-      } else {
-        setSelectedCategories((p) => [
-          ...p.filter((sc) => sc !== parentId),
-          id,
-        ]);
-      }
-
+      setSelectedCategories((p) => [...p.filter((sc) => sc !== parentId), id]);
       if (!expandedCategories.includes(id)) {
-        if (setExpanded) {
-          setExpanded([...expanded, id]);
-        } else {
-          setExpandedCategories((p) => [...p, id]);
-        }
+        setExpandedCategories((p) => [...p, id]);
+      }
+    }
+  };
+
+  const handleUrlSearchParams = (
+    id: string,
+    searchParams: Record<string, string | string[]>,
+    valueSearchParamKey: string,
+    expandedSearchParamKey: string
+  ) => {
+    const urlSearchParams = createURLSearchParams(searchParams);
+    if (selectedCategories.includes(id)) {
+      const ids = selectedCategories.filter((it) => it !== id);
+      const newUrl = constructNewUrl(
+        valueSearchParamKey,
+        ids,
+        pathname,
+        urlSearchParams
+      );
+      router.replace(newUrl);
+    } else {
+      const parentId = getParentId(categories, id);
+      const selectedCategoriesIds = [
+        ...selectedCategories.filter((sc) => sc !== parentId),
+        id,
+      ];
+      if (!expandedCategories.includes(id)) {
+        const modifiedUrlSearchParams = constructNewUrl(
+          valueSearchParamKey,
+          selectedCategoriesIds,
+          pathname,
+          urlSearchParams,
+          {
+            returnUrlSearchParams: true,
+          }
+        );
+        const expandedCategoriesIds = [...expandedCategories, id];
+        const newUrl = constructNewUrl(
+          expandedSearchParamKey,
+          expandedCategoriesIds,
+          pathname,
+          modifiedUrlSearchParams
+        );
+        router.replace(newUrl);
+      } else {
+        const newUrl = constructNewUrl(
+          valueSearchParamKey,
+          selectedCategoriesIds,
+          pathname,
+          urlSearchParams
+        );
+        router.replace(newUrl);
       }
     }
   };
 
   const handleChevronClick = (id: string) => {
     if (!expandedCategories.includes(id)) {
-      if (setExpanded) {
-        setExpanded([...expanded, id]);
+      if (method === "UrlSearchParams") {
+        const urlSearchParams = createURLSearchParams(searchParams);
+        const ids = [...expandedCategories, id];
+        const newUrl = constructNewUrl(
+          expandedSearchParamKey,
+          ids,
+          pathname,
+          urlSearchParams
+        );
+        router.replace(newUrl);
       } else {
         setExpandedCategories((p) => [...p, id]);
       }
     } else {
-      if (setExpanded) {
-        setExpanded(expanded.filter((it) => it !== id));
+      if (method === "UrlSearchParams") {
+        const urlSearchParams = createURLSearchParams(searchParams);
+        const ids = expandedCategories.filter((it) => it !== id);
+        const newUrl = constructNewUrl(
+          expandedSearchParamKey,
+          ids,
+          pathname,
+          urlSearchParams
+        );
+        router.replace(newUrl);
       } else {
         setExpandedCategories((p) => p.filter((it) => it !== id));
       }
