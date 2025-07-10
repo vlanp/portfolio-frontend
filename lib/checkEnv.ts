@@ -16,6 +16,7 @@ interface IEnvVariables {
   NEXT_PUBLIC_GET_TIMELINE_DATA_MD_CONTENT: string;
   NEXT_PUBLIC_GET_ARTICLES_NO_MD: string;
   NEXT_PUBLIC_GET_ARTICLES_MD_CONTENT: string;
+  NEXT_PUBLIC_GET_ARTICLES_CATEGORIES: string;
 }
 
 const checkEnv = (): IEnvVariables => {
@@ -92,6 +93,11 @@ const checkEnv = (): IEnvVariables => {
       "Missing environment variable: NEXT_PUBLIC_GET_ARTICLES_MD_CONTENT"
     );
   }
+  if (!process.env.NEXT_PUBLIC_GET_ARTICLES_CATEGORIES) {
+    throw new Error(
+      "Missing environment variable: NEXT_PUBLIC_GET_ARTICLES_CATEGORIES"
+    );
+  }
   return {
     NEXT_PUBLIC_BACKEND_URL: process.env.NEXT_PUBLIC_BACKEND_URL,
     NEXT_PUBLIC_POST_PROJECTS_URL: process.env.NEXT_PUBLIC_POST_PROJECTS_URL,
@@ -118,6 +124,8 @@ const checkEnv = (): IEnvVariables => {
     NEXT_PUBLIC_GET_ARTICLES_NO_MD: process.env.NEXT_PUBLIC_GET_ARTICLES_NO_MD,
     NEXT_PUBLIC_GET_ARTICLES_MD_CONTENT:
       process.env.NEXT_PUBLIC_GET_ARTICLES_MD_CONTENT,
+    NEXT_PUBLIC_GET_ARTICLES_CATEGORIES:
+      process.env.NEXT_PUBLIC_GET_ARTICLES_CATEGORIES,
   };
 };
 

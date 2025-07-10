@@ -101,4 +101,4 @@ const isChild = (
 };
 
 export type { ICategories };
-export { getParentId, isChild };
+export { getParentId, isChild, ZCategories };

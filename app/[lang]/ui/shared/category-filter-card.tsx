@@ -253,7 +253,7 @@ const CategoryFilterCard = ({
   };
 
   return (
-    <Card className="flex grow max-w-[1024px] h-fit">
+    <Card className="flex w-full max-w-[1024px] h-fit">
       <CardHeader>
         <CardTitle>
           <h5 className="flex flex-row items-center gap-2">

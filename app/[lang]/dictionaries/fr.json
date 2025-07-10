@@ -90,5 +90,13 @@
     "Studies": "Études",
     "Experiences": "Expériences",
     "Projects": "Projets"
+  },
+  "Articles": {
+    "NbArticlesFound": "%(nbArticles)s Articles trouvés",
+    "ArticleCard": {
+      "PublishedOn": "Publié le",
+      "LastUpdatedOn": "Dernière mise à jour le",
+      "ReadArticle": "Lire l'article"
+    }
   }
 }
