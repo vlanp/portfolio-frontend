@@ -3,6 +3,7 @@ import { ILang } from "./ILang";
 enum EArticlesPageSearchParamsKeys {
   FILTERS = "f",
   EXPANDED = "e",
+  PAGE = "p",
 }
 
 type ISearchParamsKeysType = `${EArticlesPageSearchParamsKeys}`;

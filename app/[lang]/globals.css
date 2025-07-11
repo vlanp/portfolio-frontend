@@ -171,7 +171,7 @@
   a {
     @apply wrap-anywhere;
   }
-  a:not([data-slot="button"]) {
+  a:not([data-slot="button"]):not([data-slot="pagination-link"]) {
     @apply text-basic-link hover:text-basic-link/60 transition-colors duration-200;
   }
   blockquote {
@@ -184,7 +184,9 @@
   code {
     @apply rounded-lg whitespace-pre-wrap mb-5;
   }
-  ul:not([data-slot="sidebar-menu-sub"]):not([data-slot="sidebar-menu"]) {
+  ul:not([data-slot="sidebar-menu-sub"]):not([data-slot="sidebar-menu"]):not(
+      [data-slot="pagination-content"]
+    ) {
     @apply my-2 list-disc flex flex-col gap-1 ml-10;
   }
   img {

@@ -11,9 +11,10 @@ import checkedEnv from "@/lib/checkEnv";
 import { getZApiSuccessResponse } from "@/types/IApiResponse";
 import { z } from "zod/v4";
 import { ZArticleNoMd } from "@/types/IArticle";
-import ArticleCard from "../ui/exclusive/articles-page/ArticleCard";
+import ArticleCard from "../ui/exclusive/articles-page/article-card";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import ArticlesPagination from "../ui/exclusive/articles-page/articles-pagination";
 
 const ArticlesPage = async ({ params, searchParams }: IArticlesPageProps) => {
   const headersList = await headers();
@@ -21,6 +22,7 @@ const ArticlesPage = async ({ params, searchParams }: IArticlesPageProps) => {
   if (!pathname) {
     throw new Error("No pathname found in headers");
   }
+  const referer = headersList.get("referer");
   const awaitedParams = await params;
   const lang = awaitedParams.lang;
   const awaitedSearchParams = await searchParams;
@@ -57,7 +59,6 @@ const ArticlesPage = async ({ params, searchParams }: IArticlesPageProps) => {
     )
     .catch((error) => {
       if (axios.isAxiosError(error) && error.response?.status === 400) {
-        const referer = headersList.get("referer");
         if (referer) {
           redirect(referer);
         } else if (pathname) {
@@ -108,6 +109,12 @@ const ArticlesPage = async ({ params, searchParams }: IArticlesPageProps) => {
           />
         ))}
       </div>
+      <ArticlesPagination
+        pathname={pathname}
+        numberOfPages={6}
+        searchParams={awaitedSearchParams}
+        referer={referer}
+      />
     </PageContainer>
   );
 };
