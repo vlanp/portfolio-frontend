@@ -5,18 +5,26 @@ import CategoryFilterCard from "../ui/shared/category-filter-card";
 import PageContainer from "../ui/shared/page-container";
 import { getDictionary } from "../dictionaries";
 import { ZCategories } from "@/types/ICategories";
-import { createURLSearchParams, searchParamsValueArray } from "@/lib/utils";
+import {
+  constructNewUrl,
+  createURLSearchParams,
+  searchParamsValueArray,
+} from "@/lib/utils";
 import axios from "axios";
 import checkedEnv from "@/lib/checkEnv";
 import { getZApiSuccessResponse } from "@/types/IApiResponse";
 import { z } from "zod/v4";
-import { ZArticleNoMd } from "@/types/IArticle";
 import ArticleCard from "../ui/exclusive/articles-page/article-card";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import ArticlesPagination from "../ui/exclusive/articles-page/articles-pagination";
+import { ZPage } from "@/types/IPage";
+import { ZArticleNoMd } from "@/types/IArticle";
+import { getZPaginated } from "@/types/IPaginated";
 
 const ArticlesPage = async ({ params, searchParams }: IArticlesPageProps) => {
+  const sort = "descending";
+  const limit = 6;
   const headersList = await headers();
   const pathname = headersList.get("x-current-path");
   if (!pathname) {
@@ -26,6 +34,7 @@ const ArticlesPage = async ({ params, searchParams }: IArticlesPageProps) => {
   const awaitedParams = await params;
   const lang = awaitedParams.lang;
   const awaitedSearchParams = await searchParams;
+  const urlSearchParams = createURLSearchParams(awaitedSearchParams);
   const filters = searchParamsValueArray(
     awaitedSearchParams,
     EArticlesPageSearchParamsKeys.FILTERS
@@ -34,6 +43,21 @@ const ArticlesPage = async ({ params, searchParams }: IArticlesPageProps) => {
     awaitedSearchParams,
     EArticlesPageSearchParamsKeys.EXPANDED
   );
+  const pageSearchParams =
+    awaitedSearchParams[EArticlesPageSearchParamsKeys.PAGE];
+
+  const pageParseResult = ZPage.safeParse(pageSearchParams);
+  if (!pageParseResult.success) {
+    if (referer) {
+      redirect(referer);
+    } else if (pathname) {
+      redirect(pathname);
+    } else {
+      redirect("/");
+    }
+  }
+  const page = pageParseResult.data;
+
   const dict = await getDictionary(lang);
   const categoryFilterCardDict = dict.shared.CategoryFilterCardDict;
   const articlesDict = dict.Articles;
@@ -49,7 +73,12 @@ const ArticlesPage = async ({ params, searchParams }: IArticlesPageProps) => {
     throw new Error(z.prettifyError(articlesCategoriesParseResult.error));
   }
   const articlesCategories = articlesCategoriesParseResult.data.data;
-  const categoryParams = createURLSearchParams({ categoryId: filters });
+  const categoryParams = createURLSearchParams({
+    categoryId: filters,
+    page: page.toString(),
+    sort,
+    limit: limit.toString(),
+  });
 
   const articlesNoMdResponse = await axios
     .get(
@@ -72,7 +101,7 @@ const ArticlesPage = async ({ params, searchParams }: IArticlesPageProps) => {
     });
 
   const articlesNoMdParseResult = getZApiSuccessResponse(
-    z.array(ZArticleNoMd)
+    getZPaginated(ZArticleNoMd)
   ).safeParse(articlesNoMdResponse.data);
 
   if (!articlesNoMdParseResult.success) {
@@ -80,6 +109,16 @@ const ArticlesPage = async ({ params, searchParams }: IArticlesPageProps) => {
   }
 
   const articlesNoMd = articlesNoMdParseResult.data.data;
+
+  if (page > articlesNoMd.totalPages) {
+    const newUrl = constructNewUrl(
+      EArticlesPageSearchParamsKeys.PAGE,
+      articlesNoMd.totalPages.toString(),
+      pathname,
+      urlSearchParams
+    );
+    redirect(newUrl);
+  }
 
   return (
     <PageContainer className="flex flex-col gap-5 items-center">
@@ -95,11 +134,11 @@ const ArticlesPage = async ({ params, searchParams }: IArticlesPageProps) => {
       />
       <span>
         {articlesDict.NbArticlesFound({
-          nbArticles: articlesNoMd.length.toString(),
+          nbArticles: articlesNoMd.numberOfElements.toString(),
         })}
       </span>
       <div className="flex flex-col gap-2">
-        {articlesNoMd.map((articleNoMd) => (
+        {articlesNoMd.elements.map((articleNoMd) => (
           <ArticleCard
             article={articleNoMd}
             key={articleNoMd._id}
@@ -111,9 +150,9 @@ const ArticlesPage = async ({ params, searchParams }: IArticlesPageProps) => {
       </div>
       <ArticlesPagination
         pathname={pathname}
-        numberOfPages={6}
+        numberOfPages={articlesNoMd.totalPages}
         searchParams={awaitedSearchParams}
-        referer={referer}
+        page={page}
       />
     </PageContainer>
   );

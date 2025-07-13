@@ -1,10 +1,8 @@
 import { z } from "zod/v4";
 
-const getZPage = (max: number) => {
-  return z.coerce.number().int().positive().max(max).default(1);
-};
+const ZPage = z.coerce.number().int().positive().default(1);
 
-type IPage = z.infer<ReturnType<typeof getZPage>>;
+type IPage = z.infer<typeof ZPage>;
 
-export { getZPage };
+export { ZPage };
 export type { IPage };

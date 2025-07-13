@@ -11,33 +11,18 @@ import { constructNewUrl, createURLSearchParams } from "@/lib/utils";
 import IArticlesPageProps, {
   EArticlesPageSearchParamsKeys,
 } from "@/types/IArticlesPageProps";
-import { getZPage } from "@/types/IPage";
-import { redirect } from "next/navigation";
 
 const ArticlesPagination = ({
   pathname,
   numberOfPages,
   searchParams,
-  referer,
+  page,
 }: {
   pathname: string;
   numberOfPages: number;
   searchParams: Awaited<IArticlesPageProps["searchParams"]>;
-  referer: string | null;
+  page: number;
 }) => {
-  const pageSearchParams = searchParams[EArticlesPageSearchParamsKeys.PAGE];
-
-  const pageParseResult = getZPage(numberOfPages).safeParse(pageSearchParams);
-  if (!pageParseResult.success) {
-    if (referer) {
-      redirect(referer);
-    } else if (pathname) {
-      redirect(pathname);
-    } else {
-      redirect("/");
-    }
-  }
-  const page = pageParseResult.data;
   const urlSearchParams = createURLSearchParams(searchParams);
   const constructPageLink = (page: number) => {
     const newUrl = constructNewUrl(
