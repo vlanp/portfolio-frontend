@@ -2,7 +2,9 @@
   "shared": {
     "HtmlMarkdownContent": {
       "Previous": "Précédent",
-      "Next": "Suivant"
+      "Next": "Suivant",
+      "PublishedOn": "Publié le",
+      "LastUpdatedOn": "Mise à jour le"
     },
     "RightTocSidebar": {
       "Title": "Sur cette page"

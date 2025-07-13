@@ -2,6 +2,7 @@ import { IFileContent } from "@/types/IFileContent";
 import { IFile } from "@/types/ITagContent";
 import Link from "next/link";
 import { IDictionary } from "@/app/[lang]/dictionaries/generated";
+import Image from "next/image";
 
 const HtmlMarkdownContent = ({
   htmlContent,
@@ -12,6 +13,9 @@ const HtmlMarkdownContent = ({
   previousFileUrl,
   nextFile,
   nextFileUrl,
+  createdAt,
+  updatedAt,
+  img,
 }: {
   htmlContent: IFileContent<unknown>["htmlContent"];
   htmlMarkdownContentDict: IDictionary["shared"]["HtmlMarkdownContent"];
@@ -25,6 +29,21 @@ const HtmlMarkdownContent = ({
   (
     | { nextFile: IFile; nextFileUrl: string }
     | { nextFile?: never; nextFileUrl?: never }
+  ) &
+  (
+    | { createdAt: string; updatedAt: string }
+    | { createdAt?: never; updatedAt?: never }
+  ) &
+  (
+    | {
+        img: {
+          url: string;
+          width: number;
+          height: number;
+          alt: string;
+        };
+      }
+    | { img?: never }
   )) => {
   return (
     <section className="justify-center py-5">
@@ -35,7 +54,26 @@ const HtmlMarkdownContent = ({
             {subTitle}
           </p>
         )}
+        {createdAt && (
+          <div className="flex flex-row w-full justify-between mt-5 text-muted-foreground">
+            <p>
+              {htmlMarkdownContentDict.PublishedOn} {createdAt}
+            </p>
+            <p>
+              {htmlMarkdownContentDict.LastUpdatedOn} {updatedAt}
+            </p>
+          </div>
+        )}
         <div className="border-t-1 w-full mb-4" />
+        {img && (
+          <Image
+            className="mb-2"
+            alt={img.alt}
+            src={img.url}
+            width={img.width}
+            height={img.height}
+          />
+        )}
         <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
         <div className="flex flex-row justify-between w-full m-20">
           <div className="max-w-60">

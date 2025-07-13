@@ -68,6 +68,28 @@ const ArticlePage = async ({ params }: IArticlePageProps) => {
             htmlContent={fileContent.htmlContent}
             htmlMarkdownContentDict={htmlMarkdownContentDict}
             title={fileContent.extraData.title[lang]}
+            createdAt={fileContent.extraData.createdAt.toLocaleDateString(
+              lang,
+              {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              }
+            )}
+            updatedAt={fileContent.extraData.updatedAt.toLocaleDateString(
+              lang,
+              {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              }
+            )}
+            img={{
+              width: fileContent.extraData.imgWidth,
+              height: fileContent.extraData.imgHeight,
+              url: fileContent.extraData.imgUrl,
+              alt: fileContent.extraData.title[lang],
+            }}
           />
         </PageContainer>
         <SidebarTrigger side="right" />
