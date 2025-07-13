@@ -5,7 +5,7 @@ import { LuChevronDown } from "react-icons/lu";
 
 const CategoryFilterCardSkeleton = () => {
   return (
-    <Card className="flex grow max-w-[1024px] h-fit">
+    <Card className="flex grow max-w-[1024px] h-fit w-full">
       <CardHeader>
         <CardTitle>
           <h5 className="flex flex-row items-center gap-2">

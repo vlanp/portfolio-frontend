@@ -36,6 +36,8 @@ function PaginationItem({ ...props }: React.ComponentProps<"li">) {
 
 type PaginationLinkProps = {
   isActive?: boolean;
+  localizedNext?: string;
+  localizedPrevious?: string;
 } & Pick<React.ComponentProps<typeof Button>, "size"> &
   React.ComponentProps<typeof Link>;
 
@@ -64,6 +66,7 @@ function PaginationLink({
 
 function PaginationPrevious({
   className,
+  localizedPrevious,
   ...props
 }: React.ComponentProps<typeof PaginationLink>) {
   return (
@@ -74,13 +77,14 @@ function PaginationPrevious({
       {...props}
     >
       <LuChevronLeft />
-      <span className="hidden sm:block">Previous</span>
+      <span className="hidden sm:block">{localizedPrevious}</span>
     </PaginationLink>
   );
 }
 
 function PaginationNext({
   className,
+  localizedNext,
   ...props
 }: React.ComponentProps<typeof PaginationLink>) {
   return (
@@ -90,7 +94,7 @@ function PaginationNext({
       className={cn("gap-1 px-2.5 sm:pr-2.5", className)}
       {...props}
     >
-      <span className="hidden sm:block">Next</span>
+      <span className="hidden sm:block">{localizedNext}</span>
       <LuChevronRight />
     </PaginationLink>
   );

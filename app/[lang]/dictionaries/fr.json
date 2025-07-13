@@ -97,6 +97,10 @@
       "PublishedOn": "Publié le",
       "LastUpdatedOn": "Dernière mise à jour le",
       "ReadArticle": "Lire l'article"
+    },
+    "ArticlesPagination": {
+      "Previous": "Précédent",
+      "Next": "Suivant"
     }
   }
 }

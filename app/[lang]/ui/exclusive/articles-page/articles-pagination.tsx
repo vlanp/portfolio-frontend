@@ -1,3 +1,4 @@
+import { IDictionary } from "@/app/[lang]/dictionaries/generated";
 import {
   Pagination,
   PaginationContent,
@@ -17,11 +18,13 @@ const ArticlesPagination = ({
   numberOfPages,
   searchParams,
   page,
+  articlesPaginationDict,
 }: {
   pathname: string;
   numberOfPages: number;
   searchParams: Awaited<IArticlesPageProps["searchParams"]>;
   page: number;
+  articlesPaginationDict: IDictionary["Articles"]["ArticlesPagination"];
 }) => {
   const urlSearchParams = createURLSearchParams(searchParams);
   const constructPageLink = (page: number) => {
@@ -112,13 +115,19 @@ const ArticlesPagination = ({
         <PaginationContent>
           {page > 1 && (
             <PaginationItem>
-              <PaginationPrevious href={constructPageLink(page - 1)} />
+              <PaginationPrevious
+                localizedPrevious={articlesPaginationDict.Previous}
+                href={constructPageLink(page - 1)}
+              />
             </PaginationItem>
           )}
           {items}
           {page < numberOfPages && (
             <PaginationItem>
-              <PaginationNext href={constructPageLink(page + 1)} />
+              <PaginationNext
+                localizedNext={articlesPaginationDict.Next}
+                href={constructPageLink(page + 1)}
+              />
             </PaginationItem>
           )}
         </PaginationContent>

@@ -19,12 +19,13 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import ArticlesPagination from "../ui/exclusive/articles-page/articles-pagination";
 import { ZPage } from "@/types/IPage";
-import { ZArticleNoMd } from "@/types/IArticle";
+import { IArticleNoMd, ZArticleNoMd } from "@/types/IArticle";
 import { getZPaginated } from "@/types/IPaginated";
+
+const articlesPerPage = 3;
 
 const ArticlesPage = async ({ params, searchParams }: IArticlesPageProps) => {
   const sort = "descending";
-  const limit = 6;
   const headersList = await headers();
   const pathname = headersList.get("x-current-path");
   if (!pathname) {
@@ -66,6 +67,7 @@ const ArticlesPage = async ({ params, searchParams }: IArticlesPageProps) => {
     checkedEnv.NEXT_PUBLIC_BACKEND_URL +
       checkedEnv.NEXT_PUBLIC_GET_ARTICLES_CATEGORIES
   );
+  const articlesPaginationDict = dict.Articles.ArticlesPagination;
   const articlesCategoriesParseResult = getZApiSuccessResponse(
     ZCategories
   ).safeParse(articlesCategoriesResponse.data);
@@ -77,7 +79,7 @@ const ArticlesPage = async ({ params, searchParams }: IArticlesPageProps) => {
     categoryId: filters,
     page: page.toString(),
     sort,
-    limit: limit.toString(),
+    limit: articlesPerPage.toString(),
   });
 
   const articlesNoMdResponse = await axios
@@ -101,7 +103,7 @@ const ArticlesPage = async ({ params, searchParams }: IArticlesPageProps) => {
     });
 
   const articlesNoMdParseResult = getZApiSuccessResponse(
-    getZPaginated(ZArticleNoMd)
+    getZPaginated<IArticleNoMd>(ZArticleNoMd)
   ).safeParse(articlesNoMdResponse.data);
 
   if (!articlesNoMdParseResult.success) {
@@ -121,7 +123,7 @@ const ArticlesPage = async ({ params, searchParams }: IArticlesPageProps) => {
   }
 
   return (
-    <PageContainer className="flex flex-col gap-5 items-center">
+    <PageContainer className="flex flex-col gap-5 items-center w-full">
       <CategoryFilterCard
         categoryFilterCardDict={categoryFilterCardDict}
         categories={articlesCategories}
@@ -137,7 +139,7 @@ const ArticlesPage = async ({ params, searchParams }: IArticlesPageProps) => {
           nbArticles: articlesNoMd.numberOfElements.toString(),
         })}
       </span>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 w-full items-center">
         {articlesNoMd.elements.map((articleNoMd) => (
           <ArticleCard
             article={articleNoMd}
@@ -153,9 +155,11 @@ const ArticlesPage = async ({ params, searchParams }: IArticlesPageProps) => {
         numberOfPages={articlesNoMd.totalPages}
         searchParams={awaitedSearchParams}
         page={page}
+        articlesPaginationDict={articlesPaginationDict}
       />
     </PageContainer>
   );
 };
 
 export default ArticlesPage;
+export { articlesPerPage };
