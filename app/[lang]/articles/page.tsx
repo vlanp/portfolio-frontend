@@ -19,8 +19,8 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import ArticlesPagination from "../ui/exclusive/articles-page/articles-pagination";
 import { ZPage } from "@/types/IPage";
-import { IArticleNoMd, ZArticleNoMd } from "@/types/IArticle";
 import { getZPaginated } from "@/types/IPaginated";
+import { IArticle, ZArticle } from "@/types/IArticle";
 
 const articlesPerPage = 3;
 
@@ -103,7 +103,7 @@ const ArticlesPage = async ({ params, searchParams }: IArticlesPageProps) => {
     });
 
   const articlesNoMdParseResult = getZApiSuccessResponse(
-    getZPaginated<IArticleNoMd>(ZArticleNoMd)
+    getZPaginated<IArticle>(ZArticle)
   ).safeParse(articlesNoMdResponse.data);
 
   if (!articlesNoMdParseResult.success) {

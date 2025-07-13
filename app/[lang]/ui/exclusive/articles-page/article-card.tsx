@@ -3,10 +3,10 @@
 import { IDictionary } from "@/app/[lang]/dictionaries/generated";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { IArticleNoMd } from "@/types/IArticle";
 import { ILang } from "@/types/ILang";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { IArticle } from "@/types/IArticle";
 
 const ArticleCard = ({
   article,
@@ -14,7 +14,7 @@ const ArticleCard = ({
   articleCardDict,
   pathname,
 }: {
-  article: IArticleNoMd;
+  article: IArticle;
   lang: ILang;
   articleCardDict: IDictionary["Articles"]["ArticleCard"];
   pathname: string;

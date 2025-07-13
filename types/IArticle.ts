@@ -10,7 +10,6 @@ const ZArticle = z.object({
   }),
   imgWidth: z.number(),
   imgHeight: z.number(),
-  mdContents: z.record(ZELangs, z.string()),
   category: z.string(),
   _id: z.string(),
   createdAt: z.coerce.date(),
@@ -20,9 +19,5 @@ const ZArticle = z.object({
 
 type IArticle = z.infer<typeof ZArticle>;
 
-const ZArticleNoMd = ZArticle.omit({ mdContents: true });
-
-type IArticleNoMd = z.infer<typeof ZArticleNoMd>;
-
-export { ZArticle, ZArticleNoMd };
-export type { IArticle, IArticleNoMd };
+export { ZArticle };
+export type { IArticle };
