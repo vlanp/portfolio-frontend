@@ -2,13 +2,8 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import HtmlMarkdownContentSkeleton from "../../../shared/html-markdown-content-skeleton";
 import { extraLargeBreakpoint } from "@/types/IBreakpoints";
 import RightTocSidebarSkeleton from "../../../shared/right-toc-sidebar-skeleton";
-import { IDictionary } from "@/app/[lang]/dictionaries/generated";
 
-const FileDisplaySkeleton = ({
-  rightTocSidebarDict,
-}: {
-  rightTocSidebarDict: IDictionary["shared"]["RightTocSidebar"];
-}) => {
+const FileDisplaySkeleton = () => {
   return (
     <>
       <section className="flex flex-1">
@@ -19,7 +14,7 @@ const FileDisplaySkeleton = ({
         className="relative w-fit"
       >
         <SidebarTrigger side="right" />
-        <RightTocSidebarSkeleton rightTocSidebarDict={rightTocSidebarDict} />
+        <RightTocSidebarSkeleton />
       </SidebarProvider>
     </>
   );

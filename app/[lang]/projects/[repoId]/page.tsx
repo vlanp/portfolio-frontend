@@ -166,12 +166,7 @@ const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
         />
       </Suspense>
       <SidebarTrigger />
-      <Suspense
-        key={sha + filePath}
-        fallback={
-          <FileDisplaySkeleton rightTocSidebarDict={rightTocSidebarDict} />
-        }
-      >
+      <Suspense key={sha + filePath} fallback={<FileDisplaySkeleton />}>
         <FileDisplay
           repoId={repoId}
           filePath={filePath}

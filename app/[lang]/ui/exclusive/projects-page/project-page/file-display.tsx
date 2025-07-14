@@ -33,7 +33,7 @@ const FileDisplay = async ({
   rightTocSidebarDict: IDictionary["shared"]["RightTocSidebar"];
 }) => {
   if (!filePath) {
-    return <FileDisplaySkeleton rightTocSidebarDict={rightTocSidebarDict} />;
+    return <FileDisplaySkeleton />;
   }
 
   const encodedFilepath = encodeURIComponent(filePath);
