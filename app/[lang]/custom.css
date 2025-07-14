@@ -1,0 +1,106 @@
+@import "tw-animate-css";
+@import "./styles/atom-one-light.css";
+@import "./styles/github-colors-light.css";
+@import "./styles/github-base.css";
+
+@theme inline {
+  --spacing-header-height: var(--header-height);
+  --spacing-main-height: var(--main-height);
+}
+
+:root {
+  --header-height: 5rem;
+  --main-height: calc(100svh - var(--header-height));
+}
+
+.dark {
+  @import "./styles/atom-one-dark.css";
+  @import "./styles/github-colors-dark-class.css";
+}
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply scroll-mt-[calc(var(--header-height)+0.8rem)];
+  }
+  h1 {
+    @apply text-5xl/14 font-bold tracking-tighter;
+  }
+  h2 {
+    @apply mb-4 mt-6 text-4xl font-semibold tracking-tight;
+  }
+  h3 {
+    @apply mb-3 mt-4 text-3xl font-semibold tracking-tight;
+  }
+  h4 {
+    @apply mb-2 mt-3 text-2xl font-semibold;
+  }
+  h5 {
+    @apply mb-1 mt-2 text-xl font-semibold;
+  }
+  h6 {
+    @apply mb-1 mt-2 text-lg font-semibold;
+  }
+  p {
+    @apply mb-2 mt-1 leading-relaxed;
+  }
+  p,
+  li,
+  code,
+  a {
+    @apply wrap-anywhere;
+  }
+  /* .basic-link {
+    @apply text-basic-link hover:text-basic-link/60 transition-colors duration-200;
+  } */
+  .basic-link {
+    @apply text-primary hover:text-primary/60 transition-colors duration-200;
+  }
+  blockquote {
+    @apply pl-4 border-l-4 border-muted italic my-4;
+  }
+  hr {
+    @apply my-6 border-border;
+  }
+  pre,
+  code {
+    @apply rounded-lg whitespace-pre-wrap mb-5;
+  }
+  .md-ul {
+    @apply my-2 list-disc flex flex-col gap-1 ml-10;
+  }
+  img {
+    @apply max-w-full h-auto;
+  }
+  .hljs {
+    @apply min-w-0;
+  }
+  .anchor-link {
+    @apply text-foreground hover:text-foreground hover:underline;
+  }
+}
+
+@layer utilities {
+  .clip-scroll-bar {
+    clip-path: inset(0 0 0 0 round 0.5rem);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Poppins } from "next/font/google";
+import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "./theme-providers";
 import Favicon from "./favicon.ico";
@@ -10,15 +10,14 @@ import { getDictionary } from "./dictionaries";
 import { IDictionary } from "./dictionaries/generated";
 import { ILang } from "@/types/ILang";
 import { Toaster } from "@/components/ui/sonner";
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuList,
+} from "@/components/ui/navigation-menu";
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  weight: ["500"],
-});
-
-const poppins = Poppins({
-  variable: "--font-poppins",
+const sans = DM_Sans({
+  variable: "--font-sans",
   subsets: ["latin"],
   weight: ["500"],
 });
@@ -40,17 +39,25 @@ export default async function RootLayout({
   const dict: IDictionary = await getDictionary(lang);
   return (
     <html suppressHydrationWarning>
-      <body className={`${poppins.variable} ${inter.variable} antialiased`}>
+      <body className={`${sans.variable} antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          <header className="sticky top-0 w-full bg-sidebar-accent text-sidebar-foreground border-sidebar-border border-2 flex flex-row justify-between items-center px-5 h-header-height z-50">
-            <ModeToggle />
-            <TopNav dictionary={dict} />
-            <LangToggle dictionary={dict} />
+          <header className="sticky top-0 z-50">
+            <NavigationMenu className="w-svw bg-card border-b border-border">
+              <NavigationMenuList className="flex flex-row justify-around w-svw px-5 h-header-height">
+                <NavigationMenuItem>
+                  <ModeToggle />
+                </NavigationMenuItem>
+                <TopNav dictionary={dict} />
+                <NavigationMenuItem>
+                  <LangToggle dictionary={dict} />
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
           </header>
           <main className="min-h-main-height flex flex-col">{children}</main>
           <Toaster />

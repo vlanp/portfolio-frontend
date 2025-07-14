@@ -16,6 +16,10 @@ import { toast } from "sonner";
 import { useEffect, useMemo } from "react";
 import { useIsBelowBP } from "@/hooks/useIsBelowBP";
 import { mobileBreakpoint } from "@/types/IBreakpoints";
+import {
+  NavigationMenuItem,
+  NavigationMenuLink,
+} from "@/components/ui/navigation-menu";
 
 const TopNav = ({ dictionary }: { dictionary: IDictionary }) => {
   const pathname = "/" + (usePathname().split("/")[2] || "");
@@ -56,31 +60,34 @@ const TopNav = ({ dictionary }: { dictionary: IDictionary }) => {
       }
     }
   }, [links, pathname, isBelowMobileBP, dictionary.topNav]);
-
   return (
     <>
       {links.map((link) => {
         const LinkIcon = link.icon;
         return (
-          <Button
-            key={link.name}
-            size={"responsive"}
-            asChild
-            variant={pathname === link.href ? "outline" : "link"}
-            title={link.name}
-          >
-            <Link className="text-[18px]" href={link.href}>
-              <LinkIcon className="h-full size-fit py-1.5 sm:py-2" />
-              <span
-                className={cn(
-                  "hidden",
-                  pathname === link.href ? "md:flex" : "lg:flex"
-                )}
+          <NavigationMenuItem key={link.name}>
+            <NavigationMenuLink asChild>
+              <Button
+                size={"responsive"}
+                asChild
+                variant={pathname === link.href ? "outline" : "ghost"}
+                title={link.name}
+                className="flex flex-row items-center"
               >
-                {link.name}
-              </span>
-            </Link>
-          </Button>
+                <Link className="text-[18px] py-0" href={link.href}>
+                  <LinkIcon className="h-full size-fit py-1.5 sm:py-2" />
+                  <span
+                    className={cn(
+                      "hidden",
+                      pathname === link.href ? "md:flex" : "lg:flex"
+                    )}
+                  >
+                    {link.name}
+                  </span>
+                </Link>
+              </Button>
+            </NavigationMenuLink>
+          </NavigationMenuItem>
         );
       })}
     </>
