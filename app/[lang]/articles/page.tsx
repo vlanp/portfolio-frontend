@@ -28,8 +28,6 @@ const ArticlesPage = async ({ params, searchParams }: IArticlesPageProps) => {
   const sort = "descending";
   const headersList = await headers();
   const pathname = headersList.get("x-current-path");
-  console.log("pathname: ", pathname);
-
   if (!pathname) {
     throw new Error("No pathname found in headers");
   }
