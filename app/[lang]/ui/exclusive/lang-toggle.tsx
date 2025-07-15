@@ -33,6 +33,7 @@ export function LangToggle({ dictionary }: { dictionary: IDictionary }) {
             setCookie("NEXT_LOCALE", "en");
             const newPath = pathname.replace(`/${currentLocale}`, "/en");
             router.push(`${newPath}?${searchParams.toString()}`);
+            router.refresh(); // Need to refresh to reset cache, because due to prefetchs, new locale can be ignored
           }}
         >
           {dictionary.langToggle.English}
@@ -42,6 +43,7 @@ export function LangToggle({ dictionary }: { dictionary: IDictionary }) {
             setCookie("NEXT_LOCALE", "fr");
             const newPath = pathname.replace(`/${currentLocale}`, "/fr");
             router.push(`${newPath}?${searchParams.toString()}`);
+            router.refresh(); // Need to refresh to reset cache, because due to prefetchs, new locale can be ignored
           }}
         >
           {dictionary.langToggle.French}

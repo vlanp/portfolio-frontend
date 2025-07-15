@@ -74,11 +74,7 @@ const TopNav = ({ dictionary }: { dictionary: IDictionary }) => {
                 title={link.name}
                 className="flex flex-row items-center"
               >
-                <Link
-                  prefetch={false}
-                  className="text-[18px] py-0"
-                  href={link.href}
-                >
+                <Link className="text-[18px] py-0" href={link.href}>
                   <LinkIcon className="h-full size-fit py-1.5 sm:py-2" />
                   <span
                     className={cn(
