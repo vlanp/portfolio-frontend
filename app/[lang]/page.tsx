@@ -10,19 +10,12 @@ import { IDictionary } from "./dictionaries/generated";
 import { getDictionary } from "./dictionaries";
 import Link from "next/link";
 import { SiGithub, SiLinkedin } from "react-icons/si";
-import { headers } from "next/headers";
 
 export default async function HomePage({
   params,
 }: {
   params: Promise<{ lang: ILang }>;
 }) {
-  const headersList = await headers();
-  const pathname = headersList.get("x-current-path");
-  if (!pathname) {
-    throw new Error("No pathname found in headers");
-  }
-
   const mainPictureResponse = await axios.get(
     checkedEnv.NEXT_PUBLIC_BACKEND_URL +
       checkedEnv.NEXT_PUBLIC_GET_MAIN_PICTURE_URL
