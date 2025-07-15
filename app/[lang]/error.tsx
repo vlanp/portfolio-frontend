@@ -18,7 +18,7 @@ export default function Error({
   useEffect(() => {
     // Log the error to an error reporting service
     console.error(error);
-    toast.error(error.message);
+    toast.error(JSON.stringify(error, undefined, 2));
   }, [error]);
 
   const handleClick = () => {
