@@ -27,10 +27,10 @@ const articlesPerPage = 3;
 const ArticlesPage = async ({ params, searchParams }: IArticlesPageProps) => {
   const sort = "descending";
   const headersList = await headers();
-  const pathname = headersList.get("x-current-path") || "/articles";
-  // if (!pathname) {
-  //   throw new Error("No pathname found in headers");
-  // }
+  const pathname = headersList.get("x-current-path");
+  if (!pathname) {
+    throw new Error("No pathname found in headers");
+  }
   const referer = headersList.get("referer");
   const awaitedParams = await params;
   const lang = awaitedParams.lang;
