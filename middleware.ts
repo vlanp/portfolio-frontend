@@ -7,6 +7,7 @@ const locales: string[] = Object.values(ELangs);
 
 function getLocale(request: NextRequest) {
   const nextLocale = request.cookies.get("NEXT_LOCALE")?.value;
+  console.log(nextLocale);
 
   if (nextLocale && locales.includes(nextLocale)) {
     return nextLocale;
