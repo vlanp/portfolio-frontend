@@ -22,9 +22,6 @@
   html {
     @apply scroll-smooth;
   }
-  body {
-    @apply bg-background text-foreground;
-  }
   h1,
   h2,
   h3,
@@ -60,9 +57,6 @@
   a {
     @apply wrap-anywhere;
   }
-  /* .basic-link {
-    @apply text-basic-link hover:text-basic-link/60 transition-colors duration-200;
-  } */
   .basic-link {
     @apply text-primary hover:text-primary/60 transition-colors duration-200;
   }
@@ -87,20 +81,5 @@
   }
   .anchor-link {
     @apply text-foreground hover:text-foreground hover:underline;
-  }
-}
-
-@layer utilities {
-  .clip-scroll-bar {
-    clip-path: inset(0 0 0 0 round 0.5rem);
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
   }
 }
