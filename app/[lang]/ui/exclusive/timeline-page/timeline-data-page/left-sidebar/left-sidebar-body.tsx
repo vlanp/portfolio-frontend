@@ -9,6 +9,7 @@ import {
   getYears,
   ITimelineDatas,
   ITimelineElement,
+  timelineColorMapping,
 } from "@/types/ITimelineData";
 import { ILang } from "@/types/ILang";
 
@@ -29,8 +30,10 @@ const LeftSidebarBody = ({
       <YearTimeline years={years} hidden />
       <TimelineElement
         Icon={IoSchoolOutline}
-        bgThemeColor="bg-chart-1"
-        borderThemeColor="border-chart-1"
+        bgThemeColor={timelineColorMapping[selectedElement].bgThemeColor}
+        borderThemeColor={
+          timelineColorMapping[selectedElement].borderThemeColor
+        }
         elementTitle={timelineDict[getTimelineElementDictKey(selectedElement)]}
         datas={timelineDatas[selectedElement]}
         startYear={startDate.getFullYear()}

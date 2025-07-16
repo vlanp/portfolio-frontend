@@ -30,6 +30,7 @@ import { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { TimelineElementCombobox } from "../timeline-data-page/left-sidebar/timeline-element-combobox";
 import { IDictionary } from "@/app/[lang]/dictionaries/generated";
+import { ETimelineDataPageSearchParamsKeys } from "@/types/ITimelineDataPageProps";
 
 const startYearHeightPx = yearDivHeightPx / 2;
 
@@ -74,9 +75,23 @@ const TimelineElement = ({
   const dispatchedTimelineDatas = createDispatchedTimelineDatas([1, 2, 3]);
 
   const isBelowMobileBp = useIsBelowBP(mobileBreakpoint);
-  const [isTooltipOpen, setIsTooltipOpen] = useState(false);
+  const [openTooltips, setOpenTooltips] = useState<Record<string, boolean>>({});
   const pathname = usePathname();
   const router = useRouter();
+
+  const toggleTooltip = (dataId: string) => {
+    setOpenTooltips((prev) => ({
+      ...prev,
+      [dataId]: !prev[dataId],
+    }));
+  };
+
+  const setTooltipOpen = (dataId: string, isOpen: boolean) => {
+    setOpenTooltips((prev) => ({
+      ...prev,
+      [dataId]: isOpen,
+    }));
+  };
 
   datas.forEach((data) => {
     const fromTopPx =
@@ -112,21 +127,23 @@ const TimelineElement = ({
       jsxElement: (
         <Tooltip
           key={data._id}
-          open={isTooltipOpen}
-          onOpenChange={setIsTooltipOpen}
+          open={openTooltips[data._id] || false}
+          onOpenChange={(isOpen) => setTooltipOpen(data._id, isOpen)}
         >
           <TooltipTrigger asChild>
             <span
               key={data._id}
               onClick={
                 isBelowMobileBp
-                  ? () => setIsTooltipOpen((p) => !p)
+                  ? () => toggleTooltip(data._id)
                   : () =>
                       replaceCurrentPath
                         ? router.push(
-                            `${pathname.split("/").slice(0, -1).join("/")}/${data._id}?el=${data.type}`
+                            `${pathname.split("/").slice(0, -1).join("/")}/${data._id}?${ETimelineDataPageSearchParamsKeys.EL}=${data.type}`
                           )
-                        : router.push(`${pathname}/${data._id}?el=${data.type}`)
+                        : router.push(
+                            `${pathname}/${data._id}?${ETimelineDataPageSearchParamsKeys.EL}=${data.type}`
+                          )
               }
               className={cn(
                 "absolute rounded-sm hover:cursor-pointer flex justify-center items-center",

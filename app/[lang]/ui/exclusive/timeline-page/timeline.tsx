@@ -7,6 +7,7 @@ import { HiOutlineBriefcase } from "react-icons/hi2";
 import {
   getYears,
   ITimelineDatas,
+  timelineColorMapping,
   ZETimelineElements,
 } from "@/types/ITimelineData";
 import { IDictionary } from "../../../dictionaries/generated";
@@ -33,8 +34,12 @@ const Timeline = ({
   const timelineElement1 = (
     <TimelineElement
       Icon={IoSchoolOutline}
-      bgThemeColor="bg-chart-1"
-      borderThemeColor="border-chart-1"
+      bgThemeColor={
+        timelineColorMapping[ZETimelineElements.enum.studies].bgThemeColor
+      }
+      borderThemeColor={
+        timelineColorMapping[ZETimelineElements.enum.studies].borderThemeColor
+      }
       elementTitle={timelineDict.Studies}
       datas={timelineDatas.studies}
       startYear={startDate.getFullYear()}
@@ -47,8 +52,13 @@ const Timeline = ({
   const timelineElement2 = (
     <TimelineElement
       Icon={HiOutlineBriefcase}
-      bgThemeColor="bg-chart-2"
-      borderThemeColor="border-chart-2"
+      bgThemeColor={
+        timelineColorMapping[ZETimelineElements.enum.experiences].bgThemeColor
+      }
+      borderThemeColor={
+        timelineColorMapping[ZETimelineElements.enum.experiences]
+          .borderThemeColor
+      }
       elementTitle={timelineDict.Experiences}
       datas={timelineDatas.experiences}
       startYear={startDate.getFullYear()}
@@ -61,8 +71,12 @@ const Timeline = ({
   const timelineElement3 = (
     <TimelineElement
       Icon={IoHammerOutline}
-      bgThemeColor="bg-chart-4"
-      borderThemeColor="border-chart-4"
+      bgThemeColor={
+        timelineColorMapping[ZETimelineElements.enum.projects].bgThemeColor
+      }
+      borderThemeColor={
+        timelineColorMapping[ZETimelineElements.enum.projects].borderThemeColor
+      }
       elementTitle={timelineDict.Projects}
       datas={timelineDatas.projects}
       startYear={startDate.getFullYear()}

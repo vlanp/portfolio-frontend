@@ -155,6 +155,48 @@ const getYears = (timelineDatas: ITimelineDatas) => {
   return { years, startDate, endDate };
 };
 
+const CHART_COLORS = {
+  bg: [
+    "bg-chart-1",
+    "bg-chart-2",
+    "bg-chart-3",
+    "bg-chart-4",
+    "bg-chart-5",
+  ] as const,
+  border: [
+    "border-chart-1",
+    "border-chart-2",
+    "border-chart-3",
+    "border-chart-4",
+    "border-chart-5",
+  ] as const,
+};
+
+type IBgChartClass = (typeof CHART_COLORS.bg)[number];
+type IBorderChartClass = (typeof CHART_COLORS.border)[number];
+
+const timelineColorMapping = ZETimelineElements.options.reduce(
+  (acc, option, index) => {
+    if (index >= CHART_COLORS.bg.length) {
+      throw new Error(
+        "There are more elements in ZETimelineElements than available chart colors."
+      );
+    }
+    acc[option] = {
+      bgThemeColor: CHART_COLORS.bg[index],
+      borderThemeColor: CHART_COLORS.border[index],
+    };
+    return acc;
+  },
+  {} as Record<
+    ITimelineElement,
+    {
+      bgThemeColor: IBgChartClass;
+      borderThemeColor: IBorderChartClass;
+    }
+  >
+);
+
 export type {
   ITimelineData,
   ITimelineElement,
@@ -177,4 +219,5 @@ export {
   getTimelineElementsDictKeys,
   getTimelineElementDictKey,
   getYears,
+  timelineColorMapping,
 };
