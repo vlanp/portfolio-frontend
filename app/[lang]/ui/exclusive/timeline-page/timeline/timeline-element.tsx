@@ -93,6 +93,21 @@ const TimelineElement = ({
     }));
   };
 
+  const displayPage = (
+    data:
+      | ITimelineExperiencesData
+      | ITimelineProjectsData
+      | ITimelineStudiesData
+  ) => {
+    return replaceCurrentPath
+      ? router.push(
+          `${pathname.split("/").slice(0, -1).join("/")}/${data._id}?${ETimelineDataPageSearchParamsKeys.EL}=${data.type}`
+        )
+      : router.push(
+          `${pathname}/${data._id}?${ETimelineDataPageSearchParamsKeys.EL}=${data.type}`
+        );
+  };
+
   datas.forEach((data) => {
     const fromTopPx =
       calculateYearsDifference(startDate, data.startDate) * yearDivHeightPx +
@@ -136,14 +151,7 @@ const TimelineElement = ({
               onClick={
                 isBelowMobileBp
                   ? () => toggleTooltip(data._id)
-                  : () =>
-                      replaceCurrentPath
-                        ? router.push(
-                            `${pathname.split("/").slice(0, -1).join("/")}/${data._id}?${ETimelineDataPageSearchParamsKeys.EL}=${data.type}`
-                          )
-                        : router.push(
-                            `${pathname}/${data._id}?${ETimelineDataPageSearchParamsKeys.EL}=${data.type}`
-                          )
+                  : () => displayPage(data)
               }
               className={cn(
                 "absolute rounded-sm hover:cursor-pointer flex justify-center items-center",
@@ -164,9 +172,10 @@ const TimelineElement = ({
             avoidCollisions
             disableArrow
             className={cn(
-              "text-popover-foreground bg-popover border-4 m-2",
+              "text-popover-foreground bg-popover border-4 m-2 hover:cursor-pointer",
               borderThemeColor
             )}
+            onClick={() => displayPage(data)}
           >
             <TimelineElementTooltipContent data={data} lang={lang} />
           </TooltipContent>
@@ -176,7 +185,7 @@ const TimelineElement = ({
   });
 
   return (
-    <div className="relative flex flex-col w-[200px]">
+    <div className="relative flex flex-col w-[200px] gap-2">
       {isBelowMobileBp && <TimelineBackground years={years} />}
       <Card
         className="flex flex-col justify-center w-full"
