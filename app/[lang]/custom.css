@@ -61,7 +61,7 @@
     @apply text-primary hover:text-primary/60 transition-colors duration-200;
   }
   blockquote {
-    @apply pl-4 border-l-4 border-muted italic my-4;
+    @apply pl-4 border-l-4 border-muted-foreground bg-muted italic my-4;
   }
   hr {
     @apply my-6 border-border;
