@@ -188,7 +188,7 @@ const TimelineElement = ({
     <div className="relative flex flex-col w-[200px] gap-2">
       {isBelowMobileBp && <TimelineBackground years={years} />}
       <Card
-        className="flex flex-col justify-center w-full"
+        className="flex flex-col justify-center w-full z-10"
         style={{ height: `${titleContainerSizePx}px` }}
       >
         <CardHeader className="flex flex-row justify-center">
