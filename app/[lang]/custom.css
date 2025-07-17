@@ -2,6 +2,7 @@
 @import "./styles/atom-one-light.css";
 @import "./styles/github-colors-light.css";
 @import "./styles/github-base.css";
+@import "./styles/katex.css";
 
 @theme inline {
   --spacing-header-height: var(--header-height);
