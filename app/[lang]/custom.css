@@ -82,4 +82,37 @@
   .anchor-link {
     @apply text-foreground hover:text-foreground hover:underline;
   }
+
+  table {
+    @apply max-w-full border-collapse bg-card rounded-lg overflow-hidden shadow-sm my-5;
+  }
+
+  table thead {
+    @apply bg-secondary;
+  }
+
+  table thead tr {
+    @apply border-b-2 border-border;
+  }
+
+  table th {
+    @apply px-6 py-4 text-center text-xs font-semibold uppercase tracking-wider;
+    @apply text-secondary-foreground bg-secondary;
+  }
+
+  table tbody tr {
+    @apply border-b border-border transition-colors duration-200;
+  }
+
+  table tbody tr:hover {
+    @apply bg-accent/30;
+  }
+
+  table tbody tr:last-child {
+    @apply border-b-0;
+  }
+
+  table td {
+    @apply px-6 py-4 text-center text-sm text-card-foreground;
+  }
 }
