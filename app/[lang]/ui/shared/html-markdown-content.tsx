@@ -74,7 +74,10 @@ const HtmlMarkdownContent = ({
             height={img.height}
           />
         )}
-        <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
+        <div
+          className="w-full"
+          dangerouslySetInnerHTML={{ __html: htmlContent }}
+        />
         <div className="flex flex-row justify-between w-full m-20">
           <div className="max-w-60">
             {previousFile && (
