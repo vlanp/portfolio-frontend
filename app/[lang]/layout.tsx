@@ -39,6 +39,21 @@ export default async function RootLayout({
   const dict: IDictionary = await getDictionary(lang);
   return (
     <html suppressHydrationWarning>
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css"
+          integrity="sha384-5TcZemv2l/9On385z///+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcFCP"
+          crossOrigin="anonymous"
+        />
+
+        <script
+          defer
+          src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"
+          integrity="sha384-cMkvdD8LoxVzGF/RPUKAcvmm49FQ0oxwDF3BGKtDXcEc+T1b2N+teh/OJfpU0jr6"
+          crossOrigin="anonymous"
+        />
+      </head>
       <body className={`${sans.variable} antialiased`}>
         <ThemeProvider
           attribute="class"
