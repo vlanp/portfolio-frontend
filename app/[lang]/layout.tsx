@@ -61,8 +61,8 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <header className="sticky top-0 z-50">
-            <NavigationMenu className="w-svw bg-card border-b border-border">
+          <header className="sticky top-0 z-50 overflow-hidden">
+            <NavigationMenu className="bg-card border-b border-border">
               <NavigationMenuList className="flex flex-row justify-around w-svw px-5 h-header-height">
                 <NavigationMenuItem>
                   <ModeToggle />
