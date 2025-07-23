@@ -2,11 +2,10 @@
 
 import { Skeleton } from "@/components/ui/skeleton";
 import { useLayoutEffect, useRef, useState } from "react";
-import { titleContainerSizePx } from "../timeline-container";
-import { yearDivHeightPx } from "./year-timeline";
 import { useIsBelowBP } from "@/hooks/useIsBelowBP";
 import { largeBreakpoint, mobileBreakpoint } from "@/types/IBreakpoints";
 import { cn } from "@/lib/utils";
+import { titleContainerSizePx, yearDivHeightPx } from "../../timeline";
 
 const YearTimeline = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);

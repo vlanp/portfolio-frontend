@@ -1,8 +1,8 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { titleContainerSizePx } from "./timeline-container";
 import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import TimelineElementBodySkeleton from "./timeline-element/timeline-element-body-skeleton";
+import { titleContainerSizePx } from "../timeline";
 
 const TimelineElementSkeleton = () => {
   return (

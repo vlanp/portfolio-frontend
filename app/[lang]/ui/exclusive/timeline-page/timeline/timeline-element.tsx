@@ -1,7 +1,6 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { titleContainerSizePx } from "./timeline-container";
 import { calculateYearsDifference, cn } from "@/lib/utils";
 import { IconType } from "react-icons";
 import {
@@ -12,10 +11,6 @@ import {
   ITimelineProjectsData,
   selectTimeline,
 } from "@/types/ITimelineData";
-import { yearDivHeightPx } from "./timeline-container/year-timeline";
-import TimelineElementBody, {
-  linesWidhtPx,
-} from "./timeline-element/timeline-element-body";
 import {
   Tooltip,
   TooltipContent,
@@ -31,8 +26,14 @@ import { usePathname, useRouter } from "next/navigation";
 import { TimelineElementCombobox } from "../timeline-data-page/left-sidebar/timeline-element-combobox";
 import { IDictionary } from "@/app/[lang]/dictionaries/generated";
 import { ETimelineDataPageSearchParamsKeys } from "@/types/ITimelineDataPageProps";
-
-const startYearHeightPx = yearDivHeightPx / 2;
+import {
+  sideTimelineMarginYPx,
+  startYearHeightPx,
+  timelineWidthPx,
+  titleContainerSizePx,
+  yearDivHeightPx,
+} from "../timeline";
+import TimelineElementBody from "./timeline-element/timeline-element-body";
 
 const TimelineElement = ({
   elementTitle,
@@ -109,7 +110,7 @@ const TimelineElement = ({
   };
 
   datas.forEach((data) => {
-    const fromTopPx =
+    let fromTopPx =
       calculateYearsDifference(startDate, data.startDate) * yearDivHeightPx +
       startYearHeightPx;
     const heightPx = data.endDate
@@ -120,6 +121,9 @@ const TimelineElement = ({
       fromTopPx,
       heightPx
     );
+    if (timeline !== "timeline1") {
+      fromTopPx = fromTopPx - sideTimelineMarginYPx;
+    }
     if (!timeline) {
       console.warn(
         "Wasn't able to display this element into a timeline because there wasn't enough place available.",
@@ -161,7 +165,7 @@ const TimelineElement = ({
                 top: fromTopPx,
                 height: heightPx,
                 width: widthPx,
-                left: -(widthPx / 2 - linesWidhtPx / 2),
+                left: -(widthPx / 2 - timelineWidthPx / 2),
               }}
             >
               {heightPx >= 20 && <Icon size={16} />}
@@ -221,4 +225,3 @@ const TimelineElement = ({
 };
 
 export default TimelineElement;
-export { startYearHeightPx };

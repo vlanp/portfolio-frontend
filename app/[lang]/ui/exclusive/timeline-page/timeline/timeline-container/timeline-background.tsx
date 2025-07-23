@@ -1,5 +1,4 @@
-import { titleContainerSizePx } from "../timeline-container";
-import { yearDivHeightPx } from "./year-timeline";
+import { titleContainerSizePx, yearDivHeightPx } from "../../timeline";
 
 const TimelineBackground = ({ years }: { years: number[] }) => {
   return (

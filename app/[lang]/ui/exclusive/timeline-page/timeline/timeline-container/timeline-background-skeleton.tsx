@@ -1,8 +1,7 @@
 "use client";
 
 import { useLayoutEffect, useRef, useState } from "react";
-import { titleContainerSizePx } from "../timeline-container";
-import { yearDivHeightPx } from "./year-timeline";
+import { titleContainerSizePx, yearDivHeightPx } from "../../timeline";
 
 const TimelineBackground = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);

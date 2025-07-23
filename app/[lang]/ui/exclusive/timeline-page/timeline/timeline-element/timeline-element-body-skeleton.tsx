@@ -2,12 +2,6 @@
 
 import { cn } from "@/lib/utils";
 import { useLayoutEffect, useRef, useState } from "react";
-import { startYearHeightPx } from "../timeline-element";
-import {
-  containerRelativeWidth,
-  linesWidhtPx,
-  marginYPx,
-} from "./timeline-element-body";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   createDispatchedTimelineDatas,
@@ -16,6 +10,13 @@ import {
 } from "@/types/ITimelineData";
 import { useIsBelowBP } from "@/hooks/useIsBelowBP";
 import { largeBreakpoint, mobileBreakpoint } from "@/types/IBreakpoints";
+import {
+  middleTimelineMarginYPx,
+  sideTimelineMarginYPx,
+  startYearHeightPx,
+  timelineElementRelativeWidthToContainer,
+  timelineWidthPx,
+} from "../../timeline";
 
 const TimelineElementBodySkeleton = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -85,7 +86,7 @@ const TimelineElementBodySkeleton = () => {
                 top: fromTopPx,
                 height: heightPx,
                 width: 24,
-                left: -(24 / 2 - linesWidhtPx / 2),
+                left: -(24 / 2 - timelineWidthPx / 2),
               }}
             />
           ),
@@ -100,25 +101,32 @@ const TimelineElementBodySkeleton = () => {
 
   const rotationValue =
     90 -
-    (Math.atan((startYearHeightPx - marginYPx) / (containerWidth / 2)) * 360) /
+    (Math.atan(
+      (startYearHeightPx - middleTimelineMarginYPx) / (containerWidth / 2)
+    ) *
+      360) /
       (2 * Math.PI);
 
   const hypotenusePx = Math.sqrt(
-    Math.pow(startYearHeightPx - marginYPx, 2) + Math.pow(containerWidth / 2, 2)
+    Math.pow(startYearHeightPx - middleTimelineMarginYPx, 2) +
+      Math.pow(containerWidth / 2, 2)
   );
 
-  const scale = hypotenusePx / (startYearHeightPx - marginYPx);
+  const scale = hypotenusePx / (startYearHeightPx - middleTimelineMarginYPx);
 
   return (
     <div
       id="timeline-body"
       className="absolute flex top-0 left-0 right-0 bottom-0 justify-center"
-      style={{ marginTop: marginYPx, marginBottom: marginYPx }}
+      style={{
+        marginTop: middleTimelineMarginYPx,
+        marginBottom: middleTimelineMarginYPx,
+      }}
     >
       <Skeleton
         id="timeline-1"
         className={cn("absolute h-full rounded-sm")}
-        style={{ width: linesWidhtPx }}
+        style={{ width: timelineWidthPx }}
       >
         {dispatchedTimelineDatas &&
           dispatchedTimelineDatas.timeline1.map((t) => t.jsxElement)}
@@ -127,10 +135,10 @@ const TimelineElementBodySkeleton = () => {
         id="timeline-2"
         className="absolute top-0 bottom-0 flex"
         style={{
-          left: `${(100 * (1 - containerRelativeWidth)) / 2 + 1}%`,
-          width: linesWidhtPx,
-          marginTop: startYearHeightPx - marginYPx - 5,
-          marginBottom: startYearHeightPx - marginYPx - 5,
+          left: `${(100 * (1 - timelineElementRelativeWidthToContainer)) / 2 + 1}%`,
+          width: timelineWidthPx,
+          marginTop: sideTimelineMarginYPx,
+          marginBottom: sideTimelineMarginYPx,
         }}
       >
         <Skeleton className={cn("flex-1 rounded-sm")} />
@@ -141,10 +149,10 @@ const TimelineElementBodySkeleton = () => {
         id="timeline-3"
         className="absolute top-0 bottom-0 flex"
         style={{
-          right: `${(100 * (1 - containerRelativeWidth)) / 2 + 1}%`,
-          width: linesWidhtPx,
-          marginTop: startYearHeightPx - marginYPx - 5,
-          marginBottom: startYearHeightPx - marginYPx - 5,
+          right: `${(100 * (1 - timelineElementRelativeWidthToContainer)) / 2 + 1}%`,
+          width: timelineWidthPx,
+          marginTop: sideTimelineMarginYPx,
+          marginBottom: sideTimelineMarginYPx,
         }}
       >
         <Skeleton className={cn("flex-1 rounded-sm")} />
@@ -155,15 +163,15 @@ const TimelineElementBodySkeleton = () => {
         className="relative"
         ref={containerRef}
         style={{
-          height: startYearHeightPx - marginYPx,
-          width: `${containerRelativeWidth * 100}%`,
+          height: startYearHeightPx - middleTimelineMarginYPx,
+          width: `${timelineElementRelativeWidthToContainer * 100}%`,
         }}
       >
         <Skeleton
           className={cn("absolute rounded-sm top-0 h-full origin-top")}
           style={{
-            width: linesWidhtPx,
-            left: `calc(50% - ${linesWidhtPx}px / 2 - 2px)`,
+            width: timelineWidthPx,
+            left: `calc(50% - ${timelineWidthPx}px / 2 - 2px)`,
             transform: `rotate(-${rotationValue}deg) scaleY(${scale})`,
           }}
         />
@@ -171,8 +179,8 @@ const TimelineElementBodySkeleton = () => {
         <Skeleton
           className={cn("absolute rounded-sm top-0 h-full origin-top")}
           style={{
-            width: linesWidhtPx,
-            left: `calc(50% - ${linesWidhtPx}px / 2 + 2px)`,
+            width: timelineWidthPx,
+            left: `calc(50% - ${timelineWidthPx}px / 2 + 2px)`,
             transform: `rotate(${rotationValue}deg) scaleY(${scale})`,
           }}
         />
@@ -180,20 +188,20 @@ const TimelineElementBodySkeleton = () => {
       <div
         className="absolute bottom-0"
         style={{
-          height: startYearHeightPx - marginYPx,
-          width: `${containerRelativeWidth * 100}%`,
+          height: startYearHeightPx - middleTimelineMarginYPx,
+          width: `${timelineElementRelativeWidthToContainer * 100}%`,
         }}
       >
         <div
           className="relative"
           ref={containerRef}
-          style={{ height: startYearHeightPx - marginYPx }}
+          style={{ height: startYearHeightPx - middleTimelineMarginYPx }}
         >
           <Skeleton
             className={cn("absolute rounded-sm bottom-0 h-full origin-bottom")}
             style={{
-              width: linesWidhtPx,
-              left: `calc(50% - ${linesWidhtPx}px / 2 + 2px)`,
+              width: timelineWidthPx,
+              left: `calc(50% - ${timelineWidthPx}px / 2 + 2px)`,
               transform: `rotate(-${rotationValue}deg) scaleY(${scale})`,
             }}
           />
@@ -201,8 +209,8 @@ const TimelineElementBodySkeleton = () => {
           <Skeleton
             className={cn("absolute rounded-sm bottom-0 h-full origin-bottom")}
             style={{
-              width: linesWidhtPx,
-              left: `calc(50% - ${linesWidhtPx}px / 2 - 2px)`,
+              width: timelineWidthPx,
+              left: `calc(50% - ${timelineWidthPx}px / 2 - 2px)`,
               transform: `rotate(${rotationValue}deg) scaleY(${scale})`,
             }}
           />

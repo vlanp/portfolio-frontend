@@ -3,11 +3,13 @@
 import { cn } from "@/lib/utils";
 import { IDispatchedTimelineDatas } from "@/types/ITimelineData";
 import { useLayoutEffect, useRef, useState } from "react";
-import { startYearHeightPx } from "../timeline-element";
-
-const linesWidhtPx = 8;
-const containerRelativeWidth = 3 / 4;
-const marginYPx = 8;
+import {
+  middleTimelineMarginYPx,
+  sideTimelineMarginYPx,
+  startYearHeightPx,
+  timelineElementRelativeWidthToContainer,
+  timelineWidthPx,
+} from "../../timeline";
 
 const TimelineElementBody = ({
   bgThemeColor,
@@ -26,24 +28,31 @@ const TimelineElementBody = ({
 
   const rotationValue =
     90 -
-    (Math.atan((startYearHeightPx - marginYPx) / (containerWidth / 2)) * 360) /
+    (Math.atan(
+      (startYearHeightPx - middleTimelineMarginYPx) / (containerWidth / 2)
+    ) *
+      360) /
       (2 * Math.PI);
 
   const hypotenusePx = Math.sqrt(
-    Math.pow(startYearHeightPx - marginYPx, 2) + Math.pow(containerWidth / 2, 2)
+    Math.pow(startYearHeightPx - middleTimelineMarginYPx, 2) +
+      Math.pow(containerWidth / 2, 2)
   );
 
-  const scale = hypotenusePx / (startYearHeightPx - marginYPx);
+  const scale = hypotenusePx / (startYearHeightPx - middleTimelineMarginYPx);
 
   return (
     <div
       className="absolute flex top-0 left-0 right-0 bottom-0 justify-center"
-      style={{ marginTop: marginYPx, marginBottom: marginYPx }}
+      style={{
+        marginTop: middleTimelineMarginYPx,
+        marginBottom: middleTimelineMarginYPx,
+      }}
     >
       <div
         id="timeline-1"
         className={cn("absolute h-full rounded-sm", bgThemeColor)}
-        style={{ width: linesWidhtPx }}
+        style={{ width: timelineWidthPx }}
       >
         {dispatchedTimelineDatas.timeline1.map((t) => t.jsxElement)}
       </div>
@@ -51,10 +60,10 @@ const TimelineElementBody = ({
         id="timeline-2"
         className="absolute top-0 bottom-0 flex"
         style={{
-          left: `${(100 * (1 - containerRelativeWidth)) / 2 + 1}%`,
-          width: linesWidhtPx,
-          marginTop: startYearHeightPx - marginYPx - 5,
-          marginBottom: startYearHeightPx - marginYPx - 5,
+          left: `${(100 * (1 - timelineElementRelativeWidthToContainer)) / 2 + 1}%`,
+          width: timelineWidthPx,
+          marginTop: sideTimelineMarginYPx,
+          marginBottom: sideTimelineMarginYPx,
         }}
       >
         <span className={cn("flex-1 rounded-sm", bgThemeColor)} />
@@ -64,10 +73,10 @@ const TimelineElementBody = ({
         id="timeline-3"
         className="absolute top-0 bottom-0 flex"
         style={{
-          right: `${(100 * (1 - containerRelativeWidth)) / 2 + 1}%`,
-          width: linesWidhtPx,
-          marginTop: startYearHeightPx - marginYPx - 5,
-          marginBottom: startYearHeightPx - marginYPx - 5,
+          right: `${(100 * (1 - timelineElementRelativeWidthToContainer)) / 2 + 1}%`,
+          width: timelineWidthPx,
+          marginTop: sideTimelineMarginYPx,
+          marginBottom: sideTimelineMarginYPx,
         }}
       >
         <span className={cn("flex-1 rounded-sm", bgThemeColor)} />
@@ -77,8 +86,8 @@ const TimelineElementBody = ({
         className="relative"
         ref={containerRef}
         style={{
-          height: startYearHeightPx - marginYPx,
-          width: `${containerRelativeWidth * 100}%`,
+          height: startYearHeightPx - middleTimelineMarginYPx,
+          width: `${timelineElementRelativeWidthToContainer * 100}%`,
         }}
       >
         <div
@@ -87,8 +96,8 @@ const TimelineElementBody = ({
             bgThemeColor
           )}
           style={{
-            width: linesWidhtPx,
-            left: `calc(50% - ${linesWidhtPx}px / 2 - 2px)`,
+            width: timelineWidthPx,
+            left: `calc(50% - ${timelineWidthPx}px / 2 - 2px)`,
             transform: `rotate(-${rotationValue}deg) scaleY(${scale})`,
           }}
         />
@@ -99,8 +108,8 @@ const TimelineElementBody = ({
             bgThemeColor
           )}
           style={{
-            width: linesWidhtPx,
-            left: `calc(50% - ${linesWidhtPx}px / 2 + 2px)`,
+            width: timelineWidthPx,
+            left: `calc(50% - ${timelineWidthPx}px / 2 + 2px)`,
             transform: `rotate(${rotationValue}deg) scaleY(${scale})`,
           }}
         />
@@ -108,14 +117,14 @@ const TimelineElementBody = ({
       <div
         className="absolute bottom-0"
         style={{
-          height: startYearHeightPx - marginYPx,
-          width: `${containerRelativeWidth * 100}%`,
+          height: startYearHeightPx - middleTimelineMarginYPx,
+          width: `${timelineElementRelativeWidthToContainer * 100}%`,
         }}
       >
         <div
           className="relative"
           ref={containerRef}
-          style={{ height: startYearHeightPx - marginYPx }}
+          style={{ height: startYearHeightPx - middleTimelineMarginYPx }}
         >
           <div
             className={cn(
@@ -123,8 +132,8 @@ const TimelineElementBody = ({
               bgThemeColor
             )}
             style={{
-              width: linesWidhtPx,
-              left: `calc(50% - ${linesWidhtPx}px / 2 + 2px)`,
+              width: timelineWidthPx,
+              left: `calc(50% - ${timelineWidthPx}px / 2 + 2px)`,
               transform: `rotate(-${rotationValue}deg) scaleY(${scale})`,
             }}
           />
@@ -135,8 +144,8 @@ const TimelineElementBody = ({
               bgThemeColor
             )}
             style={{
-              width: linesWidhtPx,
-              left: `calc(50% - ${linesWidhtPx}px / 2 - 2px)`,
+              width: timelineWidthPx,
+              left: `calc(50% - ${timelineWidthPx}px / 2 - 2px)`,
               transform: `rotate(${rotationValue}deg) scaleY(${scale})`,
             }}
           />
@@ -147,4 +156,3 @@ const TimelineElementBody = ({
 };
 
 export default TimelineElementBody;
-export { linesWidhtPx, marginYPx, containerRelativeWidth };

@@ -7,8 +7,6 @@ import { useIsBelowBP } from "@/hooks/useIsBelowBP";
 import { largeBreakpoint, mobileBreakpoint } from "@/types/IBreakpoints";
 import { cn } from "@/lib/utils";
 
-const titleContainerSizePx = 120;
-
 const TimelineContainer = ({
   children,
   years,
@@ -36,4 +34,3 @@ const TimelineContainer = ({
 };
 
 export default TimelineContainer;
-export { titleContainerSizePx };

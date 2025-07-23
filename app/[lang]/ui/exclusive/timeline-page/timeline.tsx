@@ -18,6 +18,14 @@ import { mobileBreakpoint } from "@/types/IBreakpoints";
 import YearTimeline from "./timeline/timeline-container/year-timeline";
 import { cn } from "@/lib/utils";
 
+const titleContainerSizePx = 120;
+const yearDivHeightPx = 80;
+const startYearHeightPx = yearDivHeightPx / 2;
+const timelineWidthPx = 8;
+const timelineElementRelativeWidthToContainer = 3 / 4;
+const middleTimelineMarginYPx = 8;
+const sideTimelineMarginYPx = startYearHeightPx - middleTimelineMarginYPx - 5;
+
 const Timeline = ({
   timelineDatas,
   timelineDict,
@@ -126,3 +134,13 @@ const Timeline = ({
 export default dynamic(() => Promise.resolve(Timeline), {
   ssr: false,
 });
+
+export {
+  yearDivHeightPx,
+  startYearHeightPx,
+  timelineWidthPx,
+  timelineElementRelativeWidthToContainer,
+  middleTimelineMarginYPx,
+  sideTimelineMarginYPx,
+  titleContainerSizePx,
+};

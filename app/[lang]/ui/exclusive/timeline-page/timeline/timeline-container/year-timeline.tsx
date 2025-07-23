@@ -1,7 +1,5 @@
 import { cn } from "@/lib/utils";
-import { titleContainerSizePx } from "../timeline-container";
-
-const yearDivHeightPx = 80;
+import { titleContainerSizePx, yearDivHeightPx } from "../../timeline";
 
 const YearTimeline = ({
   years,
@@ -41,4 +39,3 @@ const YearTimeline = ({
 };
 
 export default YearTimeline;
-export { yearDivHeightPx };
