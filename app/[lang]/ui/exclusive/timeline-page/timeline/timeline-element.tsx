@@ -158,7 +158,7 @@ const TimelineElement = ({
                   : () => displayPage(data)
               }
               className={cn(
-                "absolute rounded-sm hover:cursor-pointer flex justify-center items-center",
+                "absolute rounded-sm hover:cursor-pointer flex justify-center items-center border-1 border-background",
                 bgThemeColor
               )}
               style={{
