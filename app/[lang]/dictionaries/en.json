@@ -39,7 +39,9 @@
         "RepoCombobox": {
           "SearchPlaceholder": "Search a repo...",
           "EmptySearchResult": "No repos found"
-        }
+        },
+        "WorkInProgress": "The documentation for this repository is currently being created. A repository with a more complete documentation is available ",
+        "WorkInProgressLink": "here"
       }
     },
     "Video": "Video",

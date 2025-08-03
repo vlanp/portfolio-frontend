@@ -25,6 +25,9 @@ import { IDictionary } from "@/app/[lang]/dictionaries/generated";
 import { RepoCombobox } from "./left-sidebar/repo-combobox";
 import { ZProject } from "@/types/IProject";
 import { z } from "zod/v4";
+import Link from "next/link";
+
+const EXAMPLE_REPOSITORY_ID = "68896865718a051c3e2a6741";
 
 const LeftSidebar = async ({
   repoId,
@@ -122,6 +125,24 @@ const LeftSidebar = async ({
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
+          {repoId !== EXAMPLE_REPOSITORY_ID && (
+            <>
+              <SidebarSeparator />
+              <SidebarGroupContent>
+                <SidebarMenu className="text-center">
+                  <span>
+                    {projectDict.LeftProjectSidebar.WorkInProgress}
+                    <Link
+                      href="/projects/68896865718a051c3e2a6741"
+                      className="basic-link"
+                    >
+                      {projectDict.LeftProjectSidebar.WorkInProgressLink}
+                    </Link>
+                  </span>
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </>
+          )}
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>

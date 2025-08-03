@@ -39,7 +39,9 @@
         "RepoCombobox": {
           "SearchPlaceholder": "Rechercher un dépôt...",
           "EmptySearchResult": "Aucun dépôt n'a été trouvé"
-        }
+        },
+        "WorkInProgress": "La documentation de ce dépôt est en cours de création. Un dépôt avec une documentation plus complète est disponible ",
+        "WorkInProgressLink": "ici"
       }
     },
     "Video": "Vidéo",
