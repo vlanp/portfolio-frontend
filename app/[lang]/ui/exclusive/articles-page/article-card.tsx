@@ -55,7 +55,7 @@ const ArticleCard = ({
           <div className="flex flex-row gap-4">
             <p className="text-xs text-muted-foreground text-center">
               {articleCardDict.PublishedOn}{" "}
-              {new Date(article.createdAt).toLocaleDateString(lang, {
+              {article.createdAt.toLocaleDateString(lang, {
                 year: "numeric",
                 month: "long",
                 day: "numeric",
@@ -63,7 +63,7 @@ const ArticleCard = ({
             </p>
             <p className="text-xs text-muted-foreground text-center">
               {articleCardDict.LastUpdatedOn}{" "}
-              {new Date(article.updatedAt).toLocaleDateString(lang, {
+              {article.updatedAt.toLocaleDateString(lang, {
                 year: "numeric",
                 month: "long",
                 day: "numeric",
@@ -71,9 +71,9 @@ const ArticleCard = ({
             </p>
           </div>
         </div>
-        <div className="flex-col flex-1 md:block hidden">
+        <div className="flex-col flex-1 h-full md:block hidden">
           <Image
-            className="object-cover rounded-lg"
+            className="object-cover h-full rounded-2xl"
             alt={article.title[lang]}
             src={article.imgUrl}
             width={article.imgWidth}
