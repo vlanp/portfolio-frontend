@@ -17,7 +17,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Dispatch, JSX, SetStateAction, useEffect, useState } from "react";
-import { IDisplayIcon } from "@/types/IProject";
+import { IReactIcon } from "@/types/IProject";
 import { IDictionary } from "@/app/[lang]/dictionaries/generated";
 import {
   fetchDataIdle,
@@ -34,7 +34,7 @@ function ProgrammingLanguagesCombobox({
   getIconComponent,
   projectsDict,
 }: {
-  programmingLanguages: IDisplayIcon[];
+  programmingLanguages: IReactIcon[];
   value: string | undefined;
   setValue: Dispatch<SetStateAction<string | undefined>>;
   getIconComponent: (iconName: string, color: string) => JSX.Element | null;

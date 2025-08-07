@@ -15,6 +15,8 @@ const ZReactIcon = z.object({
   color: z.string(),
 });
 
+type IReactIcon = z.infer<typeof ZReactIcon>;
+
 const ZCustomIcon = z.object({
   type: z.literal("CustomIcon"),
   name: z.string(),
@@ -22,6 +24,8 @@ const ZCustomIcon = z.object({
   widthPx: z.number(),
   heightPx: z.number(),
 });
+
+type ICustomIcon = z.infer<typeof ZCustomIcon>;
 
 const ZDisplayIcon = z.discriminatedUnion("type", [ZReactIcon, ZCustomIcon]);
 
@@ -93,4 +97,12 @@ function getDistinctIconNames(projects: IProject[]): string[] {
 }
 
 export { ZRepoDescription, ZRepo, ZProject, getDistinctIconNames };
-export type { IRepoDescription, IDisplayName, IRepo, IProject, IDisplayIcon };
+export type {
+  IRepoDescription,
+  IDisplayName,
+  IRepo,
+  IProject,
+  IDisplayIcon,
+  IReactIcon,
+  ICustomIcon,
+};
