@@ -37,7 +37,7 @@ const TechnologiesSection = ({
               <Badge
                 key={framework.name}
                 variant="secondary"
-                className="text-sm gap-2 py-1"
+                className="text-sm gap-2 py-1 h-[30px]"
               >
                 {framework.type === "ReactIcon" ? (
                   <span className="text-lg">
@@ -45,6 +45,7 @@ const TechnologiesSection = ({
                   </span>
                 ) : (
                   <Image
+                    className="h-full w-fit"
                     src={framework.imgLink}
                     width={framework.widthPx}
                     height={framework.heightPx}
