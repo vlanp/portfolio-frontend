@@ -5,6 +5,7 @@ import ProgrammingLanguagesCombobox from "./technologies-section/programming-lan
 import { JSX, useState } from "react";
 import { IRepo } from "@/types/IProject";
 import { IDictionary } from "@/app/[lang]/dictionaries/generated";
+import Image from "next/image";
 
 const TechnologiesSection = ({
   getIconComponent,
@@ -34,13 +35,23 @@ const TechnologiesSection = ({
             .find((pl) => pl.name === programmingLanguage)
             ?.frameworks.map((framework) => (
               <Badge
-                key={framework.iconName}
+                key={framework.name}
                 variant="secondary"
                 className="text-sm gap-2 py-1"
               >
-                <span className="text-lg">
-                  {getIconComponent(framework.iconName, framework.color)}
-                </span>
+                {framework.type === "ReactIcon" ? (
+                  <span className="text-lg">
+                    {getIconComponent(framework.iconName, framework.color)}
+                  </span>
+                ) : (
+                  <Image
+                    src={framework.imgLink}
+                    width={framework.widthPx}
+                    height={framework.heightPx}
+                    alt={framework.name + " framework icon"}
+                  />
+                )}
+
                 <span>{framework.name}</span>
               </Badge>
             ))}

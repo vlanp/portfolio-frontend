@@ -8,11 +8,26 @@ const ZRepoDescription = z.object({
 
 type IRepoDescription = z.infer<typeof ZRepoDescription>;
 
-const ZDisplayIcon = z.object({
+const ZReactIcon = z.object({
+  type: z.literal("ReactIcon"),
   name: z.string(),
   iconName: z.string(),
   color: z.string(),
 });
+
+const ZCustomIcon = z.object({
+  type: z.literal("CustomIcon"),
+  name: z.string(),
+  imgLink: z.string(),
+  widthPx: z.number(),
+  heightPx: z.number(),
+});
+
+const ZDisplayIcon = z.discriminatedUnion("type", [ZReactIcon, ZCustomIcon]);
+
+const ZDisplayIconWithChilds = z.union([
+  ZReactIcon.extend({ frameworks: z.array(ZDisplayIcon) }),
+]);
 
 type IDisplayIcon = z.infer<typeof ZDisplayIcon>;
 
@@ -35,12 +50,8 @@ const ZRepo = z.object({
   repo: z.string(),
   path: z.string(),
   description: ZRepoDescription,
-  programmingLanguages: z.array(
-    ZDisplayIcon.extend({
-      frameworks: z.array(ZDisplayIcon),
-    })
-  ),
-  platforms: z.array(ZDisplayIcon),
+  programmingLanguages: z.array(ZDisplayIconWithChilds),
+  platforms: z.array(ZReactIcon),
   youtube: z.string(),
   github: z.string(),
   _id: z.string(),
@@ -67,7 +78,9 @@ function getDistinctIconNames(projects: IProject[]): string[] {
       repo.programmingLanguages.forEach((programmingLanguage) => {
         iconNames.push(programmingLanguage.iconName);
         programmingLanguage.frameworks.forEach((framework) => {
-          iconNames.push(framework.iconName);
+          if (framework.type === "ReactIcon") {
+            iconNames.push(framework.iconName);
+          }
         });
       });
       repo.platforms.forEach((platform) => {
