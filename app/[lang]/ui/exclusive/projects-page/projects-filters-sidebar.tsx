@@ -70,7 +70,7 @@ const ProjectsFiltersSidebar = async ({
             </SidebarGroupLabel>
             <SidebarSeparator />
             <SidebarGroupContent>
-              <SidebarMenu className="px-5 gap-10">
+              <SidebarMenu className="px-5 gap-10 mb-5">
                 <BehaviorProjectsFilters projectsDict={projectsDict} />
                 <SearchbarProjectsFilters projectsDict={projectsDict} />
                 <CheckboxProjectsFilters

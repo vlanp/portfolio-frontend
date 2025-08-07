@@ -30,7 +30,8 @@ const TechnologiesSection = ({
         projectsDict={projectsDict}
       />
       <div>
-        <div className="flex flex-wrap gap-1 justify-center">
+        {/* before:m-auto and after:m-auto allows to center elements when there is no overflow, and prevent any left overflow when there is enough elements for overflow => see https://stackoverflow.com/a/34455253/29163920 */}
+        <div className="flex gap-1 overflow-auto before:m-auto after:m-auto">
           {repo.programmingLanguages
             .find((pl) => pl.name === programmingLanguage)
             ?.frameworks.map((framework) => (

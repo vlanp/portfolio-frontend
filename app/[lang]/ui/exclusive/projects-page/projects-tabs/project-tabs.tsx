@@ -13,7 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { IProject } from "@/types/IProject";
 import { LuChevronDown, LuLayers } from "react-icons/lu";
 import { SiYoutube, SiGithub, SiGoogledocs } from "react-icons/si";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { ILang } from "@/types/ILang";
 import Link from "next/link";
 import { IconType } from "react-icons";
@@ -168,7 +168,6 @@ const ProjectTabs = ({
 
   const idOfInitialRepo = repoIdWithBestScore || project.repos[0]?._id;
   const [selectedTab, setSelectedTab] = useState(idOfInitialRepo);
-  console.log(JSON.stringify(highlightsWithReposIds, undefined, 2));
 
   const shouldTruncateDescription =
     selectedTab && highlightsWithReposIds
@@ -180,33 +179,7 @@ const ProjectTabs = ({
         : false
       : true;
 
-  console.log(shouldTruncateDescription);
-
   const [truncateDescription, setTruncateDescription] = useState<boolean>(true);
-  const repoInfoCardRef = useRef<HTMLDivElement>(null);
-  const [initialRepoInfoCardHeight, setInitialRepoInfoCardHeight] = useState<
-    number | null
-  >(null);
-
-  useLayoutEffect(() => {
-    const resetRepoInfoCard = () => {
-      setTruncateDescription(true);
-      setInitialRepoInfoCardHeight(null);
-    };
-
-    window.addEventListener("resize", resetRepoInfoCard);
-
-    return () => {
-      window.removeEventListener("resize", resetRepoInfoCard);
-    };
-  }, [shouldTruncateDescription]);
-
-  useLayoutEffect(() => {
-    if (repoInfoCardRef.current && !initialRepoInfoCardHeight) {
-      const { height } = repoInfoCardRef.current.getBoundingClientRect();
-      setInitialRepoInfoCardHeight(height);
-    }
-  }, [initialRepoInfoCardHeight]);
 
   useEffect(() => {
     if (repoIdWithBestScore) {
@@ -241,7 +214,7 @@ const ProjectTabs = ({
   };
 
   return (
-    <Card className="w-full h-fit max-w-[600px] mx-auto shadow-lg border-2 hover:shadow-xl transition-shadow duration-300 py-4">
+    <Card className="w-full h-fit max-w-[600px] mx-auto shadow-lg border-2 hover:shadow-xl transition-shadow duration-300 py-3">
       <CardContent className="px-4 sm:px-6">
         {/* Project Header */}
         <div className="text-center mb-3">
@@ -382,15 +355,7 @@ const ProjectTabs = ({
               </div>
 
               {/* Repository Information */}
-              <Card
-                style={{
-                  ...(initialRepoInfoCardHeight && {
-                    minHeight: `${initialRepoInfoCardHeight}px`,
-                  }),
-                }}
-                className="flex border-muted justify-between py-4 gap-2"
-                ref={repoInfoCardRef}
-              >
+              <Card className="flex border-muted justify-between gap-0 py-3 h-[400px] md:h-[370px]">
                 <CardHeader className="flex justify-center">
                   <CardTitle className="flex flex-col md:flex-row items-center gap-2 text-lg">
                     <span className="max-w-[220px] sm:max-w-[300px] truncate">

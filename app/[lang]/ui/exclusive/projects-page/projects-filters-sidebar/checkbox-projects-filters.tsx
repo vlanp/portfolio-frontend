@@ -36,25 +36,27 @@ const CheckboxProjectsFilters = ({
   };
 
   return (
-    <div className="flex flex-col gap-5">
-      <h6>{categoryName}</h6>
-      <div className="flex flex-row gap-5 flex-wrap">
-        {elements.map((element) => {
-          return (
-            <div className="flex items-center gap-2 min-w-30" key={element}>
-              <Checkbox
-                id={"checkbox-" + element}
-                onCheckedChange={(checked) =>
-                  handleCheckedChange(checked, element)
-                }
-                defaultChecked={params.includes(element) ? true : false}
-              />
-              <Label htmlFor={"checkbox-" + element}>{element}</Label>
-            </div>
-          );
-        })}
+    elements.length > 0 && (
+      <div className="flex flex-col gap-5">
+        <h6>{categoryName}</h6>
+        <div className="flex flex-row gap-5 flex-wrap">
+          {elements.map((element) => {
+            return (
+              <div className="flex items-center gap-2 min-w-30" key={element}>
+                <Checkbox
+                  id={"checkbox-" + element}
+                  onCheckedChange={(checked) =>
+                    handleCheckedChange(checked, element)
+                  }
+                  defaultChecked={params.includes(element) ? true : false}
+                />
+                <Label htmlFor={"checkbox-" + element}>{element}</Label>
+              </div>
+            );
+          })}
+        </div>
       </div>
-    </div>
+    )
   );
 };
 
