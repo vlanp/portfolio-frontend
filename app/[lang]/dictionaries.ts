@@ -1,14 +1,14 @@
 import "server-only";
 
-export type IDictionary =
-  | Awaited<ReturnType<typeof dictionaries.en>>
-  | Awaited<ReturnType<typeof dictionaries.fr>>;
+import { ELangs, ILang } from "@/types/ILang";
+import { IDictionary } from "./dictionaries/generated";
 
 const dictionaries = {
-  en: () => import("./dictionaries/en.json").then((module) => module.default),
-  fr: () => import("./dictionaries/fr.json").then((module) => module.default),
-};
+  [ELangs.EN]: () =>
+    import("./dictionaries/generated/en").then((module) => module.enDictionary),
+  [ELangs.FR]: () =>
+    import("./dictionaries/generated/fr").then((module) => module.frDictionary),
+} satisfies Record<ELangs, () => Promise<IDictionary>>;
 
-export const getDictionary = async (
-  locale: "en" | "fr"
-): Promise<IDictionary> => dictionaries[locale]();
+export const getDictionary = async (locale: ILang): Promise<IDictionary> =>
+  dictionaries[locale]();

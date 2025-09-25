@@ -1,21 +1,25 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "./theme-providers";
 import Favicon from "./favicon.ico";
-import { ModeToggle } from "./ui/mode-toggle";
-import TopNav from "./ui/topnav";
-import { LangToggle } from "./ui/lang-toggle";
-import { getDictionary, IDictionary } from "./dictionaries";
+import { ModeToggle } from "./ui/exclusive/mode-toggle";
+import TopNav from "./ui/exclusive/topnav";
+import { LangToggle } from "./ui/exclusive/lang-toggle";
+import { getDictionary } from "./dictionaries";
+import { IDictionary } from "./dictionaries/generated";
+import { ILang } from "@/types/ILang";
+import { Toaster } from "@/components/ui/sonner";
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuList,
+} from "@/components/ui/navigation-menu";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const sans = DM_Sans({
+  variable: "--font-sans",
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  weight: ["500"],
 });
 
 export const metadata: Metadata = {
@@ -29,30 +33,50 @@ export default async function RootLayout({
   params,
 }: Readonly<{
   children: React.ReactNode;
-  params: Promise<{ lang: "en" | "fr" }>;
+  params: Promise<{ lang: ILang }>;
 }>) {
   const { lang } = await params;
   const dict: IDictionary = await getDictionary(lang);
   return (
     <html suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css"
+          integrity="sha384-5TcZemv2l/9On385z///+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcFCP"
+          crossOrigin="anonymous"
+        />
+
+        <script
+          defer
+          src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"
+          integrity="sha384-cMkvdD8LoxVzGF/RPUKAcvmm49FQ0oxwDF3BGKtDXcEc+T1b2N+teh/OJfpU0jr6"
+          crossOrigin="anonymous"
+        />
+      </head>
+      <body className={`${sans.variable} antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          <div className="min-h-screen flex flex-col">
-            <header className="bg-sidebar-accent text-sidebar-foreground border-sidebar-border border-2 flex flex-row p-5 justify-between">
-              <ModeToggle />
-              <TopNav dictionary={dict} />
-              <LangToggle dictionary={dict} />
-            </header>
-            <main className="flex flex-1">{children}</main>
-            <footer></footer>
-          </div>
+          <header className="sticky top-0 z-50 overflow-hidden">
+            <NavigationMenu className="bg-card border-b border-border">
+              <NavigationMenuList className="flex flex-row justify-around w-svw px-5 h-header-height">
+                <NavigationMenuItem>
+                  <ModeToggle />
+                </NavigationMenuItem>
+                <TopNav dictionary={dict} />
+                <NavigationMenuItem>
+                  <LangToggle dictionary={dict} />
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
+          </header>
+          <main className="min-h-main-height flex flex-col">{children}</main>
+          <Toaster />
+          <footer></footer>
         </ThemeProvider>
       </body>
     </html>

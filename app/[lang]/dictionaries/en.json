@@ -1,9 +1,25 @@
 {
+  "shared": {
+    "HtmlMarkdownContent": {
+      "Previous": "Previous",
+      "Next": "Next",
+      "PublishedOn": "Published on",
+      "LastUpdatedOn": "Last updated on"
+    },
+    "RightTocSidebar": {
+      "Title": "On this page"
+    },
+    "CategoryFilterCardDict": {
+      "Title": "Filters"
+    }
+  },
   "topNav": {
-    "Home": "Home",
-    "Projects": "Projects",
     "About": "About",
-    "Contact": "Contact"
+    "Timeline": "Timeline",
+    "Projects": "Projects",
+    "Resume": "Resume",
+    "Articles": "Articles",
+    "PageNameToast": "Welcome to the page : %(pageName)s"
   },
   "langToggle": {
     "English": "English",
@@ -12,5 +28,83 @@
   "404NotFound": {
     "Description": "Could not find the requested resource.",
     "GoBack": "Go Back"
+  },
+  "Projects": {
+    "Project": {
+      "LeftProjectSidebar": {
+        "TagCombobox": {
+          "SearchPlaceholder": "Search a tag...",
+          "EmptySearchResult": "No tags found"
+        },
+        "RepoCombobox": {
+          "SearchPlaceholder": "Search a repo...",
+          "EmptySearchResult": "No repos found"
+        },
+        "WorkInProgress": "The documentation for this repository is currently being created. A repository with a more complete documentation is available ",
+        "WorkInProgressLink": "here"
+      }
+    },
+    "Video": "Video",
+    "Code": "Code",
+    "Documentation": "Documentation",
+    "FullStack": "Full Stack",
+    "Repository": "Repository",
+    "Repositories": "Repositories",
+    "ProjectsTabs": {
+      "ProjectTabs": {
+        "ShowMore": "Show more...",
+        "ShowLess": "Show less...",
+        "Platform": "Platform",
+        "LearnMore": "Learn more",
+        "ProgrammingLanguageCombobox": {
+          "FrameworksOfLanguage": "%(programmingLanguage)s frameworks",
+          "SearchPlaceholder": "Search a language...",
+          "EmptySearchResult": "No language found"
+        }
+      }
+    },
+    "ProjectsFilters": {
+      "AllFilters": "All filters",
+      "ProgrammingLanguages": "Languages",
+      "FrameworksOfLanguage": "%(programmingLanguage)s frameworks",
+      "Platforms": "Platforms",
+      "SearchInProjects": "Search among the projects",
+      "SearchInProjectsPlaceholder": "Search per keywords...",
+      "Union": "Union",
+      "Intersection": "Intersection",
+      "FiltersBehavior": "Filters behavior",
+      "FiltersUnionTooltip": "Shows projects that match at least one of the selected filters",
+      "FiltersIntersectionTooltip": "Shows only projects that match all selected filters simultaneously"
+    }
+  },
+  "About": {
+    "MainTitle": "FullStack Application Developer",
+    "MainSubTitle": "Seeking an 18-month apprenticeship",
+    "WhoAmI": "Who Am I?",
+    "TitleP1": "Initial background in metrology",
+    "DescriptionP2": "After earning a Technical University Diploma in Physical Measurements, I specialized in metrology through a professional bachelor's degree, following a 10-week internship completed in 2017. I continued with a work-study program until my hiring at the end of 2018. Initially interested in this field, I performed various stimulating tasks requiring reflection and analysis, particularly measurement uncertainty calculations. However, these rewarding assignments gradually became scarce, giving way to increasingly repetitive tasks. I then realized that this profession no longer aligned with my professional aspirations.",
+    "TitleP3": "Discovery and interest in development",
+    "DescriptionP4": "In 2022, I began learning programming in my personal time, quickly developing an interest for it and seeing an opportunity for greater fulfillment. Meanwhile, at work, whenever I had time, I looked for improvements that could benefit the company while allowing me to get closer to development.",
+    "DescriptionP5": "Thus, I progressively self-taught myself the creation and deployment of Power BI reports, notably using DAX and Power Query M languages. These skills brought notable improvements to my department and, with my abilities being recognized, I was requested to develop and maintain reports for another department. Although these projects presented genuine interest for me, they constituted only a small part of my activities, reinforcing my desire for career change.",
+    "TitleP6": "Transition to development",
+    "DescriptionP7": "From May to July 2024, I undertook a professional retraining process through the PTP program of Transition Pro Normandie, which allowed me to follow a 10-week bootcamp provided by Le Reacteur.",
+    "DescriptionP8": "In accordance with the program, I resumed my position as a metrology technician after the training. Having no other means to complete my career transition, I made the decision to resign in March 2025, after 7 years of experience in metrology. Since then, I have been dedicating my time to improving my developer skills and actively preparing for the apprenticeship training offered by Le Reacteur, for which I am currently seeking a host company."
+  },
+  "Timeline": {
+    "Studies": "Studies",
+    "Experiences": "Experiences",
+    "Projects": "Projects"
+  },
+  "Articles": {
+    "NbArticlesFound": "%(nbArticles)s Articles found",
+    "ArticleCard": {
+      "PublishedOn": "Published on",
+      "LastUpdatedOn": "Last updated on",
+      "ReadArticle": "Read the article"
+    },
+    "ArticlesPagination": {
+      "Previous": "Previous",
+      "Next": "Next"
+    }
   }
 }

@@ -1,6 +1,8 @@
 import Link from "next/link";
-import { FaceFrownIcon } from "@heroicons/react/24/outline";
-import { getDictionary, IDictionary } from "../dictionaries";
+import { HiOutlineFaceFrown } from "react-icons/hi2";
+import { getDictionary } from "../dictionaries";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { IDictionary } from "../dictionaries/generated";
 
 export default async function NotFound({
   params,
@@ -10,16 +12,15 @@ export default async function NotFound({
   const { lang } = await params;
   const dict: IDictionary = await getDictionary(lang);
   return (
-    <main className="flex h-screen w-screen flex-col items-center justify-center gap-2">
-      <FaceFrownIcon className="w-10 text-gray-400" />
+    <section className="flex flex-grow h-full flex-col items-center justify-center gap-2">
+      <HiOutlineFaceFrown className="text-gray-400 size-10" />
       <h2 className="text-xl font-semibold">404 Not Found</h2>
       <p>{dict["404NotFound"].Description}</p>
-      <Link
-        href="/"
-        className="mt-4 rounded-md bg-blue-500 px-4 py-2 text-sm text-white transition-colors hover:bg-blue-400"
-      >
-        {dict["404NotFound"].GoBack}
-      </Link>
-    </main>
+      <Button asChild variant={"outline"}>
+        <Link className={buttonVariants({ variant: "outline" })} href="/">
+          {dict["404NotFound"].GoBack}
+        </Link>
+      </Button>
+    </section>
   );
 }

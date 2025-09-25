@@ -1,0 +1,153 @@
+@import "tw-animate-css";
+@import "./styles/atom-one-light.css";
+@import "./styles/github-colors-light.css";
+@import "./styles/github-base.css";
+@source inline("dark:hidden dark:block");
+
+@theme inline {
+  --spacing-header-height: var(--header-height);
+  --spacing-main-height: var(--main-height);
+}
+
+:root {
+  --header-height: 5rem;
+  --main-height: calc(100svh - var(--header-height));
+}
+
+.dark {
+  @import "./styles/atom-one-dark.css";
+  @import "./styles/github-colors-dark-class.css";
+}
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply scroll-mt-[calc(var(--header-height)+0.8rem)];
+  }
+  h1 {
+    @apply text-5xl/14 font-bold tracking-tighter;
+  }
+  h2 {
+    @apply mb-4 mt-6 text-4xl font-semibold tracking-tight;
+  }
+  h3 {
+    @apply mb-3 mt-4 text-3xl font-semibold tracking-tight;
+  }
+  h4 {
+    @apply mb-2 mt-3 text-2xl font-semibold;
+  }
+  h5 {
+    @apply mb-1 mt-2 text-xl font-semibold;
+  }
+  h6 {
+    @apply mb-1 mt-2 text-lg font-semibold;
+  }
+  p {
+    @apply mb-2 mt-1 leading-relaxed;
+  }
+  p,
+  li,
+  code,
+  a {
+    @apply wrap-anywhere;
+  }
+  .basic-link {
+    @apply text-primary hover:text-primary/60 transition-colors duration-200;
+  }
+  blockquote {
+    @apply pl-4 bg-muted rounded-lg italic my-4 py-2 shadow-sm;
+  }
+  hr {
+    @apply my-6 border-border;
+  }
+  pre,
+  code {
+    @apply rounded-lg whitespace-pre-wrap mb-5;
+  }
+  .md-ul {
+    @apply my-2 list-disc flex flex-col gap-1 ml-10;
+  }
+  img {
+    @apply max-w-full h-auto;
+  }
+  .hljs {
+    @apply min-w-0;
+  }
+  .anchor-link {
+    @apply text-foreground hover:text-foreground hover:underline;
+  }
+
+  table {
+    @apply max-w-full border-collapse bg-card rounded-lg overflow-hidden shadow-sm my-5;
+  }
+
+  table thead {
+    @apply bg-secondary;
+  }
+
+  table thead tr {
+    @apply border-b-2 border-border;
+  }
+
+  table th {
+    @apply px-6 py-4 text-center text-xs font-semibold uppercase tracking-wider;
+    @apply text-secondary-foreground bg-secondary;
+  }
+
+  table tbody tr {
+    @apply border-b border-border transition-colors duration-200;
+  }
+
+  table tbody tr:hover {
+    @apply bg-accent/30;
+  }
+
+  table tbody tr:last-child {
+    @apply border-b-0;
+  }
+
+  table td {
+    @apply px-6 py-4 text-center text-sm text-card-foreground;
+  }
+
+  .not-responsive-equation {
+    @apply hidden 2xl:block;
+  }
+
+  .responsive-equation {
+    @apply block 2xl:hidden;
+  }
+}
+
+@media (max-width: 1024px) {
+  .responsive-table {
+    font-size: 0.85rem;
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .responsive-table th,
+  .responsive-table td {
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+}
+
+@media (max-width: 768px) {
+  .responsive-table {
+    font-size: 0.8rem;
+  }
+
+  .responsive-table th,
+  .responsive-table td {
+    padding-left: 2px;
+    padding-right: 2px;
+  }
+}

@@ -1,0 +1,227 @@
+"use client";
+
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { calculateYearsDifference, cn } from "@/lib/utils";
+import { IconType } from "react-icons";
+import {
+  createDispatchedTimelineDatas,
+  ITimelineElement,
+  ITimelineExperiencesData,
+  ITimelineStudiesData,
+  ITimelineProjectsData,
+  selectTimeline,
+} from "@/types/ITimelineData";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import TimelineElementTooltipContent from "./timeline-element/timeline-element-tooltip-content";
+import { ILang } from "@/types/ILang";
+import { useIsBelowBP } from "@/hooks/useIsBelowBP";
+import { mobileBreakpoint } from "@/types/IBreakpoints";
+import TimelineBackground from "./timeline-container/timeline-background";
+import { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { TimelineElementCombobox } from "../timeline-data-page/left-sidebar/timeline-element-combobox";
+import { IDictionary } from "@/app/[lang]/dictionaries/generated";
+import { ETimelineDataPageSearchParamsKeys } from "@/types/ITimelineDataPageProps";
+import {
+  sideTimelineMarginYPx,
+  startYearHeightPx,
+  timelineWidthPx,
+  titleContainerSizePx,
+  yearDivHeightPx,
+} from "../timeline";
+import TimelineElementBody from "./timeline-element/timeline-element-body";
+
+const TimelineElement = ({
+  elementTitle,
+  bgThemeColor,
+  borderThemeColor,
+  Icon,
+  datas,
+  startYear,
+  timelineElement,
+  lang,
+  years,
+  replaceCurrentPath,
+  withCombobox,
+  timelineDict,
+}: {
+  elementTitle: string;
+  bgThemeColor: `bg-chart-${number}`;
+  borderThemeColor: `border-chart-${number}`;
+  Icon: IconType;
+  datas:
+    | ITimelineExperiencesData[]
+    | ITimelineProjectsData[]
+    | ITimelineStudiesData[];
+  startYear: number;
+  timelineElement: ITimelineElement;
+  lang: ILang;
+  years: number[];
+  replaceCurrentPath?: boolean;
+} & (
+  | {
+      withCombobox: true;
+      timelineDict: IDictionary["Timeline"];
+    }
+  | {
+      withCombobox?: false;
+      timelineDict?: undefined;
+    }
+)) => {
+  const startDate = new Date(startYear, 1, 1);
+  const dispatchedTimelineDatas = createDispatchedTimelineDatas([1, 2, 3]);
+
+  const isBelowMobileBp = useIsBelowBP(mobileBreakpoint);
+  const [openTooltips, setOpenTooltips] = useState<Record<string, boolean>>({});
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const toggleTooltip = (dataId: string) => {
+    setOpenTooltips((prev) => ({
+      ...prev,
+      [dataId]: !prev[dataId],
+    }));
+  };
+
+  const setTooltipOpen = (dataId: string, isOpen: boolean) => {
+    setOpenTooltips((prev) => ({
+      ...prev,
+      [dataId]: isOpen,
+    }));
+  };
+
+  const displayPage = (
+    data:
+      | ITimelineExperiencesData
+      | ITimelineProjectsData
+      | ITimelineStudiesData
+  ) => {
+    return replaceCurrentPath
+      ? router.push(
+          `${pathname.split("/").slice(0, -1).join("/")}/${data._id}?${ETimelineDataPageSearchParamsKeys.EL}=${data.type}`
+        )
+      : router.push(
+          `${pathname}/${data._id}?${ETimelineDataPageSearchParamsKeys.EL}=${data.type}`
+        );
+  };
+
+  datas.forEach((data) => {
+    let fromTopPx =
+      calculateYearsDifference(startDate, data.startDate) * yearDivHeightPx +
+      startYearHeightPx;
+    const heightPx = data.endDate
+      ? calculateYearsDifference(data.startDate, data.endDate) * yearDivHeightPx
+      : 5;
+    const timeline = selectTimeline(
+      dispatchedTimelineDatas,
+      fromTopPx,
+      heightPx
+    );
+    if (timeline !== "timeline1") {
+      fromTopPx = fromTopPx - sideTimelineMarginYPx;
+    }
+    if (!timeline) {
+      console.warn(
+        "Wasn't able to display this element into a timeline because there wasn't enough place available.",
+        {
+          element: timelineElement,
+          data,
+          calculatedPosition: {
+            fromTopPx,
+            heightPx,
+          },
+          dispatchedTimelineDatas,
+        }
+      );
+      return undefined;
+    }
+    const widthPx = 24;
+    dispatchedTimelineDatas[timeline].push({
+      fromTopPx,
+      heightPx,
+      jsxElement: (
+        <Tooltip
+          key={data._id}
+          open={openTooltips[data._id] || false}
+          onOpenChange={(isOpen) => setTooltipOpen(data._id, isOpen)}
+        >
+          <TooltipTrigger asChild>
+            <span
+              key={data._id}
+              onClick={
+                isBelowMobileBp
+                  ? () => toggleTooltip(data._id)
+                  : () => displayPage(data)
+              }
+              className={cn(
+                "absolute rounded-sm hover:cursor-pointer flex justify-center items-center border-1 border-background",
+                bgThemeColor
+              )}
+              style={{
+                top: fromTopPx,
+                height: heightPx,
+                width: widthPx,
+                left: -(widthPx / 2 - timelineWidthPx / 2),
+              }}
+            >
+              {heightPx >= 20 && <Icon size={16} />}
+            </span>
+          </TooltipTrigger>
+          <TooltipContent
+            side={isBelowMobileBp ? "top" : "right"}
+            avoidCollisions
+            disableArrow
+            className={cn(
+              "text-popover-foreground bg-popover border-4 m-2 hover:cursor-pointer",
+              borderThemeColor
+            )}
+            onClick={() => displayPage(data)}
+          >
+            <TimelineElementTooltipContent data={data} lang={lang} />
+          </TooltipContent>
+        </Tooltip>
+      ),
+    });
+  });
+
+  return (
+    <div className="relative flex flex-col w-[200px] gap-2">
+      {isBelowMobileBp && <TimelineBackground years={years} />}
+      <Card
+        className="flex flex-col justify-center w-full z-10"
+        style={{ height: `${titleContainerSizePx}px` }}
+      >
+        <CardHeader className="flex flex-row justify-center">
+          <Icon size={40} className={cn("p-2 rounded-full", bgThemeColor)} />
+        </CardHeader>
+        <CardContent>
+          <CardTitle className="text-center">
+            {withCombobox ? (
+              <TimelineElementCombobox
+                timelineDict={timelineDict}
+                selectedElement={timelineElement}
+              />
+            ) : (
+              elementTitle
+            )}
+          </CardTitle>
+        </CardContent>
+      </Card>
+      <div
+        className="relative flex flex-col flex-1"
+        style={{ maxHeight: years.length * yearDivHeightPx }}
+      >
+        <TimelineElementBody
+          bgThemeColor={bgThemeColor}
+          dispatchedTimelineDatas={dispatchedTimelineDatas}
+        />
+      </div>
+    </div>
+  );
+};
+
+export default TimelineElement;
