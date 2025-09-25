@@ -47,7 +47,7 @@ This project is a portfolio website designed to showcase information about my st
 
 ## About The Project
 
-This project is a responsive web application that serves as my portfolio to showcase information about my studies, professional experiences, and personal projects. The application features bilingual support (French and English) and offers both dark and light themes, with a responsive design optimized to work seamlessly across desktop, tablet, and mobile devices.
+This project is a responsive web application that serves as my portfolio to showcase informations about my studies, professional experiences, and personal projects. The application features bilingual support (French and English) and offers both dark and light themes, with a responsive design optimized to work seamlessly across desktop, tablet, and mobile devices.
 
 The portfolio includes the following dedicated sections:
 
