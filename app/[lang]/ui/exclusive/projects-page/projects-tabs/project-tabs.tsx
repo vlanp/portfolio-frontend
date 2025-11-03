@@ -343,16 +343,14 @@ const ProjectTabs = ({
               className="mt-0 space-y-3"
             >
               {/* Video */}
-              <div className="relative w-full aspect-[16/9] rounded-md overflow-hidden bg-black shadow-sm border">
-                <iframe
-                  className="w-full h-full"
-                  src={repo.youtube + "?hl=" + lang}
-                  title={`${repo.displayName.stringified}`}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  allowFullScreen
-                />
-              </div>
+              <iframe
+                className="aspect-video shadow-sm"
+                src={repo.youtube + "?hl=" + lang}
+                title={`${repo.displayName.stringified}`}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+              />
 
               {/* Repository Information */}
               <Card className="flex border-muted justify-between gap-0 py-3 h-[400px] md:h-[370px]">
