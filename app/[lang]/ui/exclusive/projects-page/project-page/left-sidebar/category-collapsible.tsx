@@ -9,7 +9,7 @@ import {
   CollapsibleContent,
 } from "@radix-ui/react-collapsible";
 import { LuChevronDown, LuChevronRight } from "react-icons/lu";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import SubCategory from "./sub-category";
 import { useSearchParams } from "next/navigation";
 import { EProjectPageSearchParamsKeys } from "@/types/IProjectPageProps";
@@ -17,18 +17,11 @@ import { EProjectPageSearchParamsKeys } from "@/types/IProjectPageProps";
 const CategoryCollapsible = ({ orderedDir }: { orderedDir: IDir }) => {
   const searchParams = useSearchParams();
   const filePath = searchParams.get(EProjectPageSearchParamsKeys.FILE_PATH);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const initialIsOpen = filePath
+    ? orderedDir.orderedFiles.map((it) => it.file.path).includes(filePath)
+    : false;
+  const [isOpen, setIsOpen] = useState<boolean>(initialIsOpen);
 
-  useEffect(() => {
-    if (
-      filePath &&
-      orderedDir.orderedFiles.map((it) => it.file.path).includes(filePath)
-    ) {
-      setIsOpen(true);
-    } else {
-      setIsOpen(false);
-    }
-  }, [filePath, orderedDir.orderedFiles]);
   return (
     <Collapsible onOpenChange={setIsOpen} open={isOpen}>
       <SidebarMenuItem>
