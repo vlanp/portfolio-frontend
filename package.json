@@ -2,6 +2,7 @@
   "name": "portfolio-v2",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "concurrently \"tsx ./app/[lang]/dictionaries/scripts/generate-dictionaries.ts watch\" \"dotenvx run -- tsx ./types/scripts/generateISearchPaths.ts && next dev --turbopack\"",
     "dict:watch": "tsx ./app/[lang]/dictionaries/scripts/generate-dictionaries.ts watch",
@@ -42,7 +43,6 @@
   },
   "devDependencies": {
     "@dotenvx/dotenvx": "^1.44.2",
-    "@eslint/eslintrc": "^3",
     "@octokit/types": "^14.0.0",
     "@tailwindcss/postcss": "^4",
     "@types/negotiator": "^0.6.3",
@@ -50,8 +50,9 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "concurrently": "^9.1.2",
-    "eslint": "^9",
-    "eslint-config-next": "15.3.1",
+    "eslint": "^10.1.0",
+    "eslint-config-next": "^16.2.1",
+    "eslint-config-prettier": "^10.1.8",
     "prettier": "^3.5.3",
     "tailwindcss": "^4",
     "tsx": "^4.19.4",
