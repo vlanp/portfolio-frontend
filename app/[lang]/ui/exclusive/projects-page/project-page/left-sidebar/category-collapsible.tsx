@@ -11,15 +11,14 @@ import {
 import { LuChevronDown, LuChevronRight } from "react-icons/lu";
 import { useState } from "react";
 import SubCategory from "./sub-category";
-import { useSearchParams } from "next/navigation";
-import { EProjectPageSearchParamsKeys } from "@/types/IProjectPageProps";
 
-const CategoryCollapsible = ({ orderedDir }: { orderedDir: IDir }) => {
-  const searchParams = useSearchParams();
-  const filePath = searchParams.get(EProjectPageSearchParamsKeys.FILE_PATH);
-  const initialIsOpen = filePath
-    ? orderedDir.orderedFiles.map((it) => it.file.path).includes(filePath)
-    : false;
+const CategoryCollapsible = ({
+  orderedDir,
+  initialIsOpen,
+}: {
+  orderedDir: IDir;
+  initialIsOpen: boolean;
+}) => {
   const [isOpen, setIsOpen] = useState<boolean>(initialIsOpen);
 
   return (

@@ -52,16 +52,16 @@ const LeftSidebar = async ({
     checkedEnv.NEXT_PUBLIC_BACKEND_URL +
       checkedEnv.NEXT_PUBLIC_GET_TAG_URL.replace("{repoid}", repoId).replace(
         "{sha}",
-        sha
+        sha,
       ),
-    { params: { lang } }
+    { params: { lang } },
   );
   const projectResponsePromise = axios.get<unknown>(
     checkedEnv.NEXT_PUBLIC_BACKEND_URL +
       checkedEnv.NEXT_PUBLIC_GET_PROJECT_FROM_REPO_URL.replace(
         "{repoid}",
-        repoId
-      )
+        repoId,
+      ),
   );
   const responses = await Promise.all([
     tagContentResponsePromise,
@@ -69,7 +69,7 @@ const LeftSidebar = async ({
   ]);
   const [tagContentResponse, reposResponse] = responses;
   const projectResponseParseResult = getZApiSuccessResponse(ZProject).safeParse(
-    reposResponse.data
+    reposResponse.data,
   );
   if (!projectResponseParseResult.success) {
     throw new Error(z.prettifyError(projectResponseParseResult.error));
@@ -83,14 +83,14 @@ const LeftSidebar = async ({
       throw new Error(
         "Unable to find a file to display for repoid " +
           repoId +
-          ". This shouldn't happen, unless a new repo is being created"
+          ". This shouldn't happen, unless a new repo is being created",
       );
     }
     const newUrl = constructNewUrl(
       EProjectPageSearchParamsKeys.FILE_PATH,
       firstFilePath,
       pathname,
-      urlSearchParams
+      urlSearchParams,
     );
     redirect(newUrl);
   }
@@ -117,12 +117,18 @@ const LeftSidebar = async ({
           <SidebarSeparator />
           <SidebarGroupContent>
             <SidebarMenu>
-              {tagContentResponse.data.data.orderedDirs.map((orderedDir) => (
-                <CategoryCollapsible
-                  key={orderedDir.dir.path}
-                  orderedDir={orderedDir}
-                />
-              ))}
+              {tagContentResponse.data.data.orderedDirs.map((orderedDir) => {
+                const initialIsOpen = orderedDir.orderedFiles
+                  .map((it) => it.file.path)
+                  .includes(filePath);
+                return (
+                  <CategoryCollapsible
+                    key={orderedDir.dir.path + initialIsOpen}
+                    orderedDir={orderedDir}
+                    initialIsOpen={initialIsOpen}
+                  />
+                );
+              })}
             </SidebarMenu>
           </SidebarGroupContent>
           {repoId !== EXAMPLE_REPOSITORY_ID && (
