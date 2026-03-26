@@ -106,5 +106,14 @@
       "Previous": "Précédent",
       "Next": "Suivant"
     }
+  },
+  "SignIn": {
+    "LoginTitle": "Connectez-vous à votre compte",
+    "LoginSubTitle": "Entrez vos informations ci-dessous pour vous connecter à votre compte",
+    "Email": "Email",
+    "Password": "Mot de passe",
+    "LogIn": "Se connecter",
+    "LogInError": "Connexion impossible. L'email ou le mot de passe est incorrecte.",
+    "UnknownError": "Une erreur inconnue est survenue lors de la tentative de connexion. Merci de réessayer ultérieurement."
   }
 }

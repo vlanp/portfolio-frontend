@@ -17,6 +17,8 @@ interface IEnvVariables {
   NEXT_PUBLIC_GET_ARTICLES_NO_MD: string;
   NEXT_PUBLIC_GET_ARTICLES_MD_CONTENT: string;
   NEXT_PUBLIC_GET_ARTICLES_CATEGORIES: string;
+  NEXT_PUBLIC_POST_SIGNIN: string;
+  NEXT_PUBLIC_ADMIN_COOKIE_NAME: string;
 }
 
 const checkEnv = (): IEnvVariables => {
@@ -25,7 +27,7 @@ const checkEnv = (): IEnvVariables => {
   }
   if (!process.env.NEXT_PUBLIC_POST_PROJECTS_URL) {
     throw new Error(
-      "Missing environment variable: NEXT_PUBLIC_POST_PROJECTS_URL"
+      "Missing environment variable: NEXT_PUBLIC_POST_PROJECTS_URL",
     );
   }
   if (!process.env.NEXT_PUBLIC_GET_TAG_URL) {
@@ -36,12 +38,12 @@ const checkEnv = (): IEnvVariables => {
   }
   if (!process.env.NEXT_PUBLIC_GET_FILE_CONTENT_URL) {
     throw new Error(
-      "Missing environment variable: NEXT_PUBLIC_GET_FILE_CONTENT_URL"
+      "Missing environment variable: NEXT_PUBLIC_GET_FILE_CONTENT_URL",
     );
   }
   if (!process.env.NEXT_PUBLIC_GET_FILE_EXIST_URL) {
     throw new Error(
-      "Missing environment variable: NEXT_PUBLIC_GET_FILE_EXIST_URL"
+      "Missing environment variable: NEXT_PUBLIC_GET_FILE_EXIST_URL",
     );
   }
   if (!process.env.NEXT_PUBLIC_GET_TAGS_URL) {
@@ -49,22 +51,22 @@ const checkEnv = (): IEnvVariables => {
   }
   if (!process.env.NEXT_PUBLIC_GET_PROJECT_FROM_REPO_URL) {
     throw new Error(
-      "Missing environment variable: NEXT_PUBLIC_GET_PROJECT_FROM_REPO_URL"
+      "Missing environment variable: NEXT_PUBLIC_GET_PROJECT_FROM_REPO_URL",
     );
   }
   if (!process.env.NEXT_PUBLIC_GET_PROJECTS_FILTERS_URL) {
     throw new Error(
-      "Missing environment variable: NEXT_PUBLIC_GET_PROJECTS_FILTERS_URL"
+      "Missing environment variable: NEXT_PUBLIC_GET_PROJECTS_FILTERS_URL",
     );
   }
   if (!process.env.NEXT_PUBLIC_GET_SEARCH_PATHS_URL) {
     throw new Error(
-      "Missing environment variable: NEXT_PUBLIC_GET_SEARCH_PATHS_URL"
+      "Missing environment variable: NEXT_PUBLIC_GET_SEARCH_PATHS_URL",
     );
   }
   if (!process.env.NEXT_PUBLIC_GET_MAIN_PICTURE_URL) {
     throw new Error(
-      "Missing environment variable: NEXT_PUBLIC_GET_MAIN_PICTURE_URL"
+      "Missing environment variable: NEXT_PUBLIC_GET_MAIN_PICTURE_URL",
     );
   }
   if (!process.env.NEXT_PUBLIC_GITHUB_URL) {
@@ -75,27 +77,35 @@ const checkEnv = (): IEnvVariables => {
   }
   if (!process.env.NEXT_PUBLIC_GET_TIMELINE_DATAS_NO_MD) {
     throw new Error(
-      "Missing environment variable: NEXT_PUBLIC_GET_TIMELINE_DATA_NO_MD"
+      "Missing environment variable: NEXT_PUBLIC_GET_TIMELINE_DATA_NO_MD",
     );
   }
   if (!process.env.NEXT_PUBLIC_GET_TIMELINE_DATA_MD_CONTENT) {
     throw new Error(
-      "Missing environment variable: NEXT_PUBLIC_GET_TIMELINE_DATA_MD_CONTENT"
+      "Missing environment variable: NEXT_PUBLIC_GET_TIMELINE_DATA_MD_CONTENT",
     );
   }
   if (!process.env.NEXT_PUBLIC_GET_ARTICLES_NO_MD) {
     throw new Error(
-      "Missing environment variable: NEXT_PUBLIC_GET_ARTICLES_NO_MD"
+      "Missing environment variable: NEXT_PUBLIC_GET_ARTICLES_NO_MD",
     );
   }
   if (!process.env.NEXT_PUBLIC_GET_ARTICLES_MD_CONTENT) {
     throw new Error(
-      "Missing environment variable: NEXT_PUBLIC_GET_ARTICLES_MD_CONTENT"
+      "Missing environment variable: NEXT_PUBLIC_GET_ARTICLES_MD_CONTENT",
     );
   }
   if (!process.env.NEXT_PUBLIC_GET_ARTICLES_CATEGORIES) {
     throw new Error(
-      "Missing environment variable: NEXT_PUBLIC_GET_ARTICLES_CATEGORIES"
+      "Missing environment variable: NEXT_PUBLIC_GET_ARTICLES_CATEGORIES",
+    );
+  }
+  if (!process.env.NEXT_PUBLIC_POST_SIGNIN) {
+    throw new Error("Missing environment variable: NEXT_PUBLIC_POST_SIGNIN");
+  }
+  if (!process.env.NEXT_PUBLIC_ADMIN_COOKIE_NAME) {
+    throw new Error(
+      "Missing environment variable: NEXT_PUBLIC_ADMIN_COOKIE_NAME",
     );
   }
   return {
@@ -126,6 +136,8 @@ const checkEnv = (): IEnvVariables => {
       process.env.NEXT_PUBLIC_GET_ARTICLES_MD_CONTENT,
     NEXT_PUBLIC_GET_ARTICLES_CATEGORIES:
       process.env.NEXT_PUBLIC_GET_ARTICLES_CATEGORIES,
+    NEXT_PUBLIC_POST_SIGNIN: process.env.NEXT_PUBLIC_POST_SIGNIN,
+    NEXT_PUBLIC_ADMIN_COOKIE_NAME: process.env.NEXT_PUBLIC_ADMIN_COOKIE_NAME,
   };
 };
 

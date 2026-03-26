@@ -106,5 +106,14 @@
       "Previous": "Previous",
       "Next": "Next"
     }
+  },
+  "SignIn": {
+    "LoginTitle": "Log into your account",
+    "LoginSubTitle": "Enter your informations below to log into your account",
+    "Email": "Email",
+    "Password": "Password",
+    "LogIn": "Log In",
+    "LogInError": "Unable to log in. The email or password is incorrect.",
+    "UnknownError": "An unknown error occurred while attempting to log in. Please try again later."
   }
 }
