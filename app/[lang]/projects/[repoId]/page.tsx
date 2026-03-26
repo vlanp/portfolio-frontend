@@ -16,13 +16,42 @@ import FileDisplay from "../../ui/exclusive/projects-page/project-page/file-disp
 import { getDictionary } from "../../dictionaries";
 import FileDisplaySkeleton from "../../ui/exclusive/projects-page/project-page/file-display-skeleton";
 import { constructNewUrl } from "@/lib/utils";
-import { ZRepo } from "@/types/IProject";
+import { ZProject, ZRepo } from "@/types/IProject";
 import {
   getZApiSuccessResponse,
   IApiSuccessResponse,
 } from "@/types/IApiResponse";
 import z from "zod/v4";
 import { IDictionary } from "../../dictionaries/generated";
+import { getZDocumentsWithHighlights } from "@/types/IDocumentsWithHighlights";
+import { ZESearchPaths } from "@/types/generated/ISearchPaths";
+import { ELangs } from "@/types/ILang";
+
+export async function generateStaticParams() {
+  const projectsResponse = await fetch(
+    checkedEnv.NEXT_PUBLIC_BACKEND_URL +
+      checkedEnv.NEXT_PUBLIC_POST_PROJECTS_URL +
+      "?lang=" +
+      ELangs.EN,
+    {
+      method: "POST",
+    },
+  ).then((res) => res.json());
+
+  const projectsResponseParseResult = getZApiSuccessResponse(
+    getZDocumentsWithHighlights(ZProject, ZESearchPaths),
+  ).safeParse(projectsResponse);
+
+  if (!projectsResponseParseResult.success) {
+    throw new Error(z.prettifyError(projectsResponseParseResult.error));
+  }
+
+  return projectsResponseParseResult.data.data.documents
+    .flatMap((document) => document.repos)
+    .map((repo) => ({
+      repoId: repo._id,
+    }));
+}
 
 const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
   const awaitedSearchParams = await searchParams;
@@ -47,7 +76,7 @@ const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
   const repoResponse = await axios
     .get<unknown>(
       checkedEnv.NEXT_PUBLIC_BACKEND_URL +
-        checkedEnv.NEXT_PUBLIC_GET_REPO_URL.replace("{repoid}", repoId)
+        checkedEnv.NEXT_PUBLIC_GET_REPO_URL.replace("{repoid}", repoId),
     )
     .catch((error: Error | AxiosError) => {
       if (
@@ -62,7 +91,7 @@ const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
     });
 
   const repoResponseParseResult = getZApiSuccessResponse(ZRepo).safeParse(
-    repoResponse.data
+    repoResponse.data,
   );
 
   if (!repoResponseParseResult.success) {
@@ -75,7 +104,7 @@ const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
     IApiSuccessResponse<IOctokitTagsResponse["data"]>
   >(
     checkedEnv.NEXT_PUBLIC_BACKEND_URL +
-      checkedEnv.NEXT_PUBLIC_GET_TAGS_URL.replace("{repoid}", repoId)
+      checkedEnv.NEXT_PUBLIC_GET_TAGS_URL.replace("{repoid}", repoId),
   );
   const tags = tagsResponse.data.data;
   const sha = awaitedSearchParams.sha;
@@ -85,7 +114,7 @@ const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
       EProjectPageSearchParamsKeys.SHA,
       tags[0].commit.sha,
       pathname,
-      urlSearchParams
+      urlSearchParams,
     );
     redirect(newUrl);
   }
@@ -94,7 +123,7 @@ const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
     throw new Error(
       "No sha has been set, meaning that no tags where found for the repoId " +
         repoId +
-        ". This shouldn't happen, unless a new repo is being created"
+        ". This shouldn't happen, unless a new repo is being created",
     );
   }
 
@@ -107,13 +136,13 @@ const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
       checkedEnv.NEXT_PUBLIC_BACKEND_URL +
         checkedEnv.NEXT_PUBLIC_GET_FILE_EXIST_URL.replace(
           "{repoid}",
-          repoId
+          repoId,
         ).replace("{filepath}", encodedFilepath),
-      { params: { sha, lang } }
+      { params: { sha, lang } },
     );
 
     const fileExistReponseParseResult = getZApiSuccessResponse(
-      ZFileExist
+      ZFileExist,
     ).safeParse(didFileExistResponse.data);
 
     if (!fileExistReponseParseResult.success) {
@@ -127,7 +156,7 @@ const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
         EProjectPageSearchParamsKeys.FILE_PATH,
         "",
         pathname,
-        urlSearchParams
+        urlSearchParams,
       );
       redirect(newUrl);
     } else if (fileExist.filePath) {
@@ -135,7 +164,7 @@ const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
         EProjectPageSearchParamsKeys.FILE_PATH,
         fileExist.filePath,
         pathname,
-        urlSearchParams
+        urlSearchParams,
       );
       redirect(newUrl);
     }
