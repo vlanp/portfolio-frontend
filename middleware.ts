@@ -7,7 +7,6 @@ const locales: string[] = Object.values(ELangs);
 
 function getLocale(request: NextRequest) {
   const nextLocale = request.cookies.get("NEXT_LOCALE")?.value;
-  console.log(nextLocale);
 
   if (nextLocale && locales.includes(nextLocale)) {
     return nextLocale;
@@ -25,7 +24,7 @@ export function middleware(request: NextRequest) {
   // Check if there is any supported locale in the pathname
   const { pathname } = request.nextUrl;
   const pathnameHasLocale = locales.some(
-    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
+    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
   );
 
   if (pathnameHasLocale) return NextResponse.next({ headers });

@@ -8,13 +8,20 @@ import TopNav from "./ui/exclusive/topnav";
 import { LangToggle } from "./ui/exclusive/lang-toggle";
 import { getDictionary } from "./dictionaries";
 import { IDictionary } from "./dictionaries/generated";
-import { ILang } from "@/types/ILang";
+import { ELangs, ILang } from "@/types/ILang";
 import { Toaster } from "@/components/ui/sonner";
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
+import { Suspense } from "react";
+
+export async function generateStaticParams() {
+  return Object.values(ELangs).map((lang) => ({
+    lang,
+  }));
+}
 
 const sans = DM_Sans({
   variable: "--font-sans",
@@ -55,29 +62,31 @@ export default async function RootLayout({
         />
       </head>
       <body className={`${sans.variable} antialiased`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <header className="sticky top-0 z-50 overflow-hidden">
-            <NavigationMenu className="bg-card border-b border-border">
-              <NavigationMenuList className="flex flex-row justify-around w-svw px-5 h-header-height">
-                <NavigationMenuItem>
-                  <ModeToggle />
-                </NavigationMenuItem>
-                <TopNav dictionary={dict} />
-                <NavigationMenuItem>
-                  <LangToggle dictionary={dict} />
-                </NavigationMenuItem>
-              </NavigationMenuList>
-            </NavigationMenu>
-          </header>
-          <main className="min-h-main-height flex flex-col">{children}</main>
-          <Toaster />
-          <footer></footer>
-        </ThemeProvider>
+        <Suspense>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <header className="sticky top-0 z-50 overflow-hidden">
+              <NavigationMenu className="bg-card border-b border-border">
+                <NavigationMenuList className="flex flex-row justify-around w-svw px-5 h-header-height">
+                  <NavigationMenuItem>
+                    <ModeToggle />
+                  </NavigationMenuItem>
+                  <TopNav dictionary={dict} />
+                  <NavigationMenuItem>
+                    <LangToggle dictionary={dict} />
+                  </NavigationMenuItem>
+                </NavigationMenuList>
+              </NavigationMenu>
+            </header>
+            <main className="min-h-main-height flex flex-col">{children}</main>
+            <Toaster />
+            <footer></footer>
+          </ThemeProvider>
+        </Suspense>
       </body>
     </html>
   );

@@ -11,8 +11,30 @@ import PageContainer from "../../ui/shared/page-container";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { extraLargeBreakpoint, mobileBreakpoint } from "@/types/IBreakpoints";
 import RightTocSidebar from "../../ui/shared/right-toc-sidebar";
-import { ZArticle } from "@/types/IArticle";
+import { IArticle, ZArticle } from "@/types/IArticle";
 import IArticlePageProps from "@/types/IArticlePageProps";
+import { getZPaginated } from "@/types/IPaginated";
+
+export async function generateStaticParams() {
+  const articlesResponse = await fetch(
+    checkedEnv.NEXT_PUBLIC_BACKEND_URL +
+      checkedEnv.NEXT_PUBLIC_GET_ARTICLES_NO_MD,
+  ).then((res) => res.json());
+
+  const articlesResponseParseResult = getZApiSuccessResponse(
+    getZPaginated<IArticle>(ZArticle),
+  ).safeParse(articlesResponse);
+
+  if (!articlesResponseParseResult.success) {
+    throw new Error(z.prettifyError(articlesResponseParseResult.error));
+  }
+
+  return Object.values(articlesResponseParseResult.data.data.elements).map(
+    (element) => ({
+      id: element._id,
+    }),
+  );
+}
 
 const ArticlePage = async ({ params }: IArticlePageProps) => {
   const awaitedParams = await params;
@@ -36,7 +58,7 @@ const ArticlePage = async ({ params }: IArticlePageProps) => {
     .get<unknown>(
       checkedEnv.NEXT_PUBLIC_BACKEND_URL +
         checkedEnv.NEXT_PUBLIC_GET_ARTICLES_MD_CONTENT.replace("{id}", id),
-      { params: { lang } }
+      { params: { lang } },
     )
     .catch((error: Error | AxiosError) => {
       if (
@@ -51,7 +73,7 @@ const ArticlePage = async ({ params }: IArticlePageProps) => {
     });
 
   const fileContentParseResult = getZApiSuccessResponse(
-    getZFileContentWithExtraData(z.unknown(), ZArticle)
+    getZFileContentWithExtraData(z.unknown(), ZArticle),
   ).safeParse(fileContentResponse.data);
 
   if (!fileContentParseResult.success) {
@@ -74,7 +96,7 @@ const ArticlePage = async ({ params }: IArticlePageProps) => {
                 year: "numeric",
                 month: "long",
                 day: "numeric",
-              }
+              },
             )}
             updatedAt={fileContent.extraData.updatedAt.toLocaleDateString(
               lang,
@@ -82,7 +104,7 @@ const ArticlePage = async ({ params }: IArticlePageProps) => {
                 year: "numeric",
                 month: "long",
                 day: "numeric",
-              }
+              },
             )}
             img={{
               width: fileContent.extraData.imgWidth,
