@@ -11,30 +11,8 @@ import PageContainer from "../../ui/shared/page-container";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { extraLargeBreakpoint, mobileBreakpoint } from "@/types/IBreakpoints";
 import RightTocSidebar from "../../ui/shared/right-toc-sidebar";
-import { IArticle, ZArticle } from "@/types/IArticle";
+import { ZArticle } from "@/types/IArticle";
 import IArticlePageProps from "@/types/IArticlePageProps";
-import { getZPaginated } from "@/types/IPaginated";
-
-export async function generateStaticParams() {
-  const articlesResponse = await fetch(
-    checkedEnv.NEXT_PUBLIC_BACKEND_URL +
-      checkedEnv.NEXT_PUBLIC_GET_ARTICLES_NO_MD,
-  ).then((res) => res.json());
-
-  const articlesResponseParseResult = getZApiSuccessResponse(
-    getZPaginated<IArticle>(ZArticle),
-  ).safeParse(articlesResponse);
-
-  if (!articlesResponseParseResult.success) {
-    throw new Error(z.prettifyError(articlesResponseParseResult.error));
-  }
-
-  return Object.values(articlesResponseParseResult.data.data.elements).map(
-    (element) => ({
-      id: element._id,
-    }),
-  );
-}
 
 const ArticlePage = async ({ params }: IArticlePageProps) => {
   const awaitedParams = await params;

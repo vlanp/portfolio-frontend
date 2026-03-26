@@ -16,42 +16,13 @@ import FileDisplay from "../../ui/exclusive/projects-page/project-page/file-disp
 import { getDictionary } from "../../dictionaries";
 import FileDisplaySkeleton from "../../ui/exclusive/projects-page/project-page/file-display-skeleton";
 import { constructNewUrl } from "@/lib/utils";
-import { ZProject, ZRepo } from "@/types/IProject";
+import { ZRepo } from "@/types/IProject";
 import {
   getZApiSuccessResponse,
   IApiSuccessResponse,
 } from "@/types/IApiResponse";
 import z from "zod/v4";
 import { IDictionary } from "../../dictionaries/generated";
-import { getZDocumentsWithHighlights } from "@/types/IDocumentsWithHighlights";
-import { ZESearchPaths } from "@/types/generated/ISearchPaths";
-import { ELangs } from "@/types/ILang";
-
-export async function generateStaticParams() {
-  const projectsResponse = await fetch(
-    checkedEnv.NEXT_PUBLIC_BACKEND_URL +
-      checkedEnv.NEXT_PUBLIC_POST_PROJECTS_URL +
-      "?lang=" +
-      ELangs.EN,
-    {
-      method: "POST",
-    },
-  ).then((res) => res.json());
-
-  const projectsResponseParseResult = getZApiSuccessResponse(
-    getZDocumentsWithHighlights(ZProject, ZESearchPaths),
-  ).safeParse(projectsResponse);
-
-  if (!projectsResponseParseResult.success) {
-    throw new Error(z.prettifyError(projectsResponseParseResult.error));
-  }
-
-  return projectsResponseParseResult.data.data.documents
-    .flatMap((document) => document.repos)
-    .map((repo) => ({
-      repoId: repo._id,
-    }));
-}
 
 const ProjectPage = async ({ params, searchParams }: IProjectPageProps) => {
   const awaitedSearchParams = await searchParams;

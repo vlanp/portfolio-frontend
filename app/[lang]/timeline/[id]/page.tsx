@@ -15,36 +15,10 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { extraLargeBreakpoint, mobileBreakpoint } from "@/types/IBreakpoints";
 import RightTocSidebar from "../../ui/shared/right-toc-sidebar";
 import LeftSidebar from "../../ui/exclusive/timeline-page/timeline-data-page/left-sidebar";
-import {
-  ITimelineElement,
-  ZETimelineElements,
-  ZTimelineData,
-  ZTimelineDatas,
-} from "@/types/ITimelineData";
+import { ZETimelineElements, ZTimelineData } from "@/types/ITimelineData";
 import { constructNewUrl } from "@/lib/utils";
 import { Suspense } from "react";
 import LeftSidebarSkeleton from "../../ui/exclusive/timeline-page/timeline-data-page/left-sidebar-skeleton";
-
-export async function generateStaticParams() {
-  const timelineDatasResponse = await fetch(
-    checkedEnv.NEXT_PUBLIC_BACKEND_URL +
-      checkedEnv.NEXT_PUBLIC_GET_TIMELINE_DATAS_NO_MD,
-  ).then((res) => res.json());
-
-  const timelineDatasParseResult = getZApiSuccessResponse(
-    ZTimelineDatas,
-  ).safeParse(timelineDatasResponse);
-  if (!timelineDatasParseResult.success) {
-    throw new Error(z.prettifyError(timelineDatasParseResult.error));
-  }
-
-  return (Object.values(ZETimelineElements.enum) as ITimelineElement[]).flatMap(
-    (timelineElement) =>
-      timelineDatasParseResult.data.data[timelineElement].map((el) => ({
-        id: el._id,
-      })),
-  );
-}
 
 const TimelineDataPage = async ({
   params,
